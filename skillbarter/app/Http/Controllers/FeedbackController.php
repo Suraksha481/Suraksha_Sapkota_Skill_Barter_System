@@ -105,9 +105,4 @@ class FeedbackController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Thank you for your feedback!');
     }
-
-    public function show(Feedback $feedback)
-    {
-        return view('feedback.show', compact('feedback'));
-    }
 }

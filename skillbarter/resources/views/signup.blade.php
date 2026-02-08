@@ -19,18 +19,33 @@
                 <p>Join SkillBarter and start teaching and learning skills today!</p>
             </div>
 
-            <!-- FORM (RIGHT ALIGNED) -->
-            <form class="auth-form">
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <input type="password" placeholder="Confirm Password" required>
+            @if(session('error'))
+                <div class="alert error">{{ session('error') }}</div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert error">
+                    <ul style="margin: 0; padding-left: 1rem;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- FORM -->
+            <form class="auth-form" method="POST" action="{{ route('register') }}">
+                @csrf
+                <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required>
+                <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
 
                 <div class="auth-btn-wrapper">
                     <button type="submit" class="auth-btn">Sign Up</button>
                 </div>
 
-                <p class="switch">Already have an account? <a href="/login">Login</a></p>
+                <p class="switch">Already have an account? <a href="{{ route('login') }}">Login</a></p>
             </form>
 
         </div>

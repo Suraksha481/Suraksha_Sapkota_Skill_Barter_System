@@ -32,7 +32,7 @@
                             <span style="color: {{ $i <= $feedback->rating ? '#f59e0b' : '#d1d5db' }};">&#9733;</span>
                         @endfor
                         <span style="color: #666; font-size: 0.85rem;">
-                            by {{ $feedback->user->name ?? $feedback->author->name ?? 'Anonymous' }}
+                            by {{ $feedback->author->name ?? 'Anonymous' }}
                         </span>
                     </div>
                     @if($feedback->comment)

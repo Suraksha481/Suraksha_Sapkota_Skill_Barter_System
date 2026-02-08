@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ResourceModel;
+use App\Models\Resource as ResourceModel;
 
 class ResourceController extends Controller
 {

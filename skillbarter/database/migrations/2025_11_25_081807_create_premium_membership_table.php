@@ -10,15 +10,16 @@ return new class extends Migration {
         Schema::create('premium_memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('plan')->default('monthly');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->string('status')->default('active');
             $table->timestamps();
-            });
+        });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('premium_membership');
+        Schema::dropIfExists('premium_memberships');
     }
 };
