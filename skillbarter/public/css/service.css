@@ -1,0 +1,262 @@
+/* ---------- GLOBAL ---------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ---------- HERO / BANNER ---------- */
+.services-hero {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:3rem;
+    padding:5rem 3rem;
+    flex-wrap:wrap;
+    background:#fff;
+}
+.services-hero .container {
+    display: flex;
+    justify-content: space-between;
+    gap:3rem;
+}
+
+.hero-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+}
+
+.hero-text {
+    flex: 1 1 500px;
+}
+
+.hero-text .kicker {
+    font-size: 48px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.hero-text h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.hero-text p.muted {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 25px;
+}
+.hero-ctas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+}
+
+.hero-ctas a {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 12px 28px;
+    font-size: 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.hero-ctas .btn.primary {
+    border:1.5px solid #bcbce9;
+    color: #0a0a0a;;
+    background:transparent;
+    justify-content:center;
+    
+}
+
+
+.hero-ctas .btn.ghost {
+    border:1.5px solid #bcbce9;
+    color: #0a0a0a;;
+    background:transparent;
+    align-items: center;
+}
+
+
+.hero-media {
+    flex: 1 1 400px;
+}
+
+.hero-media img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* ---------- SERVICE CARDS ---------- */
+.services-cards {
+    padding: 60px 0;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.service-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.service-card img {
+    width: 60px;
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.service-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* ---------- SERVICE CATEGORIES ---------- */
+.service-categories {
+    background: #f9f9f9;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.service-categories h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.service-categories p.muted {
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.categories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.category-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #000;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+
+
+/* ---------- HOW IT WORKS ---------- */
+.service-how {
+    padding: 60px 0;
+}
+
+.two-col {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+}
+
+.how-list {
+    flex: 1 1 450px;
+}
+
+.how-list h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.how-list ol {
+    padding-left: 20px;
+}
+
+.how-list ol li {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.how-image {
+    flex: 1 1 450px;
+}
+
+.how-image img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width: 1024px) {
+    .hero-inner, .two-col {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    .hero-ctas {
+        justify-content: center;
+    }
+}
+
+@media(max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+@media(max-width: 480px) {
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .service-cta h3 {
+        font-size: 22px;
+    }
+}
