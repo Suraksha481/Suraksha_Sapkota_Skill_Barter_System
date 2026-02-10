@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="{{ asset('css/my-skills.css') }}">
   <link rel="stylesheet" href="{{ asset('css/role.css') }}">
   <link rel="stylesheet" href="{{ asset('css/rewards.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/skill-detail.css') }}">
 </head>
 <body>
 

@@ -1,13 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\{
     ProfileController,
     DashboardController,
     UserSkillController,
-    MatchController,
     SessionRequestController,
     FeedbackController,
     RewardsController,
@@ -24,9 +21,9 @@ use App\Http\Controllers\{
 
 
 Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/about', [PageController::class, 'about']);
-Route::get('/service', [PageController::class, 'service']);
-Route::get('/blogs', [PageController::class, 'blogs']);
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/service', [PageController::class, 'service'])->name('service');
+Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
@@ -43,16 +40,11 @@ Route::get('/match', function() {
     return redirect()->route('find-skill');
 })->name('match');
 
-/*Auth Pages (Guest Only)
+/*
+|--------------------------------------------------------------------------
+| Auth Pages are handled by routes/auth.php (included at bottom)
+|--------------------------------------------------------------------------
 */
-
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store']);
-
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -62,11 +54,7 @@ Route::middleware('guest')->group(function () {
 */
 
 Route::middleware('auth')->group(function () {
-
-    // Logout
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-    // My Skills (force login but NOT verification)
+    // My Skills
     Route::get('/my-skills', [UserSkillController::class, 'index'])->name('my.skills');
     Route::post('/my-skills', [UserSkillController::class, 'store'])->name('my.skills.store');
     Route::delete('/my-skills/{skill}', [UserSkillController::class, 'destroy'])->name('my.skills.destroy');
@@ -83,9 +71,7 @@ Route::middleware('auth')->group(function () {
 | These NEED email verification
 */
 
-
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

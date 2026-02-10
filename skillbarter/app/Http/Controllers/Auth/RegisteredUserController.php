@@ -23,27 +23,27 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+        ]);
 
+        // Create the user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email:rfc,dns|max:255|unique:users',
-        'password' => 'required|string|confirmed|min:8',
-    ]);
+        // Send email verification notification
+        $user->sendEmailVerificationNotification();
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
-
-
-
-    return redirect()->route('login')
-        ->with('status', 'Verification link sent to your email.');
-}
+        // Do NOT authenticate the user - they must verify email first
+        return view('auth.verification-pending', ['email' => $user->email]);
+    }
 
 
 }

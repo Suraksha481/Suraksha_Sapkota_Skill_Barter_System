@@ -30,16 +30,27 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-
-            // Redirect to home page after login
-            return redirect('/')->with('success', 'Logged in successfully.');
+        // Attempt authentication
+        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        $user = Auth::user();
+
+        // Check if email is verified
+        if (!$user->hasVerifiedEmail()) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Please verify your email address before logging in. Check your inbox for the verification link.',
+            ])->with('unverified_email', $user->email);
+        }
+
+        $request->session()->regenerate();
+
+        // Redirect to home page after login
+        return redirect('/')->with('success', 'Logged in successfully.');
     }
 
     /**
