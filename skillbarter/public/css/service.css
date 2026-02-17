@@ -82,17 +82,17 @@ body {
 }
 
 .hero-ctas .btn.primary {
-    border:1.5px solid #bcbce9;
-    color: #0a0a0a;;
-    background:transparent;
+    border:2px solid #1a1a1a;
+    color: #ffffff;
+    background:#1a1a1a;
     justify-content:center;
-    
+
 }
 
 
 .hero-ctas .btn.ghost {
-    border:1.5px solid #bcbce9;
-    color: #0a0a0a;;
+    border:2px solid #1a1a1a;
+    color: #1a1a1a;
     background:transparent;
     align-items: center;
 }

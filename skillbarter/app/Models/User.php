@@ -36,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'role' => 'json', // Store roles as JSON: ["teacher", "student"]
     ];
 
     public function userSkills() { return $this->hasMany(UserSkill::class); }
@@ -115,6 +116,53 @@ class User extends Authenticatable implements MustVerifyEmail
     public function studentProfile()
     {
         return $this->hasOne(StudentProfile::class);
+    }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole($role): bool
+    {
+        $roles = is_array($this->role) ? $this->role : [$this->role];
+        return in_array($role, $roles);
+    }
+
+    /**
+     * Check if user is a teacher
+     */
+    public function isTeacher(): bool
+    {
+        return $this->hasRole('teacher');
+    }
+
+    /**
+     * Check if user is a student
+     */
+    public function isStudent(): bool
+    {
+        return $this->hasRole('student');
+    }
+
+    /**
+     * Add a role to user
+     */
+    public function addRole($role): void
+    {
+        $roles = is_array($this->role) ? $this->role : [$this->role];
+        if (!in_array($role, $roles)) {
+            $roles[] = $role;
+            $this->update(['role' => $roles]);
+        }
+    }
+
+    /**
+     * Remove a role from user
+     */
+    public function removeRole($role): void
+    {
+        $roles = is_array($this->role) ? $this->role : [$this->role];
+        $roles = array_filter($roles, fn($r) => $r !== $role);
+        $this->update(['role' => array_values($roles)]);
     }
 
     /**

@@ -38,12 +38,37 @@
         <span class="user-name">{{ Auth::user()->name }}</span>
         <div class="dropdown">
           <ul>
-            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+            <li><a href="{{ route('dashboard') }}">📊 Dashboard</a></li>
+
+            {{-- Teacher-specific menu items --}}
+            @if(Auth::user()->isTeacher())
+              <li><hr style="margin: 8px 0;"></li>
+              <li><strong>👨‍🏫 Teacher</strong></li>
+              <li><a href="{{ route('teacher.dashboard') }}">My Teaching</a></li>
+              <li><a href="{{ route('teacher.resources.index') }}">📚 Resources</a></li>
+              <li><a href="{{ route('teacher.analytics') }}">📊 Analytics</a></li>
+            @endif
+
+            {{-- Student-specific menu items --}}
+            @if(Auth::user()->isStudent())
+              <li><hr style="margin: 8px 0;"></li>
+              <li><strong>🎓 Student</strong></li>
+              <li><a href="{{ route('student.dashboard') }}">My Learning</a></li>
+              <li><a href="{{ route('student.learning-path') }}">📖 Learning Path</a></li>
+              <li><a href="{{ route('student.progress') }}">📈 Progress</a></li>
+            @endif
+
+            {{-- Shared menu items --}}
+            <li><hr style="margin: 8px 0;"></li>
+              <li><a href="{{ route('profile.show') }}">👤 Profile</a></li>
+            <li><a href="{{ route('my.skills') }}">⭐ My Skills</a></li>
+            <li><a href="{{ route('requests.index') }}">📝 Requests</a></li>
+            <li><a href="{{ route('rewards.index') }}">🏆 Rewards</a></li>
+            <li><a href="{{ route('premium.index') }}">💎 Premium</a></li>
             <li>
               <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit">Logout</button>
+                <button type="submit">🚪 Logout</button>
               </form>
             </li>
           </ul>

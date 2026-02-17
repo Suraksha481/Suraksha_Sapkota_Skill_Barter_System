@@ -36,7 +36,7 @@
 }
 
 .find-skill-search button {
-    background: #6a00ff;
+    background: #1a1a1a;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -92,7 +92,7 @@
 .skill-link {
     display: inline-block;
     margin-top: 15px;
-    color: #6a00ff;
+    color: #1a1a1a;
     font-weight: 600;
     text-decoration: none;
 }

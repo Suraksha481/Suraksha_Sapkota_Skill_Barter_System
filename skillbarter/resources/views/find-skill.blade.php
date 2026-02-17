@@ -58,10 +58,7 @@
         @endforelse
     </div>
 
-    <!-- PAGINATION -->
-    <div class="pagination-wrapper">
-        {{ $skills->withQueryString()->links() }}
-    </div>
+    
 
 
 </section>

@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -29,12 +29,13 @@
             width: 80px;
             height: 80px;
             margin: 0 auto 20px;
-            background: #667eea;
+            background: #1a1a1a;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
+            color: white;
         }
         h1 {
             color: #333;
@@ -53,12 +54,12 @@
             border-radius: 5px;
             margin: 20px 0;
             font-weight: 600;
-            color: #667eea;
+            color: #1a1a1a;
         }
         .instructions {
             background: #f9f9f9;
             padding: 20px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #1a1a1a;
             margin: 20px 0;
             text-align: left;
             border-radius: 5px;
@@ -91,13 +92,13 @@
             transition: all 0.3s ease;
         }
         .btn-primary {
-            background: #667eea;
+            background: #1a1a1a;
             color: white;
         }
         .btn-primary:hover {
-            background: #5568d3;
+            background: #333333;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(26, 26, 26, 0.4);
         }
         .btn-secondary {
             background: #ddd;

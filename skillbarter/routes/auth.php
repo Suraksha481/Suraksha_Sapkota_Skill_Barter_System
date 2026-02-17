@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\VerifyEmailCodeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -34,6 +35,16 @@ Route::middleware('guest')->group(function () {
 
     Route::put('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
+
+    // Email Verification Code routes
+    Route::get('verify-email-code', [VerifyEmailCodeController::class, 'show'])
+                ->name('verify-email-code.show');
+
+    Route::post('verify-email-code', [VerifyEmailCodeController::class, 'verify'])
+                ->name('verify-email-code.verify');
+
+    Route::post('verify-email-code/resend', [VerifyEmailCodeController::class, 'resend'])
+                ->name('verify-email-code.resend');
 
     // OAuth routes
     Route::get('auth/{provider}/redirect', [OAuthController::class, 'redirect'])

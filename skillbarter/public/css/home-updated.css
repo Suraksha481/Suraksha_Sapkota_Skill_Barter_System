@@ -1,0 +1,238 @@
+/* BLACK AND WHITE THEME - HOME PAGE */
+
+/* HEADER */
+.site-header {
+  background: #1a1a1a !important;
+  border-bottom: 1px solid #333333 !important;
+}
+
+.brand a {
+  color: #ffffff !important;
+}
+
+.logo-circle {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.main-nav ul li a {
+  color: #ffffff !important;
+}
+
+.main-nav ul li a:hover {
+  color: #cccccc !important;
+}
+
+.user-name {
+  color: #ffffff !important;
+}
+
+.user-profile .dropdown {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.user-profile .dropdown ul li a,
+.user-profile .dropdown ul li button {
+  color: #1a1a1a !important;
+}
+
+/* BUTTONS */
+.btn.primary {
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 2px solid #1a1a1a !important;
+}
+
+.btn.primary:hover {
+  background: #333333 !important;
+  border-color: #333333 !important;
+}
+
+.btn.ghost {
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+  background: transparent !important;
+}
+
+.btn.ghost:hover {
+  background: #f0f0f0 !important;
+}
+
+.search-hero input {
+  border: 2px solid #cccccc !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.search-hero input:focus {
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.search-hero button {
+  background: #1a1a1a !important;
+  border: 2px solid #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.search-hero button:hover {
+  background: #333333 !important;
+}
+
+/* HERO */
+.hero {
+  background: #ffffff !important;
+}
+
+.hero-content h1 {
+  color: #000000 !important;
+}
+
+.hero-content p {
+  color: #666666 !important;
+}
+
+.hero-image img {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+/* SECTIONS */
+.how-it-works {
+  background: #f5f5f5 !important;
+}
+
+.how-it-works h2 {
+  color: #1a1a1a !important;
+}
+
+.step {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.step h3 {
+  color: #000000 !important;
+}
+
+.step p {
+  color: #666666 !important;
+}
+
+.step:hover {
+  border-color: #999999 !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* POPULAR SKILLS */
+.popular-skills {
+  background: #ffffff !important;
+}
+
+.popular-skills h2 {
+  color: #1a1a1a !important;
+}
+
+.skill {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.skill h3 {
+  color: #000000 !important;
+}
+
+.skill p {
+  color: #666666 !important;
+}
+
+.skill:hover {
+  border-color: #999999 !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* TESTIMONIALS */
+.testimonials {
+  background: #f5f5f5 !important;
+}
+
+.testimonials h2 {
+  color: #1a1a1a !important;
+}
+
+.testimonial-card {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.testimonial-card h4 {
+  color: #000000 !important;
+}
+
+.testimonial-card p {
+  color: #666666 !important;
+}
+
+.testimonial-card:hover {
+  border-color: #999999 !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* CTA */
+.service-cta {
+  background: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+}
+
+.service-cta h3 {
+  color: #ffffff !important;
+}
+
+.service-cta p.muted {
+  color: #cccccc !important;
+}
+
+.service-cta .btn.primary.large {
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  border: 2px solid #ffffff !important;
+}
+
+.service-cta .btn.primary.large:hover {
+  background: #e0e0e0 !important;
+  border-color: #e0e0e0 !important;
+}
+
+/* FOOTER */
+footer {
+  background: #1a1a1a !important;
+  border-top: 1px solid #333333 !important;
+}
+
+footer p {
+  color: #999999 !important;
+}
+
+.footer-brand h3,
+.footer-links h4,
+.footer-contact h4 {
+  color: #ffffff !important;
+}
+
+.footer-links a,
+.footer-contact p,
+.footer-brand p {
+  color: #999999 !important;
+}
+
+.footer-links a:hover {
+  color: #ffffff !important;
+}
+
+.footer-bottom {
+  color: #666666 !important;
+}

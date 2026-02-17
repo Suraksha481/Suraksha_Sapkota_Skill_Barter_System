@@ -72,8 +72,8 @@
 }
 
 .role-option input:checked + .role-box {
-    border-color: #6a00ff;
-    box-shadow: 0 8px 20px rgba(106,0,255,0.2);
+    border-color: #1a1a1a;
+    box-shadow: 0 8px 20px rgba(26,26,26,0.2);
     transform: translateY(-4px);
 }
 

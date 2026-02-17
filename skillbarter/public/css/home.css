@@ -78,15 +78,15 @@
 
 }
 .hero-buttons .btn.ghost {
-  border:1.5px solid #bcbce9;
-  color: #0a0a0a;;
+  border:2px solid #000000;
+  color: #1a1a1a;
   background:transparent;
 }
 
 .hero-buttons .btn.primary {
-  border:1.5px solid #bcbce9;
-  color: #0a0a0a;;
-  background:transparent;
+  border:2px solid #1a1a1a;
+  color: #ffffff;
+  background:#1a1a1a;
 }
 
 /* SEARCH BAR */
@@ -105,20 +105,20 @@
   transition:all 0.3s ease;
 }
 .search-hero input:focus {
-  border-color:#6a00ff;
-  box-shadow:0 6px 20px rgba(51, 49, 54, 0.2);
+  border-color:#000000;
+  box-shadow:0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 .search-hero button {
   padding:0.6rem 1rem;
   border:none;
-  background:#6a00ff;
+  background:#1a1a1a;
   color:#fff;
   border-radius:0 6px 6px 0;
   cursor:pointer;
   transition:0.3s ease;
 }
 .search-hero button:hover {
-  background:#8a2be2;
+  background:#333333;
 }
 
 /* BUTTONS */
@@ -171,6 +171,10 @@
     border: 1px solid #ccc;
     min-width: 150px;
     z-index: 100;
+    max-height: 500px;
+    overflow-y: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .user-profile:hover .dropdown {
@@ -190,13 +194,21 @@
 .user-profile .dropdown ul li a,
 .user-profile .dropdown ul li button {
     text-decoration: none;
-    color: black;
+    color: #1a1a1a;
     display: block;
     width: 100%;
     text-align: left;
     background: none;
     border: none;
     cursor: pointer;
+    padding: 10px 16px;
+    transition: all 0.3s ease;
+}
+
+.user-profile .dropdown ul li a:hover,
+.user-profile .dropdown ul li button:hover {
+    background-color: #f5f5f5;
+    color: #000000;
 }
 
 

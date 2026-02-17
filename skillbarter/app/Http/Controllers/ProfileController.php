@@ -22,6 +22,19 @@ class ProfileController extends Controller
     }
 
     /**
+     * Show the public profile summary for the authenticated user.
+     */
+    public function show(Request $request): View
+    {
+        $user = $request->user();
+        $user->loadMissing(['skills', 'studentProfile', 'teacherProfile']);
+
+        return view('profile.show', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
