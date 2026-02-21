@@ -28,7 +28,7 @@
             </div>
 
             <div class="form-group">
-                <label for="category">🏷️ Category</label>
+                <label for="category">Category</label>
                 <select id="category" name="category">
                     <option value="">-- Select Category --</option>
                     <option value="tutorial" {{ old('category') == 'tutorial' ? 'selected' : '' }}>Tutorial</option>
@@ -40,14 +40,14 @@
             </div>
 
             <div class="form-group">
-                <label for="file">📁 Upload File * (PDF, DOC, DOCX, TXT max 10MB)</label>
+                <label for="file">Upload File * (PDF, DOC, DOCX, TXT max 10MB)</label>
                 <input type="file" id="file" name="file"
                        accept=".pdf,.doc,.docx,.txt" required>
                 @error('file') <small class="error">{{ $message }}</small> @enderror
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn primary">✅ Upload Resource</button>
+                <button type="submit" class="btn primary">Upload Resource</button>
                 <a href="{{ route('teacher.resources.index') }}" class="btn secondary">❌ Cancel</a>
             </div>
         </form>

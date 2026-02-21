@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     ContactController,
     RoleController,
     TeacherDashboardController,
+    TeacherController,
     TeacherResourcesController,
     TeacherAnalyticsController,
     StudentDashboardController,
@@ -29,6 +30,10 @@ Route::get('/service', [PageController::class, 'service'])->name('service');
 Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Teacher directory
+Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
+Route::get('/teachers/{teacher}', [TeacherController::class, 'show'])->name('teachers.show');
 
 // Public Skill Browsing (VERY IMPORTANT)
 Route::get('/find-skill', [SkillController::class, 'index'])->name('find-skill');
@@ -81,6 +86,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/requests/{requestModel}/decline', [SessionRequestController::class, 'decline'])->name('requests.decline');
     Route::post('/requests/{requestModel}/complete', [SessionRequestController::class, 'complete'])->name('requests.complete');
     Route::post('/requests/{requestModel}/cancel', [SessionRequestController::class, 'cancel'])->name('requests.cancel');
+
+    // Chat for a request (real-time)
+    Route::get('/chat/{requestModel}', [\App\Http\Controllers\ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{requestModel}/message', [\App\Http\Controllers\ChatController::class, 'send'])->name('chat.send');
 
     // Feedback
     Route::resource('feedback', FeedbackController::class)->only(['index','create','store']);

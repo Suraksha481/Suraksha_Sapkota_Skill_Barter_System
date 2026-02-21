@@ -37,7 +37,7 @@ class SessionRequestController extends Controller
     public function create(UserSkill $userSkill)
     {
         $userSkill->load(['user', 'skill']);
-        
+
         if ($userSkill->user_id === auth()->id()) {
             return back()->with('error', 'You cannot request your own skill.');
         }
@@ -69,7 +69,7 @@ class SessionRequestController extends Controller
             return back()->with('error', 'You already have a pending request for this skill.');
         }
 
-        RequestModel::create([
+        $requestModel = RequestModel::create([
             'requester_id' => $user->id,
             'responder_id' => $userSkill->user_id,
             'user_skill_id' => $request->user_skill_id,
@@ -77,6 +77,13 @@ class SessionRequestController extends Controller
             'status' => 'open',
             'scheduled_at' => $request->scheduled_at,
         ]);
+
+        // Notify the teacher (responder)
+        try {
+            $userSkill->user->notify(new \App\Notifications\RequestReceived($requestModel));
+        } catch (\Throwable $e) {
+            // swallow notification errors so request creation is not blocked
+        }
 
         return redirect()->route('requests.index', ['tab' => 'sent'])
             ->with('success', 'Request sent successfully!');
@@ -89,6 +96,13 @@ class SessionRequestController extends Controller
         }
 
         $requestModel->update(['status' => 'accepted']);
+
+        // Notify requester that their request was accepted
+        try {
+            $requestModel->requester->notify(new \App\Notifications\RequestAccepted($requestModel));
+        } catch (\Throwable $e) {
+            // ignore
+        }
 
         return back()->with('success', 'Request accepted! You can now schedule the session.');
     }

@@ -64,7 +64,7 @@
                     </div>
                 </div>
             @empty
-                <p class="empty">No learning requests yet. <a href="{{ route('find-skill') }}">Find a teacher</a></p>
+                <p class="empty">No learning requests yet. <a href="{{ route('teachers.index') }}">Find a teacher</a></p>
             @endforelse
         </div>
     </div>
@@ -93,7 +93,7 @@
         <div class="action-buttons">
             <a href="{{ route('student.learning-path') }}" class="btn primary">📖 Learning Path</a>
             <a href="{{ route('student.progress') }}" class="btn primary">📈 My Progress</a>
-            <a href="{{ route('find-skill') }}" class="btn secondary">🔍 Find Teachers</a>
+            <a href="{{ route('teachers.index') }}" class="btn secondary">🔍 Find Teachers</a>
             <a href="{{ route('my.skills') }}" class="btn secondary">➕ Add Skills</a>
         </div>
     </div>
