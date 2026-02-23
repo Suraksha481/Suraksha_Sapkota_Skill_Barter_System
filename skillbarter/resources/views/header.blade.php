@@ -127,6 +127,22 @@
     cursor: pointer;
 }
 
+/* Fix notification text color */
+.notif-card,
+.notif-card a,
+.notif-card .notif-message,
+.notif-card .notif-time {
+    color: #000 !important;
+}
+
+.notif-item.unread {
+    background: #f2f2f2;
+}
+
+.notif-item.unread a {
+    color: #000 !important;
+}
+
 /* Body */
 .notif-body {
     max-height: 300px;
