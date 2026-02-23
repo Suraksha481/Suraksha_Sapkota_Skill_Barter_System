@@ -62,27 +62,23 @@
 
                 <!-- Role Selection -->
                 <div class="roles-selection">
-                    <label style="font-weight: bold; margin-bottom: 10px;">Select your role(s):</label>
+                    <label style="font-weight: bold; margin-bottom: 10px;">Select your role:</label>
 
                     <label>
-                        <input type="checkbox" name="roles[]" value="student"
-                               {{ in_array('student', old('roles', [])) ? 'checked' : '' }}>
-                        <span>🎓 Student - I want to learn new skills</span>
+                        <input type="radio" name="role" value="student"
+                               {{ old('role') === 'student' ? 'checked' : '' }}>
+                        <span>Student - I want to learn new skills</span>
                     </label>
 
                     <label>
-                        <input type="checkbox" name="roles[]" value="teacher"
-                               {{ in_array('teacher', old('roles', [])) ? 'checked' : '' }}>
-                        <span>👨‍🏫 Teacher - I want to teach skills</span>
+                        <input type="radio" name="role" value="teacher"
+                               {{ old('role') === 'teacher' ? 'checked' : '' }}>
+                        <span>Teacher - I want to teach skills</span>
                     </label>
 
-                    <label>
-                        <small style="color: #666; display: block; margin-top: 8px;">
-                            💡 Tip: You can select both! Share your knowledge and learn new things.
-                        </small>
-                    </label>
+                    
 
-                    @error('roles')
+                    @error('role')
                         <div class="error-text">{{ $message }}</div>
                     @enderror
                 </div>

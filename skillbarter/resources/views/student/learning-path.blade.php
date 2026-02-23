@@ -5,7 +5,7 @@
 <section class="dashboard">
 
     <div class="dashboard-header">
-        <h1>📖 My Learning Path</h1>
+        <h1>My Learning Path</h1>
         <p>Track your enrolled courses and learning journey</p>
     </div>
 
@@ -48,8 +48,8 @@
             </div>
         @empty
             <div class="empty-state">
-                <p>📭 No enrolled courses yet.</p>
-                <a href="{{ route('find-skill') }}" class="btn primary">Find a Teacher</a>
+                <p>No enrolled courses yet.</p>
+                <a href="{{ route('teachers.index') }}" class="btn primary">Find a Teacher</a>
             </div>
         @endforelse
     </div>
@@ -77,18 +77,15 @@
     }
 
     .filter-btn {
-        background: #f0f0f0;
+        background: #cbc7c7;
         padding: 8px 16px;
         border-radius: 20px;
         text-decoration: none;
-        color: #333;
+        color: #820909;
         transition: all 0.3s;
     }
 
-    .filter-btn:hover {
-        background: #2196f3;
-        color: white;
-    }
+
 
     .courses-grid {
         display: grid;

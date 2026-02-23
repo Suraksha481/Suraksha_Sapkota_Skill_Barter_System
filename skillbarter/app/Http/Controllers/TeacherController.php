@@ -9,7 +9,7 @@ class TeacherController extends Controller
     // List all teachers with basic filters
     public function index(Request $request)
     {
-        $query = User::query()->whereJsonContains('role', 'teacher');
+        $query = User::query()->where('role', 'teacher');
 
         if ($request->filled('q')) {
             $query->where('name', 'like', '%' . $request->q . '%');

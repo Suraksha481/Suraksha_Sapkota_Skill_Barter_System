@@ -5,7 +5,7 @@
 <section class="dashboard">
 
     <div class="dashboard-header">
-        <h1>📈 My Learning Progress</h1>
+        <h1>My Learning Progress</h1>
         <p>Track how far you've come in your learning journey</p>
     </div>
 
@@ -13,28 +13,28 @@
     <div class="progress-stats">
         <div class="stat-card">
             <h3>{{ $stats['total_courses_taken'] }}</h3>
-            <p>👥 Total Courses</p>
+            <p>Total Courses</p>
         </div>
 
         <div class="stat-card">
             <h3>{{ $stats['completed_courses'] }}</h3>
-            <p>✅ Completed</p>
+            <p>Completed</p>
         </div>
 
         <div class="stat-card">
             <h3>{{ $stats['in_progress_courses'] }}</h3>
-            <p>🔄 In Progress</p>
+            <p>In Progress</p>
         </div>
 
         <div class="stat-card">
             <h3>{{ round($totalHours, 1) }}</h3>
-            <p>⏱️ Learning Hours</p>
+            <p>Learning Hours</p>
         </div>
     </div>
 
     <!-- SKILLS PROGRESS -->
     <div class="progress-section">
-        <h2>🎯 Skill Progress</h2>
+        <h2>Skill Progress</h2>
         <div class="skills-progress">
             @forelse($learningSkills as $skill)
                 @php
@@ -62,7 +62,7 @@
 
     <!-- COURSE TIMELINE -->
     <div class="progress-section">
-        <h2>📅 Course Timeline</h2>
+        <h2>Course Timeline</h2>
         <div class="timeline">
             @forelse($allRequests->sortByDesc('updated_at') as $course)
                 <div class="timeline-item timeline-{{ $course->status }}">
@@ -82,7 +82,7 @@
 
     <!-- TEACHER FEEDBACK -->
     <div class="progress-section">
-        <h2>💬 Feedback Received</h2>
+        <h2>Feedback Received</h2>
         <div class="feedback-list">
             @forelse($feedbackReceived as $feedback)
                 <div class="feedback-item">

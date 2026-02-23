@@ -19,15 +19,26 @@
 
     <!-- Tab Navigation -->
     <div class="dashboard-actions" style="margin-bottom: 2rem;">
-        <a href="{{ route('requests.index', ['tab' => 'received']) }}"
-           class="btn {{ $tab === 'received' ? 'primary' : 'ghost' }}">
-            Received ({{ $received->count() }})
-        </a>
+        @if(auth()->user()->isTeacher())
+            <a href="{{ route('requests.index', ['tab' => 'received']) }}"
+               class="btn {{ $tab === 'received' ? 'primary' : 'ghost' }}">
+                Received ({{ $received->count() }})
+            </a>
+        @endif
+
         <a href="{{ route('requests.index', ['tab' => 'sent']) }}"
            class="btn {{ $tab === 'sent' ? 'primary' : 'ghost' }}">
             Sent ({{ $sent->count() }})
         </a>
     </div>
+
+    @if(! auth()->user()->isTeacher())
+        <div style="margin-bottom:1rem;">
+            <div class="alert info">
+                When a teacher accepts your request you will be notified here and via Notifications. You can also open the request details to see status changes.
+            </div>
+        </div>
+    @endif
 
     @if($tab === 'received')
     <!-- RECEIVED REQUESTS -->

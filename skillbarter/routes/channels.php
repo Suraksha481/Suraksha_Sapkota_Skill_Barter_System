@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+// Channel for chat related to a specific request (only participants may listen)
+Broadcast::channel('request.{requestId}', function ($user, $requestId) {
+    // Minimal check: user must be participant (requester or responder)
+    $request = \App\Models\RequestModel::find($requestId);
+    if (! $request) return false;
+    return (int)$user->id === (int)$request->requester_id || (int)$user->id === (int)$request->responder_id;
+});

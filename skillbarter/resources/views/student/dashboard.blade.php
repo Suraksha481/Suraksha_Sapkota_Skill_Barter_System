@@ -6,7 +6,7 @@
 
     <!-- HEADER -->
     <div class="dashboard-header">
-        <h1>🎓 Student Dashboard</h1>
+        <h1>Student Dashboard</h1>
         <p>Welcome, {{ $user->name }}! Track your learning journey</p>
     </div>
 
@@ -35,7 +35,7 @@
 
     <!-- LEARNING SKILLS -->
     <div class="dashboard-section">
-        <h2>📚 Skills I'm Learning</h2>
+        <h2>Skills I'm Learning</h2>
         <div class="skills-box">
             @forelse($learningSkills as $skill)
                 <div class="skill-card">
@@ -50,7 +50,7 @@
 
     <!-- MY LEARNING REQUESTS -->
     <div class="dashboard-section">
-        <h2>📝 My Learning Requests</h2>
+        <h2>My Learning Requests</h2>
         <div class="requests-list">
             @forelse($myRequests->take(5) as $request)
                 <div class="request-card">
@@ -71,7 +71,7 @@
 
     <!-- TEACHER FEEDBACK -->
     <div class="dashboard-section">
-        <h2>📣 Feedback from Teachers</h2>
+        <h2>Feedback from Teachers</h2>
         <div class="feedback-list">
             @forelse($feedbackReceived as $feedback)
                 <div class="feedback-card">
@@ -89,12 +89,12 @@
 
     <!-- QUICK ACTIONS -->
     <div class="dashboard-section">
-        <h2>⚡ Quick Actions</h2>
+        <h2>Quick Actions</h2>
         <div class="action-buttons">
-            <a href="{{ route('student.learning-path') }}" class="btn primary">📖 Learning Path</a>
-            <a href="{{ route('student.progress') }}" class="btn primary">📈 My Progress</a>
-            <a href="{{ route('teachers.index') }}" class="btn secondary">🔍 Find Teachers</a>
-            <a href="{{ route('my.skills') }}" class="btn secondary">➕ Add Skills</a>
+            <a href="{{ route('student.learning-path') }}" class="btn primary">Learning Path</a>
+            <a href="{{ route('student.progress') }}" class="btn primary">My Progress</a>
+            <a href="{{ route('teachers.index') }}" class="btn secondary">Find Teachers</a>
+            <a href="{{ route('my.skills') }}" class="btn secondary">Add Skills</a>
         </div>
     </div>
 

@@ -82,6 +82,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/requests', [SessionRequestController::class, 'index'])->name('requests.index');
     Route::get('/requests/new/{userSkill}', [SessionRequestController::class, 'create'])->name('requests.create');
     Route::post('/requests', [SessionRequestController::class, 'store'])->name('requests.store');
+    Route::get('/requests/{requestModel}', [SessionRequestController::class, 'show'])->name('requests.show');
     Route::post('/requests/{requestModel}/accept', [SessionRequestController::class, 'accept'])->name('requests.accept');
     Route::post('/requests/{requestModel}/decline', [SessionRequestController::class, 'decline'])->name('requests.decline');
     Route::post('/requests/{requestModel}/complete', [SessionRequestController::class, 'complete'])->name('requests.complete');
@@ -97,10 +98,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Rewards (shared)
     Route::get('/rewards', [RewardsController::class, 'index'])->name('rewards.index');
 
+    // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markRead'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+
     // Premium (shared)
     Route::get('/premium', [PremiumController::class, 'index'])->name('premium.index');
     Route::post('/premium/subscribe', [PremiumController::class, 'subscribe'])->name('premium.subscribe');
     Route::post('/premium/cancel', [PremiumController::class, 'cancel'])->name('premium.cancel');
+
+        // eSewa payment integration
+        Route::post('/premium/esewa/initiate', [\App\Http\Controllers\EsewaController::class, 'initiate'])->name('esewa.initiate');
+        Route::get('/premium/esewa/callback', [\App\Http\Controllers\EsewaController::class, 'callback'])->name('esewa.callback');
+        Route::get('/premium/esewa/failure', [\App\Http\Controllers\EsewaController::class, 'failure'])->name('esewa.failure');
 
     // ====== TEACHER-SPECIFIC ROUTES ======
     Route::middleware('teacher')->group(function () {

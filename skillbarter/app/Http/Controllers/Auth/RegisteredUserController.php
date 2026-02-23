@@ -31,29 +31,22 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
-            'roles' => 'required|array|min:1',
-            'roles.*' => 'in:teacher,student',
+            'role' => 'required|in:teacher,student',
         ]);
 
-        // Create the user with selected roles
+        // Create the user with single role (mutually exclusive)
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->roles, // Store as JSON array
+            'role' => $request->role,
         ]);
 
-        // Create profiles based on selected roles
-        if (in_array('teacher', $request->roles)) {
-            \App\Models\TeacherProfile::firstOrCreate([
-                'user_id' => $user->id,
-            ]);
-        }
-
-        if (in_array('student', $request->roles)) {
-            \App\Models\StudentProfile::firstOrCreate([
-                'user_id' => $user->id,
-            ]);
+        // Create profile based on selected role
+        if ($request->role === 'teacher') {
+            \App\Models\TeacherProfile::firstOrCreate(['user_id' => $user->id]);
+        } else {
+            \App\Models\StudentProfile::firstOrCreate(['user_id' => $user->id]);
         }
 
         // Generate verification code

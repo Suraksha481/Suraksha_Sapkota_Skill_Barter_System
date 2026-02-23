@@ -73,12 +73,13 @@
     <p class="muted">From technology to arts, find short sessions and workshops that match your goals.</p>
 
     <div class="categories-grid">
-      <a href="{{ url('/skills/technology') }}" class="category-btn">Technology</a>
-      <a href="{{ url('/skills/design') }}" class="category-btn">Design & Figma</a>
-      <a href="{{ url('/skills/business') }}" class="category-btn">Business</a>
-      <a href="{{ url('/skills/language') }}" class="category-btn">Language</a>
-      <a href="{{ url('/skills/writing') }}" class="category-btn">Writing</a>
-      <a href="{{ url('/skills/marketing') }}" class="category-btn">Marketing</a>
+      <a href="{{ route('find-skill', ['category' => 'Technology']) }}" class="category-btn">Technology</a>
+      <a href="{{ route('find-skill', ['category' => 'Design']) }}" class="category-btn">Design</a>
+      <a href="{{ route('find-skill', ['category' => 'Business']) }}" class="category-btn">Business</a>
+      <a href="{{ route('find-skill', ['category' => 'Language']) }}" class="category-btn">Language</a>
+      <a href="{{ route('find-skill', ['category' => 'Soft Skills']) }}" class="category-btn">Soft Skill</a>
+      <a href="{{ route('find-skill', ['category' => 'Marketing']) }}" class="category-btn">Marketing</a>
+      <a href="{{ route('find-skill', ['category' => 'Data']) }}" class="category-btn">Data</a>
     </div>
   </div>
 </section>

@@ -19,7 +19,13 @@ class SessionRequestController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $tab = $request->get('tab', 'received');
+        // Default tab depends on user role: teachers see received by default, students see sent
+        $tab = $request->get('tab', $user->isTeacher() ? 'received' : 'sent');
+
+        // Ensure non-teachers cannot view the received tab
+        if (! $user->isTeacher() && $tab === 'received') {
+            $tab = 'sent';
+        }
 
         $received = RequestModel::where('responder_id', $user->id)
             ->with(['requester', 'userSkill.skill'])
@@ -158,5 +164,12 @@ class SessionRequestController extends Controller
         $requestModel->update(['status' => 'cancelled']);
 
         return back()->with('success', 'Request cancelled.');
+    }
+
+    public function show(RequestModel $requestModel)
+    {
+        $requestModel->load(['requester', 'responder', 'userSkill.skill', 'userSkill.user']);
+
+        return view('requests.show', ['requestModel' => $requestModel]);
     }
 }

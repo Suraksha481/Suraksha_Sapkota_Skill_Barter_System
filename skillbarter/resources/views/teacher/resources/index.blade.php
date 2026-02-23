@@ -5,7 +5,7 @@
 <section class="dashboard">
 
     <div class="dashboard-header">
-        <h1>📚 Teaching Resources</h1>
+        <h1>Teaching Resources</h1>
         <p>Manage your learning materials and resources</p>
     </div>
 
@@ -15,7 +15,7 @@
 
     <!-- UPLOAD BUTTON -->
     <div class="resource-header">
-        <a href="{{ route('teacher.resources.create') }}" class="btn primary">➕ Upload New Resource</a>
+        <a href="{{ route('teacher.resources.create') }}" class="btn primary">Upload New Resource</a>
     </div>
 
     <!-- RESOURCES LIST -->
@@ -36,11 +36,11 @@
                 </div>
 
                 <div class="resource-actions">
-                    <a href="{{ asset('storage/' . $resource->file_path) }}" download class="btn small">⬇️ Download</a>
+                    <a href="{{ asset('storage/' . $resource->file_path) }}" download class="btn small">⬇Download</a>
                     <form action="{{ route('teacher.resources.destroy', $resource) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn small danger" onclick="return confirm('Delete this resource?')">🗑️ Delete</button>
+                        <button type="submit" class="btn small danger" onclick="return confirm('Delete this resource?')">Delete</button>
                     </form>
                 </div>
             </div>

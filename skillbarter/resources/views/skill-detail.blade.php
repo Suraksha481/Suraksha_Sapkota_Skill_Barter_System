@@ -27,9 +27,20 @@
             </div>
 
             @auth
-                <a href="{{ route('my.skills') }}" class="btn primary">
-                    Add to My Skills
-                </a>
+                @php $user = auth()->user(); @endphp
+                @if($user->isTeacher() && ! $user->isStudent())
+                    <button class="btn primary add-skill-btn" data-skill-id="{{ $skill->id }}" data-type="offer">Add to My Skills</button>
+                @elseif($user->isStudent() && ! $user->isTeacher())
+                    <button class="btn primary add-skill-btn" data-skill-id="{{ $skill->id }}" data-type="request">Add to My Skills</button>
+                @else
+                    <div class="inline-add">
+                        <select class="add-skill-type">
+                            <option value="offer">Teach</option>
+                            <option value="request">Learn</option>
+                        </select>
+                        <button class="btn primary add-skill-btn" data-skill-id="{{ $skill->id }}">Add</button>
+                    </div>
+                @endif
             @else
                 <a href="{{ route('register') }}" class="btn primary">
                     Sign up to Learn / Teach

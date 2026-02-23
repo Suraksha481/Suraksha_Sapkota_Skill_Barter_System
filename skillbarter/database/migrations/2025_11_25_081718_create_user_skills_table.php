@@ -19,7 +19,7 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
         // Core role of the skill
-            $table->enum('type', ['teach', 'learn']);
+            $table->enum('type', ['offer', 'request']);
 
         // Skill proficiency
             $table->enum('level', ['beginner', 'intermediate', 'advanced'])

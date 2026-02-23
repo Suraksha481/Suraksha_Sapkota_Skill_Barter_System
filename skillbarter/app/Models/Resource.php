@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Resource extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','filename','path','mime','size','type'];
+    protected $fillable = ['user_id','title','description','category','file_path','filename','mime','size','type'];
     public function user() { return $this->belongsTo(User::class); }
 }

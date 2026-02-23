@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Notifications dropdown and profile card styling */
+.nav-actions .user-profile{display:flex;align-items:center;gap:12px}
+.notifications{position:relative}
+#notif-toggle{position:relative;padding:8px 10px;border-radius:8px;background:transparent;border:1px solid transparent;display:flex;align-items:center;gap:8px}
+#notif-toggle:focus{outline:none}
+#notif-count{display:inline-block;min-width:22px;height:22px;background:#efebff;color:#6b21a8;border-radius:999px;font-size:12px;line-height:22px;text-align:center;padding:0 6px;margin-left:4px}
+.notif-dropdown{position:absolute;right:0;top:calc(100% + 12px);width:360px;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(8,16,24,0.2);overflow:hidden;border:1px solid rgba(30,41,59,0.05);z-index:50}
+.notif-dropdown .notif-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #f1f1fb}
+.notif-dropdown .notif-header strong{font-size:18px;color:#0f172a}
+.notif-dropdown .notif-header .btn.ghost.small{background:transparent;border:1px solid rgba(15,23,42,0.06);padding:6px 10px;border-radius:8px;color:#6b21a8}
+.notif-dropdown ul{max-height:340px;overflow:auto}
+.notif-dropdown ul li{display:block;padding:14px 16px;border-bottom:1px solid #f6f6fb;background:#fff}
+.notif-dropdown ul li.unread{background:#fbf8ff}
+.notif-dropdown ul li a{display:block;color:#0f172a;font-weight:600;text-decoration:none}
+.notif-dropdown ul li .time{display:block;color:#94a3b8;font-size:13px;margin-top:8px;font-weight:400}
+.notif-dot{width:10px;height:10px;background:#9b5cf6;border-radius:999px;display:inline-block;margin-left:8px}
+.notif-dropdown .view-all{padding:12px;text-align:center;background:#fff}
+
+/* Profile dropdown card */
+.user-profile .dropdown{position:relative}
+.user-profile .dropdown ul{position:absolute;right:0;top:calc(100% + 12px);width:300px;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(8,16,24,0.12);padding:16px;border:1px solid rgba(30,41,59,0.04);z-index:40;list-style:none}
+.user-profile .dropdown ul li{padding:8px 0}
+.user-profile .dropdown ul li hr{border:none;border-top:1px solid #f1f5f9;margin:8px 0}
+.user-profile .dropdown ul li a{display:flex;align-items:center;gap:10px;color:#0f172a;text-decoration:none}
+.profile-card{display:flex;gap:12px;align-items:center;padding:8px 0 16px}
+.profile-avatar{width:64px;height:64px;border-radius:999px;background:#ecfdf5;border:6px solid rgba(226,252,239,0.6);display:flex;align-items:center;justify-content:center;color:#06b6d4;font-size:28px}
+.profile-name{font-size:18px;font-weight:700;color:#0f172a}
+.profile-sub{color:#64748b;font-size:13px}
+.user-profile .dropdown a.logout{color:#ef4444}
+.user-profile .dropdown a.blue{color:#0ea5a4}
+
+/* Small helpers */
+.btn.ghost.small{font-size:13px;padding:6px 10px}
+.btn.tiny{font-size:12px;padding:4px 8px;border-radius:6px}
+
+/* Scrollbar for notification list */
+.notif-dropdown ul::-webkit-scrollbar{width:8px}
+.notif-dropdown ul::-webkit-scrollbar-thumb{background:#e6e6f7;border-radius:6px}

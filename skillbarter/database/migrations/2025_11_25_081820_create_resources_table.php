@@ -10,11 +10,19 @@ return new class extends Migration {
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('filename');
-            $table->string('path');
+
+            // Metadata and display fields
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->string('category', 100)->nullable();
+
+            // Storage fields
+            $table->string('file_path');
+            $table->string('filename')->nullable();
             $table->string('mime',100)->nullable();
             $table->integer('size')->nullable();
             $table->string('type',50)->nullable();
+
             $table->timestamps();
         });
     }

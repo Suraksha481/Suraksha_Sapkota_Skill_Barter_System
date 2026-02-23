@@ -5,7 +5,7 @@
 <section class="dashboard">
 
     <div class="dashboard-header">
-        <h1>📚 {{ $skill->title ?? 'Skill Progress' }}</h1>
+        <h1>{{ $skill->title ?? 'Skill Progress' }}</h1>
         <p>Track your progress in this skill</p>
     </div>
 

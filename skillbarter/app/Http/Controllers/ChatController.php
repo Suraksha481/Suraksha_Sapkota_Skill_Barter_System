@@ -33,6 +33,21 @@ class ChatController extends Controller
 
         $data = $request->validate(['body' => 'required|string|max:2000']);
 
+        // Enforce free message limit for non-premium users
+        if (! $user->isPremium()) {
+            $limit = (int) config('chat.free_messages_per_day', 50);
+            $sentToday = Message::where('sender_id', $user->id)
+                ->whereDate('created_at', now()->toDateString())
+                ->count();
+
+            if ($sentToday >= $limit) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => config('chat.limit_reached_message'),
+                ], 429);
+            }
+        }
+
         $message = Message::create([
             'request_id' => $requestModel->id,
             'sender_id' => $user->id,

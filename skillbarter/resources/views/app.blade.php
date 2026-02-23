@@ -26,5 +26,62 @@
 
   @include('footer')
 
+  @stack('scripts')
+
+  <script>
+    (function(){
+      const addUrl = "{{ route('my.skills.store') }}";
+      const csrf = "{{ csrf_token() }}";
+
+      document.addEventListener('click', function(e){
+        const btn = e.target.closest('.add-skill-btn');
+        if (!btn) return;
+        e.preventDefault();
+
+        const skillId = btn.dataset.skillId;
+        let type = btn.dataset.type || null;
+        if (!type) {
+          const sel = btn.closest('.inline-add')?.querySelector('.add-skill-type');
+          if (sel) type = sel.value;
+          else type = 'request';
+        }
+
+        // Prefer using existing helper if present
+        if (window.addUserSkill) {
+          window.addUserSkill(skillId, type).then(res => {
+            if (res.ok) {
+              btn.disabled = true;
+              btn.textContent = 'Added';
+            } else {
+              const err = res.error?.error || res.error?.message || 'Could not add skill';
+              alert(err);
+            }
+          });
+          return;
+        }
+
+        // Fallback: direct fetch to store route
+        const fd = new FormData();
+        fd.append('skill_id', skillId);
+        fd.append('type', type);
+
+        fetch(addUrl, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrf },
+          body: fd
+        })
+        .then(res => res.json().then(data => ({ status: res.status, data })))
+        .then(result => {
+          if (result.status >= 200 && result.status < 300) {
+            btn.disabled = true;
+            btn.textContent = 'Added';
+          } else {
+            alert(result.data?.error || result.data?.message || 'Could not add skill');
+          }
+        }).catch(() => alert('Network error while adding skill'));
+      });
+    })();
+  </script>
+
 </body>
 </html>

@@ -36,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'role' => 'json', // Store roles as JSON: ["teacher", "student"]
+        'role' => 'string', // Single role: 'teacher' or 'student'
     ];
 
     public function userSkills() { return $this->hasMany(UserSkill::class); }
@@ -100,12 +100,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function teachSkills()
     {
-        return $this->skills()->wherePivot('type', 'teach');
+        return $this->skills()->wherePivot('type', 'offer');
     }
 
     public function learnSkills()
     {
-        return $this->skills()->wherePivot('type', 'learn');
+        return $this->skills()->wherePivot('type', 'request');
     }
 
     public function teacherProfile()
@@ -123,8 +123,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasRole($role): bool
     {
-        $roles = is_array($this->role) ? $this->role : [$this->role];
-        return in_array($role, $roles);
+        return (string)$this->role === (string)$role;
     }
 
     /**
@@ -148,11 +147,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function addRole($role): void
     {
-        $roles = is_array($this->role) ? $this->role : [$this->role];
-        if (!in_array($role, $roles)) {
-            $roles[] = $role;
-            $this->update(['role' => $roles]);
-        }
+        // Enforce single-role policy: replace existing role
+        $this->update(['role' => $role]);
     }
 
     /**
@@ -160,9 +156,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function removeRole($role): void
     {
-        $roles = is_array($this->role) ? $this->role : [$this->role];
-        $roles = array_filter($roles, fn($r) => $r !== $role);
-        $this->update(['role' => array_values($roles)]);
+        if ((string)$this->role === (string)$role) {
+            $this->update(['role' => null]);
+        }
     }
 
     /**
