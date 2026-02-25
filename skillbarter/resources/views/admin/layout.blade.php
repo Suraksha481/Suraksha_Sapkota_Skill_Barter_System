@@ -1,41 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>Skill Barter Admin</h2>
+<div class="admin-wrapper">
 
-    <a href="/admin/dashboard">📊 Dashboard</a>
+    {{-- Sidebar --}}
+    @include('admin.sidebar')
 
-    <a href="/admin/teacher-applications" class="active">👨‍🏫 Teacher Applications</a>
-    <a href="#">✔ Approved Teachers</a>
-    <a href="#">✖ Rejected Teachers</a>
+    {{-- Main Content --}}
+    <div class="admin-main">
 
-    <a href="#">🎓 Students</a>
-    <a href="#">📚 Skills</a>
+        <div class="admin-topbar">
+            <h2>@yield('title')</h2>
+            <form action="{{ route('admin.logout') }}" method="POST">
+                @csrf
+                <button class="btn-danger">Logout</button>
+            </form>
+        </div>
 
-    <a href="#">📩 Session Requests</a>
-    <a href="#">✔ Active Sessions</a>
-    <a href="#">✔ Completed Sessions</a>
+        <div class="admin-content">
+            @if(session('success'))
+                <div class="alert success">{{ session('success') }}</div>
+            @endif
 
-    <a href="#">⭐ Feedback</a>
+            @if(session('error'))
+                <div class="alert error">{{ session('error') }}</div>
+            @endif
 
-    <a href="#">💎 Subscriptions</a>
+            @yield('content')
+        </div>
 
-    <a href="#">📁 Resources</a>
-
-    <a href="#">📜 Activity Logs</a>
-
-    <hr>
-    <a href="#">⚙ Settings</a>
-</div>
-
-<div class="main">
-    @yield('content')
+    </div>
 </div>
 
 </body>

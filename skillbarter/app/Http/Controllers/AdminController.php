@@ -17,30 +17,13 @@ class AdminController extends Controller
 
     public function index()
     {
-        $admin = auth('admin')->user();
-        if (! $admin) {
-            abort(403);
-        }
-
-        $stats = [
-            'users' => User::count(),
-            'teachers' => User::where('role','teacher')->count(),
-            'students' => User::where('role','student')->count(),
-            'requests' => RequestModel::count(),
-            'messages' => Message::count(),
-            'skills' => \App\Models\Skill::count(),
-            'premium_members' => \App\Models\PremiumMembership::where('status','active')->count(),
-            'revenue' => \App\Models\PremiumMembership::where('status','active')->sum('price'),
-        ];
-
-        // Load recent items for management panels on the single admin dashboard
-        $recentUsers = User::latest()->take(12)->get();
-        $recentSkills = \App\Models\Skill::latest()->take(12)->get();
-        $recentRequests = RequestModel::latest()->take(12)->get();
-        $recentFeedbacks = \App\Models\Feedback::latest()->take(12)->get();
-        $recentSubscriptions = \App\Models\PremiumMembership::latest()->take(12)->get();
-
-        return view('admin.dashboard', compact('stats','recentUsers','recentSkills','recentRequests','recentFeedbacks','recentSubscriptions'));
+        return view('admin.dashboard', [
+            'totalUsers' => \App\Models\User::count(),
+            'totalTeachers' => \App\Models\User::where('role','teacher')->count(),
+            'totalStudents' => \App\Models\User::where('role','student')->count(),
+            'totalSessions' => \App\Models\RequestModel::count(),
+            'totalPremium' => \App\Models\PremiumMembership::where('status','active')->count(),
+        ]);
     }
 
     public function users()
@@ -179,21 +162,35 @@ class AdminController extends Controller
         return view('admin.teachers', ['teachers' => $teachers, 'title' => 'All Teachers']);
     }
 
-    public function approveTeacher($id)
+   public function approveTeacher($id)
     {
-        $this->authorizeAdmin();
         $user = User::findOrFail($id);
-        $user->update(['is_approved_teacher' => true, 'is_active' => true]);
-        return back()->with('status', 'Teacher approved.');
+
+        if (!$user->isTeacher()) {
+            abort(400);
+        }
+
+        $user->update([
+            'is_teacher_approved' => true
+        ]);
+
+    return back()->with('success', 'Teacher approved successfully.');
+}
+
+   public function rejectTeacher($id)
+{
+    $user = User::findOrFail($id);
+
+    if (!$user->isTeacher()) {
+        abort(400);
     }
 
-    public function rejectTeacher($id)
-    {
-        $this->authorizeAdmin();
-        $user = User::findOrFail($id);
-        $user->update(['is_approved_teacher' => false, 'is_active' => false]);
-        return back()->with('status', 'Teacher rejected.');
-    }
+    $user->update([
+        'is_teacher_approved' => false
+    ]);
+
+    return back()->with('success', 'Teacher rejected successfully.');
+}
 
     protected function authorizeAdmin()
     {

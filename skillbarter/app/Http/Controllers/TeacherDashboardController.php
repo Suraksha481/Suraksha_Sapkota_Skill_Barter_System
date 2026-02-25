@@ -14,6 +14,12 @@ class TeacherDashboardController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
+
+        if (!$user->canTeach()) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Awaiting admin approval.');
+        }
         $user = $request->user();
 
         // Get teacher stats
