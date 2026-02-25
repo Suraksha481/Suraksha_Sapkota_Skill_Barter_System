@@ -36,6 +36,11 @@ class TeacherResourcesController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
+
+    if (!$user->canTeach()) {
+        abort(403, 'Only approved teachers can upload resources.');
+    }
         $user = $request->user();
 
         $request->validate([

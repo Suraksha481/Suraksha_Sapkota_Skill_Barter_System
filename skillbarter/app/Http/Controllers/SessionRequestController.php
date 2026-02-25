@@ -95,23 +95,30 @@ class SessionRequestController extends Controller
             ->with('success', 'Request sent successfully!');
     }
 
-    public function accept(RequestModel $requestModel)
-    {
-        if ($requestModel->responder_id !== auth()->id()) {
-            abort(403);
-        }
+    public function accept($requestModelId)
+{
+    $requestModel = RequestModel::findOrFail($requestModelId);
+    $user = auth()->user();
 
-        $requestModel->update(['status' => 'accepted']);
-
-        // Notify requester that their request was accepted
-        try {
-            $requestModel->requester->notify(new \App\Notifications\RequestAccepted($requestModel));
-        } catch (\Throwable $e) {
-            // ignore
-        }
-
-        return back()->with('success', 'Request accepted! You can now schedule the session.');
+    // SECURITY CHECKS
+    if (!$user->canTeach()) {
+        abort(403, 'You are not authorized to accept sessions.');
     }
+
+    if ($requestModel->responder_id !== $user->id) {
+        abort(403);
+    }
+
+    if ($requestModel->status !== 'pending') {
+        return back()->with('error', 'Request is not pending.');
+    }
+
+    $requestModel->update([
+        'status' => 'accepted'
+    ]);
+
+    return back()->with('success', 'Session accepted successfully.');
+}
 
     public function decline(RequestModel $requestModel)
     {

@@ -58,13 +58,23 @@ class AdminController extends Controller
         return back()->with('status', 'User status updated.');
     }
 
-    public function changeRole(Request $request, $id)
+   public function changeRole(Request $request, $id)
     {
-        $this->authorizeAdmin();
-        $request->validate(['role' => 'nullable|string|in:admin,teacher,student']);
+        $request->validate([
+            'role' => 'required|in:student,teacher,admin'
+        ]);
+
         $user = User::findOrFail($id);
-        $user->update(['role' => $request->input('role')]);
-        return back()->with('status', 'User role updated.');
+
+        $user->role = $request->role;
+
+        if ($request->role !== 'teacher') {
+        $user->is_teacher_approved = false;
+        }
+
+        $user->save();
+
+        return back()->with('success','Role updated successfully.');
     }
 
     public function destroyUser($id)

@@ -7,17 +7,14 @@ use Illuminate\Http\Request;
 class TeacherController extends Controller
 {
     // List all teachers with basic filters
-    public function index(Request $request)
+   public function index()
     {
-        $query = User::query()->where('role', 'teacher');
+        $teachers = User::where('role', 'teacher')
+            ->where('is_teacher_approved', true)
+            ->where('is_active', true)
+            ->paginate(10);
 
-        if ($request->filled('q')) {
-            $query->where('name', 'like', '%' . $request->q . '%');
-        }
-
-        $teachers = $query->with(['userSkills.skill'])->paginate(12);
-
-        return view('teacher.index', compact('teachers'));
+        return view('teachers.index', compact('teachers'));
     }
 
     public function show(User $teacher)
