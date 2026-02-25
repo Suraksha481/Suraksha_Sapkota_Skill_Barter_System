@@ -11,13 +11,23 @@ class CheckTeacherRole
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        if (auth()->check() && auth()->user()->isTeacher()) {
-            return $next($request);
-        }
+   public function handle($request, Closure $next)
+{
+    $user = auth()->user();
 
-        return redirect()->route('dashboard')
-            ->with('error', 'You need Teacher role to access this page.');
+    if (!$user->isTeacher()) {
+        abort(403);
     }
+
+    if (!$user->is_teacher_approved) {
+        return redirect()->route('dashboard')
+            ->with('error','Waiting for admin approval.');
+    }
+
+    if (!$user->is_active) {
+        abort(403, 'Account disabled.');
+    }
+
+    return $next($request);
+}
 }
