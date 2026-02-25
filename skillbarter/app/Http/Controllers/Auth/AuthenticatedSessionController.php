@@ -23,34 +23,44 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required'],
+   public function store(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required','email'],
+        'password' => ['required'],
+    ]);
+
+    if (!Auth::attempt($credentials, $request->boolean('remember'))) {
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
         ]);
-
-        // Attempt authentication
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ]);
-        }
-
-        $user = Auth::user();
-
-        // Check if email is verified
-        if (!$user->hasVerifiedEmail()) {
-            Auth::logout();
-               return redirect()->route('verify-email-code.show', ['user_id' => $user->id])
-                   ->withErrors(['email' => 'Please verify your email address to login.']);
-        }
-
-        $request->session()->regenerate();
-
-        // Redirect to home page after login
-        return redirect('/')->with('success', 'Logged in successfully.');
     }
+
+    $user = Auth::user();
+
+    // Check email verification
+    if (!$user->hasVerifiedEmail()) {
+        Auth::logout();
+
+        return redirect()
+            ->route('verify-email-code.show', ['user_id' => $user->id])
+            ->withErrors(['email' => 'Please verify your email address to login.']);
+    }
+
+    $request->session()->regenerate();
+
+   
+
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->role === 'teacher') {
+        return redirect()->route('teacher.dashboard');
+    }
+
+    return redirect()->route('student.dashboard');
+}
 
     /**
      * Destroy an authenticated session.

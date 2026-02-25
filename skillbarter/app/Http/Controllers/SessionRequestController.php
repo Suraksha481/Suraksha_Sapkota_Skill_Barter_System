@@ -121,6 +121,13 @@ class SessionRequestController extends Controller
 
         $requestModel->update(['status' => 'declined']);
 
+        // Notify requester that their request was declined
+        try {
+            $requestModel->requester->notify(new \App\Notifications\RequestDeclined($requestModel));
+        } catch (\Throwable $e) {
+            // ignore notification errors
+        }
+
         return back()->with('success', 'Request declined.');
     }
 

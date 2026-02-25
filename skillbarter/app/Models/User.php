@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role',
+        'is_active',
         'bio',
         'avatar',
         'provider',
@@ -37,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'role' => 'string', // Single role: 'teacher' or 'student'
+        'is_active' => 'boolean',
     ];
 
     public function userSkills() { return $this->hasMany(UserSkill::class); }

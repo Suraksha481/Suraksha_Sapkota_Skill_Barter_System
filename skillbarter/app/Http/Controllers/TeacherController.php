@@ -17,7 +17,7 @@ class TeacherController extends Controller
 
         $teachers = $query->with(['userSkills.skill'])->paginate(12);
 
-        return view('teachers.index', compact('teachers'));
+        return view('teacher.index', compact('teachers'));
     }
 
     public function show(User $teacher)
@@ -28,6 +28,6 @@ class TeacherController extends Controller
 
         $teacher->load(['userSkills.skill']);
 
-        return view('teachers.show', compact('teacher'));
+        return view('teacher.show', compact('teacher'));
     }
 }

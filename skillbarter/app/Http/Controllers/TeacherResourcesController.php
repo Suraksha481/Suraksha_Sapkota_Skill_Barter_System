@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Resource;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Log;
 
 class TeacherResourcesController extends Controller
 {
@@ -53,16 +55,25 @@ class TeacherResourcesController extends Controller
         // Fallback filename if original not available
         $originalName = $uploaded->getClientOriginalName() ?? basename($filePath);
 
-        Resource::create([
-            'user_id' => $user->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'category' => $request->category,
-            'file_path' => $filePath,
-            'filename' => $originalName,
-            'mime' => $uploaded->getClientMimeType() ?? null,
-            'size' => $uploaded->getSize() ?? null,
-        ]);
+        // Build payload only with columns that actually exist in DB
+        $data = ['user_id' => $user->id, 'file_path' => $filePath, 'filename' => $originalName, 'mime' => $uploaded->getClientMimeType() ?? null, 'size' => $uploaded->getSize() ?? null];
+
+        if (Schema::hasColumn('resources', 'title')) {
+            $data['title'] = $request->input('title');
+        }
+        if (Schema::hasColumn('resources', 'description')) {
+            $data['description'] = $request->input('description');
+        }
+        if (Schema::hasColumn('resources', 'category')) {
+            $data['category'] = $request->input('category');
+        }
+
+        try {
+            Resource::create($data);
+        } catch (\Exception $e) {
+            Log::error('Resource upload failed: '.$e->getMessage());
+            return back()->with('error', 'Failed to save resource. Please check server logs.');
+        }
 
         return redirect()->route('teacher.resources.index')
             ->with('success', 'Resource uploaded successfully!');

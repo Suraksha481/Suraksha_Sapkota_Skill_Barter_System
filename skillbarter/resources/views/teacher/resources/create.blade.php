@@ -10,6 +10,9 @@
     </div>
 
     <div class="form-container">
+        @if (session('error'))
+            <div class="alert alert-error">{{ session('error') }}</div>
+        @endif
         <form action="{{ route('teacher.resources.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 

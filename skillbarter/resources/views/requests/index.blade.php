@@ -18,18 +18,22 @@
     @endif
 
     <!-- Tab Navigation -->
+    @php
+        $tab = $tab ?? (auth()->user()->isTeacher() ? 'received' : 'sent');
+    @endphp
+
     <div class="dashboard-actions" style="margin-bottom: 2rem;">
         @if(auth()->user()->isTeacher())
             <a href="{{ route('requests.index', ['tab' => 'received']) }}"
                class="btn {{ $tab === 'received' ? 'primary' : 'ghost' }}">
                 Received ({{ $received->count() }})
             </a>
+        @else
+            <a href="{{ route('requests.index', ['tab' => 'sent']) }}"
+               class="btn {{ $tab === 'sent' ? 'primary' : 'ghost' }}">
+                Sent ({{ $sent->count() }})
+            </a>
         @endif
-
-        <a href="{{ route('requests.index', ['tab' => 'sent']) }}"
-           class="btn {{ $tab === 'sent' ? 'primary' : 'ghost' }}">
-            Sent ({{ $sent->count() }})
-        </a>
     </div>
 
     @if(! auth()->user()->isTeacher())
@@ -72,6 +76,10 @@
                         </div>
                     @endif
 
+                    <div style="margin-top:0.5rem;display:flex;gap:0.5rem;align-items:center;">
+                        <a href="{{ route('chat.show', $request) }}" class="btn small">Open Chat</a>
+                    </div>
+
                     @if($request->status === 'accepted')
                         <form method="POST" action="{{ route('requests.complete', $request) }}" style="margin-top: 0.5rem;">
                             @csrf
@@ -108,6 +116,10 @@
                             <button type="submit" class="btn ghost small">Cancel</button>
                         </form>
                     @endif
+
+                    <div style="margin-top:0.5rem;display:flex;gap:0.5rem;align-items:center;">
+                        <a href="{{ route('chat.show', $request) }}" class="btn small">Open Chat</a>
+                    </div>
 
                     @if($request->status === 'accepted')
                         <form method="POST" action="{{ route('requests.complete', $request) }}" style="margin-top: 0.5rem;">

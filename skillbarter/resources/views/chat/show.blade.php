@@ -2,76 +2,138 @@
 
 @section('content')
 
-<section class="dashboard">
+<div class="chat-page" style="max-width:1000px;margin:1.5rem auto;">
+    <div class="chat-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;height:70vh">
+        <div class="chat-header" style="padding:12px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:12px;background:#fafafa">
+            <div style="width:44px;height:44px;border-radius:50%;background:#111827;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600">{{ strtoupper(substr($requestModel->userSkill->user->name ?? 'U',0,1)) }}</div>
+            <div>
+                <div style="font-weight:600">Chat: {{ $requestModel->userSkill->skill->title ?? 'Request' }}</div>
+                <div style="font-size:12px;color:#6b7280">Request #{{ $requestModel->id }} — {{ $requestModel->requester->name ?? '' }} ↔ {{ $requestModel->responder->name ?? '' }}</div>
+            </div>
+            <div style="margin-left:auto;color:#6b7280;font-size:13px">Status: <span class="badge {{ $requestModel->status }}" style="margin-left:6px">{{ ucfirst($requestModel->status) }}</span></div>
+        </div>
 
-    <div class="dashboard-header">
-        <h1>Chat: {{ $requestModel->userSkill->skill->title ?? 'Session' }}</h1>
-        <p>Between <strong>{{ $requestModel->requester->name }}</strong> and <strong>{{ $requestModel->responder->name }}</strong></p>
-    </div>
-
-    <div class="chat-container" style="max-width:800px; margin:0 auto;">
-        <div id="messages" style="border:1px solid #ddd; padding:1rem; height:400px; overflow:auto; background:white;">
+        <div id="messages" style="flex:1;overflow:auto;padding:18px;background:linear-gradient(180deg,#ffffff, #f9fafb)">
             @foreach($messages as $m)
-                <div style="margin-bottom:0.5rem;">
-                    <strong>{{ $m->sender->name }}</strong>
-                    <span style="color:#666; font-size:0.9rem;">{{ $m->created_at->diffForHumans() }}</span>
-                    <div style="margin-top:0.25rem;">{{ $m->body }}</div>
+                @php $isMe = auth()->id() === $m->sender_id; @endphp
+                <div style="display:flex;flex-direction:column;align-items:{{ $isMe ? 'flex-end' : 'flex-start' }};margin-bottom:12px">
+                    <div style="max-width:75%;padding:10px 14px;border-radius:12px;line-height:1.35;background:{{ $isMe ? '#0ea5a3' : '#f3f4f6' }};color:{{ $isMe ? '#fff' : '#111827' }}">
+                        <div style="font-size:13px">{{ $m->body }}</div>
+                    </div>
+                    <div style="font-size:11px;color:#6b7280;margin-top:6px">{{ $m->sender->name ?? 'User' }} · {{ $m->created_at->format('H:i') }}</div>
                 </div>
             @endforeach
         </div>
 
-        <form id="chatForm" style="display:flex; gap:0.5rem; margin-top:1rem;">
-            @csrf
-            <input type="text" name="body" id="body" placeholder="Write a message..." style="flex:1; padding:0.5rem; border:1px solid #ddd; border-radius:6px;">
-            <button class="btn primary" type="submit">Send</button>
+        <form id="sendForm" style="display:flex;padding:12px;border-top:1px solid #f3f4f6;gap:8px;align-items:center">
+            <textarea id="body" name="body" rows="1" placeholder="Write a message..." style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:8px;resize:none"></textarea>
+            <button id="sendBtn" class="btn primary" type="submit" style="padding:8px 12px">Send</button>
         </form>
     </div>
+</div>
 
-</section>
+@push('styles')
+<style>
+    /* simple responsive tweaks */
+    @media (max-width:640px){ .chat-page{padding:0 12px} .chat-card{height:70vh} }
+</style>
+@endpush
 
-@section('scripts')
+@push('scripts')
 <script>
+(() => {
     const requestId = {{ $requestModel->id }};
-    const userId = {{ auth()->id() }};
+    const messagesEl = document.getElementById('messages');
+    const form = document.getElementById('sendForm');
+    const bodyInput = document.getElementById('body');
 
-    function appendMessage(data) {
-        const container = document.getElementById('messages');
-        const el = document.createElement('div');
-        el.style.marginBottom = '0.5rem';
-        el.innerHTML = `<strong>${data.sender_name}</strong> <span style="color:#666; font-size:0.9rem;">${data.created_at}</span><div style="margin-top:0.25rem;">${data.body}</div>`;
-        container.appendChild(el);
-        container.scrollTop = container.scrollHeight;
+    function scrollToEnd(){ messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+    function makeBubble(msg){
+        const isMe = msg.sender_id === {{ auth()->id() ?? 'null' }};
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.alignItems = isMe ? 'flex-end' : 'flex-start';
+        wrapper.style.marginBottom = '12px';
+
+        const bubble = document.createElement('div');
+        bubble.style.maxWidth = '75%';
+        bubble.style.padding = '10px 14px';
+        bubble.style.borderRadius = '12px';
+        bubble.style.lineHeight = '1.35';
+        bubble.style.background = isMe ? '#0ea5a3' : '#f3f4f6';
+        bubble.style.color = isMe ? '#fff' : '#111827';
+        bubble.textContent = msg.body;
+
+        const meta = document.createElement('div');
+        meta.style.fontSize = '11px';
+        meta.style.color = '#6b7280';
+        meta.style.marginTop = '6px';
+        meta.textContent = (msg.sender?.name || 'User') + ' · ' + (msg.time || '');
+
+        wrapper.appendChild(bubble);
+        wrapper.appendChild(meta);
+        messagesEl.appendChild(wrapper);
+        scrollToEnd();
     }
 
-    document.getElementById('chatForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const body = document.getElementById('body');
-        if (!body.value.trim()) return;
-
-        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        const res = await fetch(`{{ route('chat.send', $requestModel) }}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': token,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ body: body.value })
-        });
-
-        if (res.ok) {
-            const json = await res.json();
-            appendMessage({ sender_name: json.message.sender.name, body: json.message.body, created_at: json.message.created_at });
-            body.value = '';
-        }
-    });
-
+    // Echo subscription
     if (window.Echo) {
         window.Echo.private('request.' + requestId)
             .listen('MessageSent', (e) => {
-                appendMessage(e);
+                const m = e.message;
+                makeBubble({ body: m.body, sender: m.sender ?? { name: e.sender_name }, sender_id: m.sender_id, time: 'just now' });
             });
     }
+
+    form.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        console.log('chat: submit handler fired');
+        const body = bodyInput.value.trim();
+        console.log('chat: body=', body);
+        if (!body) return;
+
+        fetch(`{{ route('chat.send', $requestModel) }}`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ body })
+        }).then(async res => {
+            console.log('chat.send response', res.status);
+            if (res.status === 429) {
+                const json = await res.json();
+                alert(json.message || 'Message limit reached');
+                return;
+            }
+            if (res.status === 419) {
+                // CSRF/session expired
+                alert('Session expired or CSRF mismatch. Please refresh and try again.');
+                return;
+            }
+            if (!res.ok) {
+                const txt = await res.text();
+                console.error('Send failed:', res.status, txt);
+                alert('Send failed: ' + (txt || res.status));
+                return;
+            }
+            const json = await res.json();
+            console.log('chat.send json', json);
+            const msg = json.message;
+            makeBubble({ body: msg.body, sender: msg.sender || { name: '{{ auth()->user()->name ?? "You" }}' }, sender_id: msg.sender_id, time: 'just now' });
+            bodyInput.value = '';
+            console.log('chat: message appended and input cleared');
+        }).catch(err => { console.error('Network error', err); alert('Network error'); });
+    });
+
+    // initial scroll
+    scrollToEnd();
+})();
 </script>
+@endpush
+
 @endsection

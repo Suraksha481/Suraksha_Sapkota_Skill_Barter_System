@@ -19,7 +19,8 @@ use App\Http\Controllers\{
     TeacherAnalyticsController,
     StudentDashboardController,
     StudentLearningPathController,
-    StudentProgressController
+    StudentProgressController,
+    AdminController
 };
 
 // Public Pages (NO LOGIN REQUIRED)
@@ -143,4 +144,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// DEV: quick login-as route for local testing — only enabled in non-production environments
+if (app()->environment('local')) {
+    Route::get('/dev/login-as/{id}', function ($id) {
+        \Auth::loginUsingId($id);
+        return redirect('/');
+    })->name('dev.login-as');
+
+    // Dev sessions launcher: one-click links to open demo accounts (use different browsers/profiles)
+    Route::get('/dev/sessions', function () {
+        $users = \App\Models\User::whereIn('email', ['admin@example.test','teacher@example.test','student@example.test'])->get()->keyBy('email');
+        return view('dev.sessions', compact('users'));
+    })->name('dev.sessions');
+}
+
+// Admin auth and dashboard (separate guard)
+Route::prefix('admin')->group(function () {
+    // Admin auth
+    Route::get('login', [\App\Http\Controllers\AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('login', [\App\Http\Controllers\AdminAuthController::class, 'login'])->name('admin.login.post');
+    Route::post('logout', [\App\Http\Controllers\AdminAuthController::class, 'logout'])->name('admin.logout');
+
+    // Protected admin routes (use AdminMiddleware which now checks admin guard)
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+        Route::post('/users/{id}/toggle-active', [AdminController::class, 'toggleUserActive'])->name('admin.users.toggle-active');
+        Route::post('/users/{id}/change-role', [AdminController::class, 'changeRole'])->name('admin.users.change-role');
+        Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.delete');
+
+        Route::get('/skills', [AdminController::class, 'skills'])->name('admin.skills');
+        Route::delete('/skills/{id}', [AdminController::class, 'destroySkill'])->name('admin.skills.delete');
+
+        Route::get('/requests', [AdminController::class, 'requests'])->name('admin.requests');
+        Route::post('/requests/{id}/status', [AdminController::class, 'updateRequestStatus'])->name('admin.requests.update-status');
+
+        Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks');
+        Route::delete('/feedbacks/{id}', [AdminController::class, 'destroyFeedback'])->name('admin.feedbacks.delete');
+
+        Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
+        Route::post('/subscriptions/{id}/cancel', [AdminController::class, 'cancelSubscription'])->name('admin.subscriptions.cancel');
+    });
+});
+
 

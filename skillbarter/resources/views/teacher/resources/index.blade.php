@@ -12,6 +12,9 @@
     @if ($message = Session::get('success'))
         <div class="alert alert-success">{{ $message }}</div>
     @endif
+    @if ($error = Session::get('error'))
+        <div class="alert alert-error">{{ $error }}</div>
+    @endif
 
     <!-- UPLOAD BUTTON -->
     <div class="resource-header">
