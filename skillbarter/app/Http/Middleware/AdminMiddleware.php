@@ -14,10 +14,9 @@ class AdminMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-   public function handle($request, Closure $next)
+    public function handle($request, Closure $next)
 {
-    // Use the admin guard for admin pages (admins are separate from users)
-    if (! auth('admin')->check()) {
+    if (!auth()->check() || !auth()->user()->isAdmin()) {
         abort(403);
     }
 

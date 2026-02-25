@@ -1,3 +1,26 @@
+@extends('admin.layout')
+
+@section('title','Dashboard')
+@section('page-title','Dashboard')
+
+@section('content')
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div style="padding:12px;border:1px solid #e5e7eb;border-radius:8px;">Users<br><strong>{{ $stats['users'] }}</strong></div>
+        <div style="padding:12px;border:1px solid #e5e7eb;border-radius:8px;">Teachers<br><strong>{{ $stats['teachers'] }}</strong></div>
+        <div style="padding:12px;border:1px solid #e5e7eb;border-radius:8px;">Students<br><strong>{{ $stats['students'] }}</strong></div>
+        <div style="padding:12px;border:1px solid #e5e7eb;border-radius:8px;">Requests<br><strong>{{ $stats['requests'] }}</strong></div>
+        <div style="padding:12px;border:1px solid #e5e7eb;border-radius:8px;">Messages<br><strong>{{ $stats['messages'] }}</strong></div>
+        <div style="padding:12px;border:1px solid #e5e7eb;border-radius:8px;">Skills<br><strong>{{ $stats['skills'] }}</strong></div>
+    </div>
+
+    <h3 style="margin-top:20px;">Recent Users</h3>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+        @foreach($recentUsers as $u)
+            <div style="padding:8px;border:1px solid #e5e7eb;border-radius:6px;width:160px">{{ $u->name }}<br><small>{{ $u->email }}</small></div>
+        @endforeach
+    </div>
+
+@endsection
 @extends('layouts.app')
 
 @section('content')

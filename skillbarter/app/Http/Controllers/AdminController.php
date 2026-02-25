@@ -10,7 +10,9 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        // Use admin middleware (checks admin guard). Route group also applies this,
+        // but adding here ensures controller actions require admin auth.
+        $this->middleware(['admin']);
     }
 
     public function index()
@@ -135,10 +137,58 @@ class AdminController extends Controller
         return back()->with('status', 'Subscription cancelled.');
     }
 
+    // Teacher administration: pending, approved, approve/reject actions
+    public function pendingTeachers()
+    {
+        $this->authorizeAdmin();
+        $teachers = User::where('role', 'teacher')
+            ->where(function ($q) {
+                $q->whereNull('is_approved_teacher')->orWhere('is_approved_teacher', false);
+            })
+            ->latest()
+            ->paginate(25);
+
+        return view('admin.teachers', ['teachers' => $teachers, 'title' => 'Pending Teachers']);
+    }
+
+    public function approvedTeachers()
+    {
+        $this->authorizeAdmin();
+        $teachers = User::where('role', 'teacher')
+            ->where('is_approved_teacher', true)
+            ->latest()
+            ->paginate(25);
+
+        return view('admin.teachers', ['teachers' => $teachers, 'title' => 'Approved Teachers']);
+    }
+
+    public function allTeachers()
+    {
+        $this->authorizeAdmin();
+        $teachers = User::where('role', 'teacher')->latest()->paginate(25);
+        return view('admin.teachers', ['teachers' => $teachers, 'title' => 'All Teachers']);
+    }
+
+    public function approveTeacher($id)
+    {
+        $this->authorizeAdmin();
+        $user = User::findOrFail($id);
+        $user->update(['is_approved_teacher' => true, 'is_active' => true]);
+        return back()->with('status', 'Teacher approved.');
+    }
+
+    public function rejectTeacher($id)
+    {
+        $this->authorizeAdmin();
+        $user = User::findOrFail($id);
+        $user->update(['is_approved_teacher' => false, 'is_active' => false]);
+        return back()->with('status', 'Teacher rejected.');
+    }
+
     protected function authorizeAdmin()
     {
-        $user = auth()->user();
-        if (! $user || ! $user->hasRole('admin')) {
+        // Only allow access when authenticated via the admin guard (admins are separate)
+        if (! auth('admin')->check()) {
             abort(403);
         }
     }

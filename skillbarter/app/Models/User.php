@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\TeacherProfile;
-use App\Models\StudentProfile;
-use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\VerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'is_active',
+        'is_teacher_approved',
         'bio',
         'avatar',
         'provider',
@@ -37,61 +36,42 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'role' => 'string', // Single role: 'teacher' or 'student'
+        'role' => 'string',
         'is_active' => 'boolean',
+        'is_teacher_approved' => 'boolean',
     ];
 
-    public function userSkills() { return $this->hasMany(UserSkill::class); }
-    public function skillsOffered() { return $this->hasMany(UserSkill::class)->where('type', 'offer'); }
-    public function skillsWanted() { return $this->hasMany(UserSkill::class)->where('type', 'request'); }
-    public function matchesAsSeeker() { return $this->hasMany(MatchModel::class,'seeker_id'); }
-    public function matchesAsProvider() { return $this->hasMany(MatchModel::class,'provider_id'); }
-    public function requestsMade() { return $this->hasMany(RequestModel::class,'requester_id'); }
-    public function requestsReceived() { return $this->hasMany(RequestModel::class,'responder_id'); }
-    public function sessions() { return $this->hasMany(SessionModel::class, 'organiser_id'); }
-    public function resources() { return $this->hasMany(Resource::class); }
-    public function gamification() { return $this->hasOne(Gamification::class); }
-    public function premiumMembership() { return $this->hasOne(PremiumMembership::class); }
-    public function feedbackGiven() { return $this->hasMany(Feedback::class, 'author_id'); }
 
-    public function isPremium(): bool
+    // ROLE HELPERS (CLEAN & STRICT)
+
+
+    public function isAdmin(): bool
     {
-        return $this->premiumMembership &&
-               $this->premiumMembership->status === 'active' &&
-               $this->premiumMembership->expires_at > now();
+        return $this->role === 'admin';
     }
 
-    public function getPoints(): int
+    public function isTeacher(): bool
     {
-        return $this->gamification?->points ?? 0;
+        return $this->role === 'teacher';
     }
 
-    public function getLevel(): int
+    public function isStudent(): bool
     {
-        return $this->gamification?->level ?? 1;
+        return $this->role === 'student';
     }
 
-    public function getBadges(): array
+    public function canTeach(): bool
     {
-        return $this->gamification?->badges ?? [];
+        return $this->isTeacher() && $this->is_teacher_approved && $this->is_active;
     }
 
-    public function getAverageRating(): float
+    // RELATIONSHIPS
+
+
+    public function userSkills()
     {
-        $feedbacks = Feedback::where('target_type', 'user')
-            ->where('target_id', $this->id)
-            ->whereNotNull('rating')
-            ->pluck('rating');
-
-        return $feedbacks->count() > 0 ? round($feedbacks->avg(), 1) : 0;
+        return $this->hasMany(UserSkill::class);
     }
-
-    public function getCompletedSessionsCount(): int
-    {
-        return $this->requestsMade()->where('status', 'completed')->count() +
-               $this->requestsReceived()->where('status', 'completed')->count();
-    }
-
 
     public function skills()
     {
@@ -110,6 +90,51 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->skills()->wherePivot('type', 'request');
     }
 
+    public function matchesAsSeeker()
+    {
+        return $this->hasMany(MatchModel::class, 'seeker_id');
+    }
+
+    public function matchesAsProvider()
+    {
+        return $this->hasMany(MatchModel::class, 'provider_id');
+    }
+
+    public function requestsMade()
+    {
+        return $this->hasMany(RequestModel::class, 'requester_id');
+    }
+
+    public function requestsReceived()
+    {
+        return $this->hasMany(RequestModel::class, 'responder_id');
+    }
+
+    public function sessions()
+    {
+        return $this->hasMany(SessionModel::class, 'organiser_id');
+    }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class);
+    }
+
+    public function gamification()
+    {
+        return $this->hasOne(Gamification::class);
+    }
+
+    public function premiumMembership()
+    {
+        return $this->hasOne(PremiumMembership::class);
+    }
+
+    public function feedbackGiven()
+    {
+        return $this->hasMany(Feedback::class, 'author_id');
+    }
+
     public function teacherProfile()
     {
         return $this->hasOne(TeacherProfile::class);
@@ -120,52 +145,56 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(StudentProfile::class);
     }
 
-    /**
-     * Check if user has a specific role
-     */
-    public function hasRole($role): bool
+   // PREMIUM LOGIC
+
+
+    public function isPremium(): bool
     {
-        return (string)$this->role === (string)$role;
+        return $this->premiumMembership &&
+            $this->premiumMembership->status === 'active' &&
+            $this->premiumMembership->expires_at > now();
     }
 
-    /**
-     * Check if user is a teacher
-     */
-    public function isTeacher(): bool
+    // GAMIFICATION
+
+
+    public function getPoints(): int
     {
-        return $this->hasRole('teacher');
+        return $this->gamification?->points ?? 0;
     }
 
-    /**
-     * Check if user is a student
-     */
-    public function isStudent(): bool
+    public function getLevel(): int
     {
-        return $this->hasRole('student');
+        return $this->gamification?->level ?? 1;
     }
 
-    /**
-     * Add a role to user
-     */
-    public function addRole($role): void
+    public function getBadges(): array
     {
-        // Enforce single-role policy: replace existing role
-        $this->update(['role' => $role]);
+        return $this->gamification?->badges ?? [];
     }
 
-    /**
-     * Remove a role from user
-     */
-    public function removeRole($role): void
+    // STATS
+
+
+    public function getAverageRating(): float
     {
-        if ((string)$this->role === (string)$role) {
-            $this->update(['role' => null]);
-        }
+        $feedbacks = Feedback::where('target_type', 'user')
+            ->where('target_id', $this->id)
+            ->whereNotNull('rating')
+            ->pluck('rating');
+
+        return $feedbacks->count() > 0 ? round($feedbacks->avg(), 1) : 0;
     }
 
-    /**
-     * Send the email verification notification.
-     */
+    public function getCompletedSessionsCount(): int
+    {
+        return $this->requestsMade()->where('status', 'completed')->count()
+            + $this->requestsReceived()->where('status', 'completed')->count();
+    }
+
+    // EMAIL VERIFICATION
+
+
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail());

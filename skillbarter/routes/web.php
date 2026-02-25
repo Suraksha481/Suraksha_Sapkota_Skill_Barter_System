@@ -180,6 +180,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/requests', [AdminController::class, 'requests'])->name('admin.requests');
         Route::post('/requests/{id}/status', [AdminController::class, 'updateRequestStatus'])->name('admin.requests.update-status');
 
+        // Teacher approvals and management
+        Route::get('/teachers', [AdminController::class, 'allTeachers'])->name('admin.teachers');
+        Route::get('/teachers/pending', [AdminController::class, 'pendingTeachers'])->name('admin.teachers.pending');
+        Route::get('/teachers/approved', [AdminController::class, 'approvedTeachers'])->name('admin.teachers.approved');
+        Route::post('/teachers/{id}/approve', [AdminController::class, 'approveTeacher'])->name('admin.teachers.approve');
+        Route::post('/teachers/{id}/reject', [AdminController::class, 'rejectTeacher'])->name('admin.teachers.reject');
+
         Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks');
         Route::delete('/feedbacks/{id}', [AdminController::class, 'destroyFeedback'])->name('admin.feedbacks.delete');
 
