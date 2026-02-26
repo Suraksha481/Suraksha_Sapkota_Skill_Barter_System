@@ -10,9 +10,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SkillSeeder::class,
-            \Database\Seeders\DevUsersSeeder::class,
-            \Database\Seeders\AdminUserSeeder::class,
-            \Database\Seeders\AdminAccountSeeder::class,
+            DevUsersSeeder::class,
+            AdminUserSeeder::class,
+            AdminAccountSeeder::class,
+            UserSeeder::class,
+            DevUsersSeeder::class,
+            DatabaseSeeder::class,
+            
         ]);
     }
 }

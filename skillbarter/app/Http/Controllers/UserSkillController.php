@@ -9,15 +9,24 @@ use Illuminate\Http\Request;
 class UserSkillController extends Controller
 {
     public function index(Request $request)
-    {
-        $user = $request->user();
-        $teachSkills = $user->skillsOffered()->with('skill')->get();
-        $learnSkills = $user->skillsWanted()->with('skill')->get();
-        $allSkills = Skill::orderBy('title')->get();
-        $categories = Skill::distinct()->pluck('category')->filter();
+{
+    $user = $request->user();
 
-        return view('dashboard.skills', compact('teachSkills', 'learnSkills', 'allSkills', 'categories'));
-    }
+    // Skills user teaches (pivot type = offer)
+    $teachSkills = $user->teachSkills()->get();
+
+    // Skills user wants to learn (pivot type = request)
+    $learnSkills = $user->learnSkills()->get();
+
+    // All available skills for dropdown
+    $allSkills = Skill::orderBy('title')->get();
+
+    return view('my-skills.index', compact(
+        'teachSkills',
+        'learnSkills',
+        'allSkills'
+    ));
+}
 
     public function store(Request $request)
     {
@@ -60,14 +69,16 @@ class UserSkillController extends Controller
         return redirect()->route('my.skills')->with('success', 'Skill added successfully!');
     }
 
-    public function destroy(UserSkill $skill)
-    {
-        if ($skill->user_id !== auth()->id()) {
-            abort(403);
-        }
+    public function destroy($id)
+{
+    $userSkill = UserSkill::findOrFail($id);
 
-        $skill->delete();
-
-        return redirect()->route('my.skills')->with('success', 'Skill removed successfully!');
+    if ($userSkill->user_id !== auth()->id()) {
+        abort(403);
     }
+
+    $userSkill->delete();
+
+    return redirect()->route('my.skills')->with('success', 'Skill removed successfully!');
+}
 }

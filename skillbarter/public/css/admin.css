@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.admin-wrapper {
+    display: flex;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background: #2563eb;
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+}
+
+.admin-sidebar .logo {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.admin-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-sidebar ul li {
+    margin: 15px 0;
+}
+
+.admin-sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.admin-main {
+    flex: 1;
+    padding: 20px;
+}
+
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-card h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.stat-card p {
+    font-size: 26px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.alert {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.alert.success {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.alert.error {
+    background: #fee2e2;
+    color: #dc2626;
+}
