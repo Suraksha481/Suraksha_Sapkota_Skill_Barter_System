@@ -90,6 +90,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->skills()->wherePivot('type', 'request');
     }
 
+    public function skillsOffered()
+    {
+        return $this->userSkills()->where('type', 'offer');
+    }
+
+    public function skillsWanted()
+    {
+        return $this->userSkills()->where('type', 'request');
+    }
+
     public function matchesAsSeeker()
     {
         return $this->hasMany(MatchModel::class, 'seeker_id');

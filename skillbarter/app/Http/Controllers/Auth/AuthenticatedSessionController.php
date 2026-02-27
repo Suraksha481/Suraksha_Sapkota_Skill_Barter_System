@@ -30,36 +30,34 @@ class AuthenticatedSessionController extends Controller
         'password' => ['required'],
     ]);
 
+    // look up user so we can enforce verification before even attempting auth
+    $user = \\App\\Models\\User::where('email', $request->email)->first();
+    if ($user && ! $user->hasVerifiedEmail()) {
+        return back()->withErrors([
+            'email' => 'Please verify your email address before logging in.',
+        ]);
+    }
+
     if (!Auth::attempt($credentials, $request->boolean('remember'))) {
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
 
-    $user = Auth::user();
-
-    // Check email verification
-    if (!$user->hasVerifiedEmail()) {
-        Auth::logout();
-
-        return redirect()
-            ->route('verify-email-code.show', ['user_id' => $user->id])
-            ->withErrors(['email' => 'Please verify your email address to login.']);
-    }
+    $request->session()->regenerate();
 
     $request->session()->regenerate();
 
-   
+
 
     if ($user->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
 
-    if ($user->role === 'teacher') {
-        return redirect()->route('teacher.dashboard');
-    }
-
-    return redirect()->route('student.dashboard');
+    // non-admin users should land on the public home page after login
+    // the old behaviour sent teachers/students straight to their dashboards,
+    // which could create a redirect loop if a teacher wasn’t yet approved.
+    return redirect()->intended(RouteServiceProvider::HOME);
 }
 
     /**

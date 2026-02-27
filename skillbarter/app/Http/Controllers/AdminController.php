@@ -1,202 +1,136 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Skill;
 use App\Models\RequestModel;
-use App\Models\Message;
+use App\Models\PremiumMembership;
+use App\Models\Feedback;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        // Use admin middleware (checks admin guard). Route group also applies this,
-        // but adding here ensures controller actions require admin auth.
-        $this->middleware(['admin']);
-    }
+    /**
+     * Admin Dashboard
+     */
+ public function dashboard()
+{
+    $totalUsers = \App\Models\User::count();
 
-    public function index()
-    {
-        return view('admin.dashboard', [
-            'totalUsers' => \App\Models\User::count(),
-            'totalTeachers' => \App\Models\User::where('role','teacher')->count(),
-            'totalStudents' => \App\Models\User::where('role','student')->count(),
-            'totalSessions' => \App\Models\RequestModel::count(),
-            'totalPremium' => \App\Models\PremiumMembership::where('status','active')->count(),
-        ]);
-    }
+    $totalTeachers = \App\Models\User::where('role', 'teacher')->count();
 
+    $totalStudents = \App\Models\User::where('role', 'student')->count();
+
+    $totalSkills = \App\Models\Skill::count();
+
+    $totalRequests = \App\Models\RequestModel::count();
+
+    $totalSessions = \App\Models\SessionModel::count();
+
+    $totalPremium = \App\Models\PremiumMembership::where('status', 'active')->count();
+
+    $totalFeedbacks = \App\Models\Feedback::count();
+
+    return view('admin.dashboard', [
+        'totalUsers' => $totalUsers,
+        'totalTeachers' => $totalTeachers,
+        'totalStudents' => $totalStudents,
+        'totalSkills' => $totalSkills,
+        'totalRequests' => $totalRequests,
+        'totalSessions' => $totalSessions,
+        'totalPremium' => $totalPremium,
+        'totalFeedbacks' => $totalFeedbacks,
+    ]);
+}
+
+    /**
+     * Users list
+     */
     public function users()
     {
-        $this->authorizeAdmin();
-        $users = User::orderBy('created_at','desc')->paginate(25);
+        $users = User::latest()->paginate(15);
         return view('admin.users', compact('users'));
     }
 
-    public function toggleUserActive($id)
+    /**
+     * Toggle user active
+     */
+    public function toggleUser($id)
     {
-        $this->authorizeAdmin();
         $user = User::findOrFail($id);
-        $user->update(['is_active' => ! $user->is_active]);
-        return back()->with('status', 'User status updated.');
-    }
-
-   public function changeRole(Request $request, $id)
-    {
-        $request->validate([
-            'role' => 'required|in:student,teacher,admin'
-        ]);
-
-        $user = User::findOrFail($id);
-
-        $user->role = $request->role;
-
-        if ($request->role !== 'teacher') {
-        $user->is_teacher_approved = false;
-        }
-
+        $user->is_active = !$user->is_active;
         $user->save();
 
-        return back()->with('success','Role updated successfully.');
+        return back()->with('success', 'User status updated.');
     }
 
-    public function destroyUser($id)
+    /**
+     * Pending teachers
+     */
+    public function pendingTeachers()
     {
-        $this->authorizeAdmin();
-        $user = User::findOrFail($id);
-        $user->delete();
-        return back()->with('status', 'User deleted.');
+        // paginate so admin doesn't have a huge list at once
+        $teachers = User::where('role', 'teacher')
+                        ->where('is_teacher_approved', false)
+                        ->latest()
+                        ->paginate(15);
+
+        return view('admin.pending-teachers', compact('teachers'));
     }
 
+    /**
+     * Approve teacher
+     */
+    public function approveTeacher($id)
+    {
+        $teacher = User::findOrFail($id);
+        $teacher->is_teacher_approved = true;
+        $teacher->save();
+
+        // clean up any pending‑approval notifications so they do not linger
+        $teacher->notifications()
+            ->where('data->type', 'teacher_pending')
+            ->delete();
+
+        // notify teacher of approval
+        $teacher->notify(new \App\Notifications\TeacherApproved());
+
+        return back()->with('success', 'Teacher approved.');
+    }
+
+    /**
+     * Skills
+     */
     public function skills()
     {
-        $this->authorizeAdmin();
-        $skills = \App\Models\Skill::latest()->paginate(25);
+        $skills = Skill::latest()->paginate(15);
         return view('admin.skills', compact('skills'));
     }
 
-    public function destroySkill($id)
+    /**
+     * Delete skill
+     */
+    public function deleteSkill($id)
     {
-        $this->authorizeAdmin();
-        $skill = \App\Models\Skill::findOrFail($id);
-        $skill->delete();
-        return back()->with('status', 'Skill deleted.');
+        Skill::findOrFail($id)->delete();
+        return back()->with('success', 'Skill deleted.');
     }
 
-    public function requests()
-    {
-        $this->authorizeAdmin();
-        $requests = RequestModel::latest()->paginate(25);
-        return view('admin.requests', compact('requests'));
-    }
-
-    public function updateRequestStatus(Request $request, $id)
-    {
-        $this->authorizeAdmin();
-        $request->validate(['status' => 'required|string|in:pending,accepted,declined,completed,cancelled']);
-        $r = RequestModel::findOrFail($id);
-        $r->update(['status' => $request->input('status')]);
-        return back()->with('status', 'Request updated.');
-    }
-
-    public function feedbacks()
-    {
-        $this->authorizeAdmin();
-        $feedbacks = \App\Models\Feedback::latest()->paginate(25);
-        return view('admin.feedbacks', compact('feedbacks'));
-    }
-
-    public function destroyFeedback($id)
-    {
-        $this->authorizeAdmin();
-        $f = \App\Models\Feedback::findOrFail($id);
-        $f->delete();
-        return back()->with('status', 'Feedback deleted.');
-    }
-
+    /**
+     * Subscriptions
+     */
     public function subscriptions()
     {
-        $this->authorizeAdmin();
-        $subs = \App\Models\PremiumMembership::latest()->paginate(25);
-        $revenue = \App\Models\PremiumMembership::where('status','active')->sum('price');
-        return view('admin.subscriptions', compact('subs','revenue'));
+        $subscriptions = PremiumMembership::latest()->paginate(15);
+        return view('admin.subscriptions', compact('subscriptions'));
     }
 
-    public function cancelSubscription($id)
+    /**
+     * Feedbacks
+     */
+    public function feedbacks()
     {
-        $this->authorizeAdmin();
-        $s = \App\Models\PremiumMembership::findOrFail($id);
-        $s->update(['status' => 'cancelled']);
-        return back()->with('status', 'Subscription cancelled.');
-    }
-
-    // Teacher administration: pending, approved, approve/reject actions
-    public function pendingTeachers()
-    {
-        $this->authorizeAdmin();
-        $teachers = User::where('role', 'teacher')
-            ->where(function ($q) {
-                $q->whereNull('is_approved_teacher')->orWhere('is_approved_teacher', false);
-            })
-            ->latest()
-            ->paginate(25);
-
-        return view('admin.teachers', ['teachers' => $teachers, 'title' => 'Pending Teachers']);
-    }
-
-    public function approvedTeachers()
-    {
-        $this->authorizeAdmin();
-        $teachers = User::where('role', 'teacher')
-            ->where('is_approved_teacher', true)
-            ->latest()
-            ->paginate(25);
-
-        return view('admin.teachers', ['teachers' => $teachers, 'title' => 'Approved Teachers']);
-    }
-
-    public function allTeachers()
-    {
-        $this->authorizeAdmin();
-        $teachers = User::where('role', 'teacher')->latest()->paginate(25);
-        return view('admin.teachers', ['teachers' => $teachers, 'title' => 'All Teachers']);
-    }
-
-   public function approveTeacher($id)
-    {
-        $user = User::findOrFail($id);
-
-        if (!$user->isTeacher()) {
-            abort(400);
-        }
-
-        $user->update([
-            'is_teacher_approved' => true
-        ]);
-
-    return back()->with('success', 'Teacher approved successfully.');
-}
-
-   public function rejectTeacher($id)
-{
-    $user = User::findOrFail($id);
-
-    if (!$user->isTeacher()) {
-        abort(400);
-    }
-
-    $user->update([
-        'is_teacher_approved' => false
-    ]);
-
-    return back()->with('success', 'Teacher rejected successfully.');
-}
-
-    protected function authorizeAdmin()
-    {
-        // Only allow access when authenticated via the admin guard (admins are separate)
-        if (! auth('admin')->check()) {
-            abort(403);
-        }
+        $feedbacks = Feedback::latest()->paginate(15);
+        return view('admin.feedbacks', compact('feedbacks'));
     }
 }

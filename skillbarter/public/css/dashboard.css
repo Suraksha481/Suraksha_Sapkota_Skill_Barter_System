@@ -82,14 +82,15 @@
 }
 
 .skills-box {
-    background: #000;
+    background: #fff;
+    color: #000;
     border-radius: 12px;
     padding: 25px;
-    border: 1px solid rgba(136, 221, 221, 0.4);
+    border: 1px solid #ddd;
 }
 
 .skills-box h3 {
-    color: #fff;
+    color: #000;
     margin-bottom: 15px;
     font-size: 18px;
 }
@@ -102,8 +103,8 @@
 
 .skills-box ul li {
     padding: 8px 0;
-    color: #ddd;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #333;
+    border-bottom: 1px solid #eee;
 }
 
 .skills-box ul li:last-child {

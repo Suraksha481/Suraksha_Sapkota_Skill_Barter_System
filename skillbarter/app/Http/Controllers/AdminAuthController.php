@@ -1,15 +1,15 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Admin;
 
 class AdminAuthController extends Controller
 {
     public function showLogin()
     {
-        return view('admin.login');
+        return view('admin.auth.login');
     }
 
     public function login(Request $request)
@@ -19,12 +19,14 @@ class AdminAuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->route('admin.dashboard');
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return back()->withErrors([
+            'email' => 'Invalid admin credentials.',
+        ]);
     }
 
     public function logout(Request $request)
@@ -32,6 +34,6 @@ class AdminAuthController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect(route('admin.login'));
+        return redirect()->route('admin.login');
     }
 }

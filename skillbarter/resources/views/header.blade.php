@@ -7,10 +7,14 @@
 #header {
     background: #000;
     color: #fff;
-    padding: 10 30px;
+    padding: 15px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 #header a {

@@ -46,6 +46,16 @@ class SkillController extends Controller
      */
     public function show(Skill $skill)
     {
-        return view('skill-detail', compact('skill'));
+        // also fetch teachers who have this skill and are approved/active
+        $teachers = User::where('role','teacher')
+            ->where('is_teacher_approved', true)
+            ->where('is_active', true)
+            ->whereHas('userSkills', function($q) use ($skill) {
+                $q->where('skill_id', $skill->id);
+            })
+            ->with('userSkills.skill')
+            ->get();
+
+        return view('skill-detail', compact('skill','teachers'));
     }
 }

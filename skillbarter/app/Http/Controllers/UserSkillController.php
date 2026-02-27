@@ -12,16 +12,17 @@ class UserSkillController extends Controller
 {
     $user = $request->user();
 
-    // Skills user teaches (pivot type = offer)
-    $teachSkills = $user->teachSkills()->get();
+    // Skills user teaches (pivot type = offer) - load with skill relationship
+    $teachSkills = $user->skillsOffered()->with('skill')->get();
 
-    // Skills user wants to learn (pivot type = request)
-    $learnSkills = $user->learnSkills()->get();
+    // Skills user wants to learn (pivot type = request) - load with skill relationship
+    $learnSkills = $user->skillsWanted()->with('skill')->get();
 
     // All available skills for dropdown
     $allSkills = Skill::orderBy('title')->get();
 
     return view('my-skills.index', compact(
+        'user',
         'teachSkills',
         'learnSkills',
         'allSkills'

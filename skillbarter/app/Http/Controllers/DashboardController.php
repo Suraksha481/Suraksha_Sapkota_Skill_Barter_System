@@ -13,8 +13,8 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $teachSkills = $user->skillsOffered()->with('skill')->get()->pluck('skill');
-        $learnSkills = $user->skillsWanted()->with('skill')->get()->pluck('skill');
+        $teachSkills = $user->skillsOffered()->with('skill')->get();
+        $learnSkills = $user->skillsWanted()->with('skill')->get();
 
         $pendingRequests = RequestModel::where('responder_id', $user->id)
             ->where('status', 'open')

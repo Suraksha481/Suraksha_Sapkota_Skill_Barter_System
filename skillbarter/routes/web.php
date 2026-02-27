@@ -89,6 +89,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         }
 
         if ($user->isTeacher()) {
+            // approved teachers may access their dashboard directly; if they
+            // are still pending we just send them home with a message, the
+            // controller already handles the approval check when rendering.
             return redirect()->route('teacher.dashboard');
         }
 
@@ -96,7 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return redirect()->route('student.dashboard');
         }
 
-        abort(403);
+        return redirect()->route('home');
 
     })->name('dashboard');
 
@@ -240,38 +243,28 @@ if (app()->environment('local')) {
 | ADMIN ROUTES
 |--------------------------------------------------------------------------
 */
-
 Route::prefix('admin')->group(function () {
 
     Route::get('login', [\App\Http\Controllers\AdminAuthController::class, 'showLogin'])->name('admin.login');
     Route::post('login', [\App\Http\Controllers\AdminAuthController::class, 'login'])->name('admin.login.post');
     Route::post('logout', [\App\Http\Controllers\AdminAuthController::class, 'logout'])->name('admin.logout');
 
-    Route::middleware(['admin'])->group(function () {
+    Route::middleware('admin')->group(function () {
 
-        Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-        Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
-        Route::post('/users/{id}/toggle-active', [AdminController::class, 'toggleUserActive'])->name('admin.users.toggle-active');
-        Route::post('/users/{id}/change-role', [AdminController::class, 'changeRole'])->name('admin.users.change-role');
-        Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.delete');
+        Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('admin.users');
+        Route::post('/users/{id}/toggle', [\App\Http\Controllers\AdminController::class, 'toggleUser'])->name('admin.users.toggle');
 
-        Route::get('/skills', [AdminController::class, 'skills'])->name('admin.skills');
-        Route::delete('/skills/{id}', [AdminController::class, 'destroySkill'])->name('admin.skills.delete');
+        Route::get('/teachers/pending', [\App\Http\Controllers\AdminController::class, 'pendingTeachers'])->name('admin.teachers.pending');
+        Route::post('/teachers/{id}/approve', [\App\Http\Controllers\AdminController::class, 'approveTeacher'])->name('admin.teachers.approve');
 
-        Route::get('/requests', [AdminController::class, 'requests'])->name('admin.requests');
-        Route::post('/requests/{id}/status', [AdminController::class, 'updateRequestStatus'])->name('admin.requests.update-status');
+        Route::get('/skills', [\App\Http\Controllers\AdminController::class, 'skills'])->name('admin.skills');
+        Route::delete('/skills/{id}', [\App\Http\Controllers\AdminController::class, 'deleteSkill'])->name('admin.skills.delete');
 
-        Route::get('/teachers', [AdminController::class, 'allTeachers'])->name('admin.teachers');
-        Route::get('/teachers/pending', [AdminController::class, 'pendingTeachers'])->name('admin.teachers.pending');
-        Route::get('/teachers/approved', [AdminController::class, 'approvedTeachers'])->name('admin.teachers.approved');
-        Route::post('/teachers/{id}/approve', [AdminController::class, 'approveTeacher'])->name('admin.teachers.approve');
-        Route::post('/teachers/{id}/reject', [AdminController::class, 'rejectTeacher'])->name('admin.teachers.reject');
+        Route::get('/subscriptions', [\App\Http\Controllers\AdminController::class, 'subscriptions'])->name('admin.subscriptions');
 
-        Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks');
-        Route::delete('/feedbacks/{id}', [AdminController::class, 'destroyFeedback'])->name('admin.feedbacks.delete');
+        Route::get('/feedbacks', [\App\Http\Controllers\AdminController::class, 'feedbacks'])->name('admin.feedbacks');
 
-        Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
-        Route::post('/subscriptions/{id}/cancel', [AdminController::class, 'cancelSubscription'])->name('admin.subscriptions.cancel');
     });
 });

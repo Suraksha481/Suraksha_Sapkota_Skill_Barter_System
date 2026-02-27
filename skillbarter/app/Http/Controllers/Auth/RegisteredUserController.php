@@ -34,36 +34,27 @@ class RegisteredUserController extends Controller
             'role' => 'required|in:teacher,student',
         ]);
 
-        // Create the user with single role (mutually exclusive)
-        $user = User::create([
+        // we no longer persist the user immediately; store pending data in session
+        $pending = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-        ]);
+        ];
 
-        // Create profile based on selected role
-        if ($request->role === 'teacher') {
-            \App\Models\TeacherProfile::firstOrCreate(['user_id' => $user->id]);
-        } else {
-            \App\Models\StudentProfile::firstOrCreate(['user_id' => $user->id]);
-        }
-
-        // Generate verification code
+        // generate a random verification code and keep it with the pending data
         $code = $this->generateVerificationCode();
+        $pending['verification_code'] = $code;
+        $pending['expires_at'] = now()->addMinutes(10);
 
-        // Create verification code record
-        EmailVerificationCode::create([
-            'user_id' => $user->id,
-            'code' => $code,
-            'expires_at' => now()->addMinutes(10),
-        ]);
+        session(['pending_registration' => $pending]);
 
-        // Send verification code email
-        $user->notify(new VerifyEmailCode($code));
+        // send code to the address the user supplied; there is no user record yet
+        \Illuminate\Support\Facades\Notification::route('mail', $pending['email'])
+            ->notify(new VerifyEmailCode($code));
 
-        // Redirect to verification code input page
-        return redirect()->route('verify-email-code.show', ['user_id' => $user->id])
+        // ask them to enter the code in order to complete the sign‑up
+        return redirect()->route('verify-email-code.show')
             ->with('status', 'Verification code sent! Please check your email.');
     }
 

@@ -52,4 +52,35 @@
 
 </section>
 
+@if(isset($teachers) && $teachers->isNotEmpty())
+<section class="skill-teachers">
+    <h2>Teachers offering this skill</h2>
+    <div class="teacher-list">
+        @foreach($teachers as $teacher)
+            <div class="teacher-card">
+                <div style="display:flex; align-items:center; gap:1rem;">
+                    <img src="{{ $teacher->avatar ?? 'https://via.placeholder.com/80' }}" alt="{{ $teacher->name }}" style="width:80px; height:80px; border-radius:8px; object-fit:cover;">
+                    <div>
+                        <h3>{{ $teacher->name }}</h3>
+                        <p style="margin:0; color:#666;">{{ Str::limit($teacher->bio ?? '', 120) }}</p>
+                        <div style="margin-top:0.5rem;">
+                            <a href="{{ route('teachers.show', $teacher) }}" class="btn small">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    <p class="view-more">
+        <a href="{{ route('teachers.index', ['q' => $skill->title]) }}">See all teachers for “{{ $skill->title }}”</a>
+    </p>
+</section>
+@endif
+
+@endsection        </div>
+
+    </div>
+
+</section>
+
 @endsection

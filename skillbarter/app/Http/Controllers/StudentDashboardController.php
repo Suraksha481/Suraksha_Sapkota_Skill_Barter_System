@@ -17,7 +17,7 @@ class StudentDashboardController extends Controller
         $user = $request->user();
 
         // Get student stats
-       $learningSkills = $user->learnSkills()->with('skills')->get()->pluck('skills');
+        $learningSkills = $user->skillsWanted()->with('skill')->get();
 
         $myRequests = RequestModel::where('requester_id', $user->id)
             ->with(['responder', 'userSkill.skill'])

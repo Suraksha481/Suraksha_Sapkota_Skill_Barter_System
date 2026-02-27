@@ -1,19 +1,20 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 
-class AdminAccountSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         Admin::updateOrCreate(
-            ['email' => 'superadmin@local'],
+            ['email' => 'admin@skillxchange.com'],
             [
                 'name' => 'Super Admin',
-                'password' => Hash::make('supersecret'),
+                'password' => Hash::make('admin123'),
             ]
         );
     }

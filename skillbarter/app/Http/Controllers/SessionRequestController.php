@@ -109,13 +109,21 @@ class SessionRequestController extends Controller
         abort(403);
     }
 
-    if ($requestModel->status !== 'pending') {
-        return back()->with('error', 'Request is not pending.');
+    // at creation we set status to "open" so treat open or pending as acceptable
+    if (! in_array($requestModel->status, ['open', 'pending'])) {
+        return back()->with('error', 'Request is not pending or open.');
     }
 
     $requestModel->update([
         'status' => 'accepted'
     ]);
+
+    // notify requester about acceptance
+    try {
+        $requestModel->requester->notify(new \App\Notifications\RequestAccepted($requestModel));
+    } catch (\Throwable $e) {
+        // ignore notification errors
+    }
 
     return back()->with('success', 'Session accepted successfully.');
 }

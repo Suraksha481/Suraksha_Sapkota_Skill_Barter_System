@@ -17,13 +17,15 @@ class TeacherDashboardController extends Controller
         $user = auth()->user();
 
         if (!$user->canTeach()) {
-            return redirect()->route('dashboard')
+            // send unapproved teachers back to the public home page instead
+            // of bouncing them through /dashboard which would loop.
+            return redirect()->route('home')
                 ->with('error', 'Awaiting admin approval.');
         }
         $user = $request->user();
 
         // Get teacher stats
-        $teachingSkills = $user->skillsOffered()->with('skill')->get()->pluck('skill');
+        $teachingSkills = $user->skillsOffered()->with('skill')->get();
 
         $studentRequests = RequestModel::where('responder_id', $user->id)
             ->with(['requester', 'userSkill.skill'])

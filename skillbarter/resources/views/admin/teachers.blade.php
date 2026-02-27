@@ -13,9 +13,9 @@
                 <tr style="border-bottom:1px solid #f3f4f6">
                     <td>{{ $t->name }}</td>
                     <td>{{ $t->email }}</td>
-                    <td>{{ $t->is_approved_teacher ? 'Yes' : 'No' }}</td>
+                    <td>{{ $t->is_teacher_approved ? 'Yes' : 'No' }}</td>
                     <td>
-                        @if(!$t->is_approved_teacher)
+                        @if(!$t->is_teacher_approved)
                             <form method="POST" action="{{ route('admin.teachers.approve', $t->id) }}" style="display:inline">@csrf<button>Approve</button></form>
                             <form method="POST" action="{{ route('admin.teachers.reject', $t->id) }}" style="display:inline">@csrf<button>Reject</button></form>
                         @else

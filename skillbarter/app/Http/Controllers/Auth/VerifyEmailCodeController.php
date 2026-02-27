@@ -15,16 +15,23 @@ class VerifyEmailCodeController extends Controller
      */
     public function show(Request $request): View
     {
-        // Get the user ID from session or query parameter
-        $userId = $request->query('user_id');
+        // if we're in the middle of a pending registration we don't have a user yet
+        $pending = session('pending_registration');
+        $user = null;
 
-        if (!$userId) {
-            return redirect()->route('login')->with('error', 'Invalid verification request.');
-        }
-
-        $user = User::find($userId);
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'User not found.');
+        if ($pending) {
+            // create a dummy user object just so the view can display the email
+            $user = new User();
+            $user->email = $pending['email'];
+        } else {
+            $userId = $request->query('user_id');
+            if (!$userId) {
+                return redirect()->route('login')->with('error', 'Invalid verification request.');
+            }
+            $user = User::find($userId);
+            if (!$user) {
+                return redirect()->route('login')->with('error', 'User not found.');
+            }
         }
 
         return view('auth.verify-email-code', ['user' => $user]);
@@ -35,6 +42,38 @@ class VerifyEmailCodeController extends Controller
      */
     public function verify(Request $request)
     {
+        // if we have pending registration details, handle them first
+        $pending = session('pending_registration');
+        if ($pending) {
+            $request->validate([
+                'code' => 'required|string|size:6',
+            ]);
+
+            if ($request->code !== $pending['verification_code'] || now()->gt($pending['expires_at'])) {
+                return back()->withErrors(['code' => 'The verification code is invalid or has expired.']);
+            }
+
+            // create user record now
+            $user = User::create([
+                'name' => $pending['name'],
+                'email' => $pending['email'],
+                'password' => $pending['password'],
+                'role' => $pending['role'],
+            ]);
+
+            if ($user->role === 'teacher') {
+                \App\Models\TeacherProfile::firstOrCreate(['user_id' => $user->id]);
+            } else {
+                \App\Models\StudentProfile::firstOrCreate(['user_id' => $user->id]);
+            }
+
+            $user->markEmailAsVerified();
+
+            session()->forget('pending_registration');
+
+            return redirect()->route('login')->with('success', 'Registration complete. You may now login.');
+        }
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'code' => 'required|string|size:6',
@@ -58,6 +97,11 @@ class VerifyEmailCodeController extends Controller
 
         // Mark code as used
         $verificationCode->markAsUsed();
+
+        // if the new account is a teacher, let them know approval is pending
+        if ($user->role === 'teacher') {
+            $user->notify(new \App\Notifications\TeacherPendingApproval());
+        }
 
         return redirect()->route('login')->with('success', 'Email verified successfully! You can now login.');
     }
