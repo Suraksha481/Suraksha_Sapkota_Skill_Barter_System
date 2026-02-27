@@ -23,20 +23,20 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-   public function store(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => ['required','email'],
-        'password' => ['required'],
-    ]);
-
-    // look up user so we can enforce verification before even attempting auth
-    $user = \\App\\Models\\User::where('email', $request->email)->first();
-    if ($user && ! $user->hasVerifiedEmail()) {
-        return back()->withErrors([
-            'email' => 'Please verify your email address before logging in.',
+    public function store(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required','email'],
+            'password' => ['required'],
         ]);
-    }
+
+        // look up user so we can enforce verification before even attempting auth
+        $user = \App\Models\User::where('email', $request->email)->first();
+        if ($user && ! $user->hasVerifiedEmail()) {
+            return back()->withErrors([
+                'email' => 'Please verify your email address before logging in.',
+            ]);
+        }
 
     if (!Auth::attempt($credentials, $request->boolean('remember'))) {
         return back()->withErrors([

@@ -31,9 +31,19 @@ class VerifyEmailCode extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
+        // some notifiables may be simple route instances without a name property
+        $name = method_exists($notifiable, 'routeNotificationFor')
+            ? '' : null; // we don't rely on this method here
+
+        if (isset($notifiable->name)) {
+            $name = $notifiable->name;
+        }
+
+        $greeting = 'Hello' . ($name ? ' ' . $name : '');
+
         return (new MailMessage)
             ->subject('Email Verification Code - SkillXchange')
-            ->greeting('Hello ' . $notifiable->name . '!')
+            ->greeting($greeting . '!')
             ->line('Welcome to SkillXchange! Your email verification code is:')
             ->line('')
             ->line('**' . $this->code . '**')

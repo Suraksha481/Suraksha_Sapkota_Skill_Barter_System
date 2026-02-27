@@ -100,23 +100,9 @@
 
 <style>
     /* make container light with readable text */
-    .skills-box {
-        background: #fff;
-        color: #000;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-    }
 
-    .skill-card {
-        background: #fff;
-        color: #000;
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-    }
 
+   
     .skill-card h4,
     .skill-card p {
         color: #000;

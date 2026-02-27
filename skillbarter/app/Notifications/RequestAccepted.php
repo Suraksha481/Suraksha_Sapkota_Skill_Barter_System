@@ -23,11 +23,15 @@ class RequestAccepted extends Notification
 
     public function toArray($notifiable)
     {
+        $teacher = $this->requestModel->responder->name;
+        $skill = $this->requestModel->userSkill->skill->title ?? '';
+
         return [
             'type' => 'request_accepted',
             'request_id' => $this->requestModel->id,
             'by_user_id' => $this->requestModel->responder_id,
-            'message' => 'Your request was accepted',
+            'message' => "{$teacher} accepted your request for {$skill}.",
+            'url' => route('requests.show', $this->requestModel->id),
         ];
     }
 }

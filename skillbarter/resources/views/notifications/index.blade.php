@@ -16,7 +16,13 @@
             <li style="padding:12px; border-bottom:1px solid #eee; background:{{ $n->read_at ? '#fff' : '#f8f9fa' }};">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <p style="margin:0;">{{ $n->data['message'] ?? ucfirst(str_replace('_',' ', $n->data['type'] ?? 'notification')) }}</p>
+                        @if(isset($n->data['url']))
+                            <a href="{{ $n->data['url'] }}" style="text-decoration:none;color:inherit;">
+                                <p style="margin:0;">{{ $n->data['message'] ?? ucfirst(str_replace('_',' ', $n->data['type'] ?? 'notification')) }}</p>
+                            </a>
+                        @else
+                            <p style="margin:0;">{{ $n->data['message'] ?? ucfirst(str_replace('_',' ', $n->data['type'] ?? 'notification')) }}</p>
+                        @endif
                         <small style="color:#666;">{{ $n->created_at->diffForHumans() }}</small>
                     </div>
                     <div>

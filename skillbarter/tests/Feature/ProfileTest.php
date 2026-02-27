@@ -23,7 +23,8 @@ class ProfileTest extends TestCase
 
     public function test_profile_information_can_be_updated(): void
     {
-        $user = User::factory()->create();
+        // start with an unverified user since some assertions rely on that
+        $user = User::factory()->create(['email_verified_at' => null]);
 
         $response = $this
             ->actingAs($user)

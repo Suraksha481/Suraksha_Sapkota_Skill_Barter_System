@@ -17,16 +17,29 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_new_users_can_register(): void
+    public function test_new_users_are_stored_pending_and_sent_verification_code(): void
     {
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'role' => 'student',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        // registration should not log the user in
+        $this->assertGuest();
+
+        // no user record should exist yet
+        $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+
+        // pending data should live in session
+        $this->assertTrue(session()->has('pending_registration'));
+        $pending = session('pending_registration');
+        $this->assertEquals('Test User', $pending['name']);
+        $this->assertEquals('test@example.com', $pending['email']);
+        $this->assertEquals('student', $pending['role']);
+
+        $response->assertRedirect(route('verify-email-code.show'));
     }
 }

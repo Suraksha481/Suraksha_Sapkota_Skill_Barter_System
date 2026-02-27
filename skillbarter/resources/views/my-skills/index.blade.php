@@ -39,10 +39,19 @@
                         </label>
                         <select name="skill_id" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit;">
                             <option value="">-- Choose Skill --</option>
-                            @foreach($allSkills as $skill)
-                                <option value="{{ $skill->id }}">{{ $skill->title }}</option>
-                            @endforeach
+                            @if($allSkills->isEmpty())
+                                <option disabled>No skills available</option>
+                            @else
+                                @foreach($allSkills as $skill)
+                                    <option value="{{ $skill->id }}">{{ $skill->title }}</option>
+                                @endforeach
+                            @endif
                         </select>
+                        @if($allSkills->isEmpty())
+                            <p style="color:#666;font-size:13px;margin-top:5px;">
+                                No skills have been added yet. Please <a href="{{ route('admin.skills') }}" target="_blank" style="text-decoration:underline;">ask an admin</a> to create some.
+                            </p>
+                        @endif
                         @error('skill_id')
                             <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
                         @enderror

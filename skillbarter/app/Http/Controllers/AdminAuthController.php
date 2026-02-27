@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Admin;
 
 class AdminAuthController extends Controller
 {
@@ -18,6 +20,16 @@ class AdminAuthController extends Controller
             'email' => ['required','email'],
             'password' => ['required'],
         ]);
+
+        // if no admins exist yet, seed a default account so the first
+        // login attempt can succeed without running artisan commands.
+        if (Admin::count() === 0) {
+            Admin::create([
+                'name' => 'Super Admin',
+                'email' => 'admin@skillxchange.com',
+                'password' => Hash::make('admin123'),
+            ]);
+        }
 
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();

@@ -62,4 +62,53 @@ class EmailVerificationTest extends TestCase
 
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
     }
+
+    public function test_pending_registration_can_be_completed_with_code(): void
+    {
+        // submit registration form to populate pending session
+        $this->post('/register', [
+            'name' => 'Pending User',
+            'email' => 'pending@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'student',
+        ]);
+
+        $this->assertGuest();
+        $pending = session('pending_registration');
+        $code = $pending['verification_code'];
+
+        $response = $this->post('/email/verify', [
+            'code' => $code,
+        ]);
+
+        $response->assertRedirect(route('login'));
+        $this->assertDatabaseHas('users', ['email' => 'pending@example.com']);
+        $this->assertNull(session('pending_registration'));
+    }
+
+    public function test_pending_registration_fails_with_wrong_code(): void
+    {
+        $this->post('/register', [
+            'name' => 'Other User',
+            'email' => 'other@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'student',
+        ]);
+
+        $response = $this->post('/email/verify', [
+            'code' => '000000',
+        ]);
+
+        $response->assertSessionHasErrors('code');
+        $this->assertDatabaseMissing('users', ['email' => 'other@example.com']);
+    }
+
+    public function test_verification_form_without_context_redirects_back(): void
+    {
+        $response = $this->get('/verify-email-code');
+        $response->assertRedirect(route('login'));
+        $response->assertSessionHas('error');
+    }
 }

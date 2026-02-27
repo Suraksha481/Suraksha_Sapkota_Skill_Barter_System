@@ -70,12 +70,16 @@ class AdminController extends Controller
     public function pendingTeachers()
     {
         // paginate so admin doesn't have a huge list at once
-        $teachers = User::where('role', 'teacher')
+        $pending = User::where('role', 'teacher')
                         ->where('is_teacher_approved', false)
                         ->latest()
                         ->paginate(15);
 
-        return view('admin.pending-teachers', compact('teachers'));
+        $all = User::where('role', 'teacher')
+                   ->latest()
+                   ->paginate(25);
+
+        return view('admin.pending-teachers', compact('pending', 'all'));
     }
 
     /**
@@ -96,6 +100,16 @@ class AdminController extends Controller
         $teacher->notify(new \App\Notifications\TeacherApproved());
 
         return back()->with('success', 'Teacher approved.');
+    }
+
+    public function rejectTeacher($id)
+    {
+        $teacher = User::findOrFail($id);
+        $teacher->is_teacher_approved = false;
+        $teacher->save();
+
+        // optionally send notification or simply rollback approval
+        return back()->with('success', 'Teacher unapproved.');
     }
 
     /**

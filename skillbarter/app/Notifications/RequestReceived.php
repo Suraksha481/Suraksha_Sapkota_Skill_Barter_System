@@ -24,11 +24,15 @@ class RequestReceived extends Notification
 
     public function toArray($notifiable)
     {
+        $skill = $this->requestModel->userSkill->skill->title ?? 'a skill';
+        $from = $this->requestModel->requester->name;
+
         return [
             'type' => 'request_received',
             'request_id' => $this->requestModel->id,
             'from_user_id' => $this->requestModel->requester_id,
-            'message' => $this->requestModel->message,
+            'message' => "New request from {$from} for {$skill}.",
+            'url' => route('requests.show', $this->requestModel->id),
         ];
     }
 }

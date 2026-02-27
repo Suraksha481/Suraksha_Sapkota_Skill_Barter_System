@@ -231,7 +231,7 @@
             <!-- Right Section -->
             <div class="verify-code-right">
                 <h2>Enter Code</h2>
-                <p class="subtitle">Check your inbox for the verification code</p>
+                <p class="subtitle">Check your inbox for the verification code sent to <strong>{{ $user->email }}</strong></p>
 
                 @if ($errors->any())
                     <div class="error-message">
@@ -248,7 +248,9 @@
                 <form method="POST" action="{{ route('verify-email-code.verify') }}">
                     @csrf
 
-                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    @unless(session('pending_registration'))
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    @endunless
 
                     <div class="code-input-group">
                         <label for="code">Verification Code</label>
@@ -272,7 +274,9 @@
                     <p class="resend-text">Didn't receive the code?</p>
                     <form method="POST" action="{{ route('verify-email-code.resend') }}" style="display:inline;">
                         @csrf
-                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        @unless(session('pending_registration'))
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        @endunless
                         <button type="submit" class="resend-btn">Resend Code</button>
                     </form>
                 </div>

@@ -17,10 +17,8 @@ class TeacherDashboardController extends Controller
         $user = auth()->user();
 
         if (!$user->canTeach()) {
-            // send unapproved teachers back to the public home page instead
-            // of bouncing them through /dashboard which would loop.
-            return redirect()->route('home')
-                ->with('error', 'Awaiting admin approval.');
+            // show the pending page if the teacher hasn't yet been approved.
+            return view('teacher.pending');
         }
         $user = $request->user();
 

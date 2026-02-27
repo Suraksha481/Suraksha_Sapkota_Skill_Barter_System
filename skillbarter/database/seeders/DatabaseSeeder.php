@@ -10,13 +10,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SkillSeeder::class,
-            DevUsersSeeder::class,
-            AdminUserSeeder::class,
-            AdminAccountSeeder::class,
+            // ensure administrator record exists
+            AdminSeeder::class,
             UserSeeder::class,
             DevUsersSeeder::class,
-            DatabaseSeeder::class,
-            
+            // add other project seeders here as needed
         ]);
     }
 }

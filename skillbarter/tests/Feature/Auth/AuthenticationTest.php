@@ -42,4 +42,18 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
     }
+
+    public function test_unverified_users_cannot_login(): void
+    {
+        $user = User::factory()->create([ 'email_verified_at' => null ]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertGuest();
+        $response->assertSessionHasErrors();
+        $this->assertStringContainsString('verify your email', session('errors')->first());
+    }
 }

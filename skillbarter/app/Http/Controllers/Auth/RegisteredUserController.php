@@ -65,7 +65,16 @@ class RegisteredUserController extends Controller
     {
         do {
             $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        } while (EmailVerificationCode::where('code', $code)->where('used', false)->exists());
+
+            // the table may not exist yet if migrations haven't been run;
+            // skip uniqueness check in that case so registration still works
+            $duplicate = false;
+            if (\Illuminate\Support\Facades\Schema::hasTable('email_verification_codes')) {
+                $duplicate = EmailVerificationCode::where('code', $code)
+                                ->where('used', false)
+                                ->exists();
+            }
+        } while ($duplicate);
 
         return $code;
     }

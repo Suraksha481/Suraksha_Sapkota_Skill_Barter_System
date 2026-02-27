@@ -68,11 +68,11 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| AUTHENTICATED + VERIFIED
+| AUTHENTICATED
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
@@ -89,9 +89,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         }
 
         if ($user->isTeacher()) {
-            // approved teachers may access their dashboard directly; if they
-            // are still pending we just send them home with a message, the
-            // controller already handles the approval check when rendering.
+            // if the teacher is still awaiting approval we display a
+            // simple notice page rather than bouncing them to home. this
+            // keeps them on the dashboard link and avoids confusion.
+            if (! $user->is_teacher_approved) {
+                return view('teacher.pending');
+            }
+
             return redirect()->route('teacher.dashboard');
         }
 
@@ -258,6 +262,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/teachers/pending', [\App\Http\Controllers\AdminController::class, 'pendingTeachers'])->name('admin.teachers.pending');
         Route::post('/teachers/{id}/approve', [\App\Http\Controllers\AdminController::class, 'approveTeacher'])->name('admin.teachers.approve');
+        Route::post('/teachers/{id}/reject', [\App\Http\Controllers\AdminController::class, 'rejectTeacher'])->name('admin.teachers.reject');
 
         Route::get('/skills', [\App\Http\Controllers\AdminController::class, 'skills'])->name('admin.skills');
         Route::delete('/skills/{id}', [\App\Http\Controllers\AdminController::class, 'deleteSkill'])->name('admin.skills.delete');

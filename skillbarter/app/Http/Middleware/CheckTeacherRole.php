@@ -20,6 +20,11 @@ class CheckTeacherRole
         }
 
         if (!$user->is_teacher_approved) {
+            // allow access to the dashboard itself but show a simple notice
+            if ($request->routeIs('teacher.dashboard')) {
+                return response()->view('teacher.pending');
+            }
+
             return redirect()->route('home')
                 ->with('error', 'Your teacher account is pending admin approval.');
         }

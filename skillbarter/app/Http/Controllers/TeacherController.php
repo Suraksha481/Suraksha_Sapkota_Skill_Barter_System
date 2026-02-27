@@ -24,6 +24,11 @@ class TeacherController extends Controller
         }
 
         $teachers = $query->with('userSkills.skill')->paginate(10);
+
+        // return view with teachers collection (include query string for pagination)
+        return view('teacher.index', [
+            'teachers' => $teachers->withQueryString(),
+        ]);
     }
 
     public function show(User $teacher)
