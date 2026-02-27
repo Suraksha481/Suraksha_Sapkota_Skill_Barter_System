@@ -1,5 +1,4 @@
-@extends('app')
-
+@extends('admin.layout')
 @section('content')
 <section class="container">
     <h1>Subscriptions</h1>
