@@ -105,16 +105,21 @@
 
     .skill-card {
         background: #fff;
-        color: #000;
+        color: #333 !important;
         padding: 15px;
         margin: 10px 0;
         border-radius: 8px;
         border: 1px solid #ddd;
     }
 
-    .skill-card h4,
+    .skill-card h4 {
+        color: #333 !important;
+        margin: 0 0 8px 0;
+    }
+
     .skill-card p {
-        color: #000;
+        color: #666 !important;
+        margin: 0;
     }
 
     .skills-box {
