@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="resource-actions">
-                    <a href="{{ asset('storage/' . $resource->file_path) }}" download class="btn small">⬇Download</a>
+                    <a href="{{ route('teacher.resources.download', $resource) }}" class="btn small">⬇Download</a>
                     <form action="{{ route('teacher.resources.destroy', $resource) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
