@@ -101,23 +101,8 @@
 </section>
 
 <style>
-    .skill-card {
-        background: #fff;
-        color: #000;
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-    }
 
-    .skills-box {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-    }
-
-
+   
     .request-card,
     .feedback-card {
         background: white;
