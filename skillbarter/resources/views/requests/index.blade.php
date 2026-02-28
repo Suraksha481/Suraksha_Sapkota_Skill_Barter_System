@@ -4,10 +4,7 @@
 
 <section class="dashboard">
 
-    <div class="dashboard-header">
-        <h1>Session Requests</h1>
-        <p>Manage your teaching and learning requests</p>
-    </div>
+
 
     @if(session('success'))
         <div class="alert success">{{ session('success') }}</div>
@@ -22,32 +19,13 @@
         $tab = $tab ?? (auth()->user()->isTeacher() ? 'received' : 'sent');
     @endphp
 
-    <div class="dashboard-actions" style="margin-bottom: 2rem;">
-        @if(auth()->user()->isTeacher())
-            <a href="{{ route('requests.index', ['tab' => 'received']) }}"
-               class="btn {{ $tab === 'received' ? 'primary' : 'ghost' }}">
-                Received ({{ $received->count() }})
-            </a>
-        @else
-            <a href="{{ route('requests.index', ['tab' => 'sent']) }}"
-               class="btn {{ $tab === 'sent' ? 'primary' : 'ghost' }}">
-                Sent ({{ $sent->count() }})
-            </a>
-        @endif
-    </div>
 
-    @if(! auth()->user()->isTeacher())
-        <div style="margin-bottom:1rem;">
-            <div class="alert info">
-                When a teacher accepts your request you will be notified here and via Notifications. You can also open the request details to see status changes.
-            </div>
-        </div>
-    @endif
+
 
     @if($tab === 'received')
     <!-- RECEIVED REQUESTS -->
     <div class="dashboard-section">
-        <h2>Requests Received</h2>
+        <h2>Student Requests</h2>
         <ul>
             @forelse($received as $request)
                 <li style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem;">
@@ -88,14 +66,14 @@
                     @endif
                 </li>
             @empty
-                <li class="empty">No requests received.</li>
+                <li class="empty">No student requests yet.</li>
             @endforelse
         </ul>
     </div>
     @else
     <!-- SENT REQUESTS -->
     <div class="dashboard-section">
-        <h2>Requests Sent</h2>
+        <h2>Learning Requests</h2>
         <ul>
             @forelse($sent as $request)
                 <li style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem;">
