@@ -99,36 +99,6 @@
 </section>
 
 <style>
-    /* make container light with readable text */
-
-
-
-    .skill-card {
-        background: #fff;
-        color: #333 !important;
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-    }
-
-    .skill-card h4 {
-        color: #333 !important;
-        margin: 0 0 8px 0;
-    }
-
-    .skill-card p {
-        color: #666 !important;
-        margin: 0;
-    }
-
-    .skills-box {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-    }
-
     .request-card,
     .feedback-card {
         background: white;
@@ -141,34 +111,6 @@
         align-items: center;
     }
 
-    .badge {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-    .badge-open { background: #fff3cd; color: #856404; }
-    .badge-accepted { background: #d1ecf1; color: #0c5460; }
-    .badge-in_progress { background: #cfe2ff; color: #084298; }
-    .badge-completed { background: #d1e7dd; color: #0f5132; }
-
-    .feedback-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-
-    .rating {
-        color: #ffc107;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-</style>
+   
 
 @endsection
