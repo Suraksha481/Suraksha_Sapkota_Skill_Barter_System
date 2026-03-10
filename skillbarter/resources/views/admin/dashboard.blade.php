@@ -27,8 +27,23 @@
     </div>
 
     <div class="stat-card">
+        <h4>Total Skills</h4>
+        <p>{{ $totalSkills }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h4>Total Requests</h4>
+        <p>{{ $totalRequests }}</p>
+    </div>
+
+    <div class="stat-card">
         <h4>Premium Members</h4>
         <p>{{ $totalPremium }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h4>Total Feedbacks</h4>
+        <p>{{ $totalFeedbacks }}</p>
     </div>
 
 </div>
