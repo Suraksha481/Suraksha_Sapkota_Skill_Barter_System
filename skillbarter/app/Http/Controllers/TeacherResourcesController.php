@@ -96,4 +96,32 @@ class TeacherResourcesController extends Controller
         return redirect()->route('teacher.resources.index')
             ->with('success', 'Resource deleted successfully!');
     }
+
+    /**
+     * Download a resource if the current user is allowed to view it.
+     */
+    public function download(Resource $resource)
+    {
+        $user = auth()->user();
+        $teacher = $resource->user;
+
+        // owner always allowed
+        if ($user && $user->id === $teacher->id) {
+            return response()->download(storage_path('app/public/'.$resource->file_path), $resource->filename);
+        }
+
+        // only a student with an accepted request may download
+        if ($user && $user->isStudent()) {
+            $accepted = \App\Models\RequestModel::where('responder_id', $teacher->id)
+                ->where('requester_id', $user->id)
+                ->where('status', 'accepted')
+                ->exists();
+
+            if ($accepted) {
+                return response()->download(storage_path('app/public/'.$resource->file_path), $resource->filename);
+            }
+        }
+
+        abort(403);
+    }
 }
