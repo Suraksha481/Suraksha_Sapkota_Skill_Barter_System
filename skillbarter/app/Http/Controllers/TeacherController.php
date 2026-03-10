@@ -37,8 +37,32 @@ class TeacherController extends Controller
             abort(404);
         }
 
+        // eager load skills for profile display
         $teacher->load(['userSkills.skill']);
 
-        return view('teacher.show', compact('teacher'));
+        $resources = collect();
+        $canViewResources = false;
+        $user = auth()->user();
+
+        // owner may always view their own resources
+        if ($user && $user->id === $teacher->id) {
+            $canViewResources = true;
+            $resources = $teacher->resources()->latest()->get();
+        }
+
+        // students who have an accepted request can view resources
+        if (! $canViewResources && $user && $user->isStudent()) {
+            $accepted = \App\Models\RequestModel::where('responder_id', $teacher->id)
+                ->where('requester_id', $user->id)
+                ->where('status', 'accepted')
+                ->exists();
+
+            if ($accepted) {
+                $canViewResources = true;
+                $resources = $teacher->resources()->latest()->get();
+            }
+        }
+
+        return view('teacher.show', compact('teacher', 'resources', 'canViewResources'));
     }
 }
