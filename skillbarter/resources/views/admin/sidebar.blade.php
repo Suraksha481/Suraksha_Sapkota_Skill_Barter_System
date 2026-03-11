@@ -44,6 +44,12 @@
         </li>
 
         <li>
+            <a href="{{ route('admin.requests') }}">
+                Session Requests
+            </a>
+        </li>
+
+        <li>
             <form method="POST" action="{{ route('admin.logout') }}">
                 @csrf
                 <button type="submit" class="logout-btn">

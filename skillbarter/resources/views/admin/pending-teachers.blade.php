@@ -11,13 +11,34 @@
     @if($pending->count())
     <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
         <thead>
-            <tr style="text-align:left;border-bottom:1px solid #e5e7eb"><th>Name</th><th>Email</th><th>Joined</th><th>Actions</th></tr>
+            <tr style="text-align:left;border-bottom:1px solid #e5e7eb"><th>Name</th><th>Email</th><th>Documents</th><th>Joined</th><th>Actions</th></tr>
         </thead>
         <tbody>
             @foreach($pending as $t)
                 <tr style="border-bottom:1px solid #f3f4f6">
                     <td><a href="{{ route('teachers.show', $t) }}" target="_blank">{{ $t->name }}</a></td>
                     <td>{{ $t->email }}</td>
+                    <td>
+                        @if($t->teacherProfile)
+                            @if($t->teacherProfile->bank_account)
+                                <div style="font-size: 0.85rem;"><strong>Bank:</strong> {{ $t->teacherProfile->bank_account }}</div>
+                            @endif
+                            @if($t->teacherProfile->cv_path)
+                                <div style="font-size: 0.85rem;"><a href="{{ asset('storage/' . $t->teacherProfile->cv_path) }}" target="_blank">View CV</a></div>
+                            @endif
+                            @if($t->teacherProfile->certificate_path)
+                                <div style="font-size: 0.85rem;"><a href="{{ asset('storage/' . $t->teacherProfile->certificate_path) }}" target="_blank">View Certificate</a></div>
+                            @endif
+                            @if($t->teacherProfile->citizenship_path)
+                                <div style="font-size: 0.85rem;"><a href="{{ asset('storage/' . $t->teacherProfile->citizenship_path) }}" target="_blank">View Citizenship</a></div>
+                            @endif
+                            @if(!$t->teacherProfile->bank_account && !$t->teacherProfile->cv_path && !$t->teacherProfile->certificate_path && !$t->teacherProfile->citizenship_path)
+                                <span style="font-size: 0.85rem; color: #777;">None</span>
+                            @endif
+                        @else
+                            <span style="font-size: 0.85rem; color: #777;">No Profile</span>
+                        @endif
+                    </td>
                     <td>{{ $t->created_at->format('Y-m-d') }}</td>
                     <td>
                         <form method="POST" action="{{ route('admin.teachers.approve', $t->id) }}" style="display:inline">@csrf<button>Approve</button></form>

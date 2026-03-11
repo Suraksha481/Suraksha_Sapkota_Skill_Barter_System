@@ -42,7 +42,7 @@
             <img src="{{ asset('Images/register.webp') }}" alt="Skill Barter">
         </div>
         <div class="card-right">
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                 @csrf
                 <h2>Create Account</h2>
 
@@ -83,6 +83,31 @@
                     @enderror
                 </div>
 
+                <div id="teacher_fields" style="display: none; margin-bottom: 20px; padding: 15px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
+                    <h3 style="margin-bottom: 15px; font-size: 16px; color: #333;">Teacher Verification Documents</h3>
+                    
+                    <input type="text" name="bank_account" placeholder="Bank Account Number" value="{{ old('bank_account') }}">
+                    @error('bank_account') <small class="error">{{ $message }}</small> @enderror
+
+                    <div style="margin-top: 15px;">
+                        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #555;">Upload CV (PDF, DOCX)</label>
+                        <input type="file" name="cv" accept=".pdf,.doc,.docx" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+                        @error('cv') <small class="error">{{ $message }}</small> @enderror
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #555;">Upload Certificate (PDF, Image)</label>
+                        <input type="file" name="certificate" accept=".pdf,.jpg,.jpeg,.png" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+                        @error('certificate') <small class="error">{{ $message }}</small> @enderror
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #555;">Upload Citizenship (PDF, Image)</label>
+                        <input type="file" name="citizenship" accept=".pdf,.jpg,.jpeg,.png" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+                        @error('citizenship') <small class="error">{{ $message }}</small> @enderror
+                    </div>
+                </div>
+
                 <button type="submit">Register</button>
                 <div class="links">
                     <a href="{{ route('login') }}">Already have an account?</a>
@@ -93,6 +118,28 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const studentRadio = document.querySelector('input[name="role"][value="student"]');
+        const teacherRadio = document.querySelector('input[name="role"][value="teacher"]');
+        const teacherFields = document.getElementById('teacher_fields');
+
+        function toggleTeacherFields() {
+            if (teacherRadio && teacherRadio.checked) {
+                teacherFields.style.display = 'block';
+            } else {
+                teacherFields.style.display = 'none';
+            }
+        }
+
+        if (studentRadio) studentRadio.addEventListener('change', toggleTeacherFields);
+        if (teacherRadio) teacherRadio.addEventListener('change', toggleTeacherFields);
+        
+        // Initial check on load
+        toggleTeacherFields();
+    });
+</script>
 
 </body>
 </html>

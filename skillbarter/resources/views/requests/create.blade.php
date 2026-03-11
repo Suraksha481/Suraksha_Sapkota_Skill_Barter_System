@@ -25,7 +25,7 @@
 
     <!-- Request Form -->
     <div class="skill-form-card" style="max-width: 600px;">
-        <form method="POST" action="{{ route('requests.store') }}">
+        <form method="POST" action="{{ route('requests.store') }}" onsubmit="return confirm('Are you sure you want to request this session?');">
             @csrf
             <input type="hidden" name="user_skill_id" value="{{ $userSkill->id }}">
 

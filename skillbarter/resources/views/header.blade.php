@@ -391,6 +391,11 @@
     </div>
 </div>
 
+  <!-- Messenger -->
+  <a href="{{ route('messenger.index') }}" class="notif-btn" title="Messenger">
+      💬
+  </a>
+
     <!-- Profile -->
     <div class="profile-box" id="profile-toggle">
         <div class="profile-avatar">
