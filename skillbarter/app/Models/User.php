@@ -120,6 +120,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(RequestModel::class, 'responder_id');
     }
 
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class, 'user_one_id')
+                    ->orWhere('user_two_id', clone $this->id);
+    }
+
     public function sessions()
     {
         return $this->hasMany(SessionModel::class, 'organiser_id');
