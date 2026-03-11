@@ -64,18 +64,37 @@ class AdminController extends Controller
         return back()->with('success', 'User status updated.');
     }
 
+    public function changeUserRole(\Illuminate\Http\Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->role = $request->role ?: null;
+        $user->save();
+
+        return back()->with('status', 'User role updated.');
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return back()->with('status', 'User deleted.');
+    }
+
     /**
      * Pending teachers
      */
     public function pendingTeachers()
     {
         // paginate so admin doesn't have a huge list at once
-        $pending = User::where('role', 'teacher')
+        $pending = User::with('teacherProfile')
+                        ->where('role', 'teacher')
                         ->where('is_teacher_approved', false)
                         ->latest()
                         ->paginate(15);
 
-        $all = User::where('role', 'teacher')
+        $all = User::with('teacherProfile')
+                   ->where('role', 'teacher')
                    ->latest()
                    ->paginate(25);
 
@@ -135,8 +154,16 @@ class AdminController extends Controller
      */
     public function subscriptions()
     {
-        $subscriptions = PremiumMembership::latest()->paginate(15);
-        return view('admin.subscriptions', compact('subscriptions'));
+        $subs = PremiumMembership::latest()->paginate(15);
+        $revenue = PremiumMembership::where('status', 'active')->sum('price');
+        return view('admin.subscriptions', compact('subs', 'revenue'));
+    }
+
+    public function cancelSubscription($id)
+    {
+        $sub = PremiumMembership::findOrFail($id);
+        $sub->update(['status' => 'cancelled']);
+        return back()->with('status', 'Subscription cancelled.');
     }
 
     /**
@@ -146,5 +173,31 @@ class AdminController extends Controller
     {
         $feedbacks = Feedback::latest()->paginate(15);
         return view('admin.feedbacks', compact('feedbacks'));
+    }
+
+    public function deleteFeedback($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        $feedback->delete();
+
+        return back()->with('status', 'Feedback deleted.');
+    }
+
+    /**
+     * Session Requests
+     */
+    public function requests()
+    {
+        $requests = RequestModel::with(['requester', 'responder'])->latest()->paginate(15);
+        return view('admin.requests', compact('requests'));
+    }
+
+    public function updateRequestStatus(\Illuminate\Http\Request $request, $id)
+    {
+        $req = RequestModel::findOrFail($id);
+        $req->status = $request->status;
+        $req->save();
+
+        return back()->with('status', 'Request status updated.');
     }
 }
