@@ -10,7 +10,7 @@
         <tbody>
         @foreach($users as $u)
             <tr>
-                <td style="padding:8px">{{ $u->name }}</td>
+                <td style="padding:8px"><a href="{{ route('admin.users.show', $u->id) }}" style="color: #2563eb; text-decoration: none; font-weight: 500;">{{ $u->name }}</a></td>
                 <td style="padding:8px">{{ $u->email }}</td>
                 <td style="padding:8px">{{ $u->role ?? '-' }}</td>
                 <td style="padding:8px">{{ $u->is_active ? 'Yes' : 'No' }}</td>
