@@ -16,7 +16,7 @@
         <tbody>
             @foreach($pending as $t)
                 <tr style="border-bottom:1px solid #f3f4f6">
-                    <td><a href="{{ route('teachers.show', $t) }}" target="_blank">{{ $t->name }}</a></td>
+                    <td><a href="{{ route('admin.users.show', $t->id) }}" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 500;">{{ $t->name }}</a></td>
                     <td>{{ $t->email }}</td>
                     <td>
                         @if($t->teacherProfile)
@@ -59,7 +59,7 @@
         <tbody>
             @foreach($all as $t)
                 <tr>
-                    <td style="padding:8px"><a href="{{ route('teachers.show', $t) }}" target="_blank">{{ $t->name }}</a></td>
+                    <td style="padding:8px"><a href="{{ route('admin.users.show', $t->id) }}" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 500;">{{ $t->name }}</a></td>
                     <td style="padding:8px">{{ $t->email }}</td>
                     <td style="padding:8px">{{ $t->is_teacher_approved ? 'Yes' : 'No' }}</td>
                     <td style="padding:8px">{{ $t->created_at->format('Y-m-d') }}</td>
