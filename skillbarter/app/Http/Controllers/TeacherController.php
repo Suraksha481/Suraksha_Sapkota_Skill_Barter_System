@@ -23,7 +23,13 @@ class TeacherController extends Controller
             });
         }
 
-        $teachers = $query->with('userSkills.skill')->paginate(10);
+        // Add average rating and review count
+        $teachers = $query->with('userSkills.skill')
+            ->withCount(['receivedFeedback as reviews_count' => function ($q) {
+                $q->whereNotNull('rating');
+            }])
+            ->withAvg('receivedFeedback as average_rating', 'rating')
+            ->paginate(10);
 
         // return view with teachers collection (include query string for pagination)
         return view('teacher.index', [
@@ -39,6 +45,17 @@ class TeacherController extends Controller
 
         // eager load skills for profile display
         $teacher->load(['userSkills.skill']);
+
+        // Load feedback/reviews
+        $reviews = \App\Models\Feedback::where('target_type', 'user')
+            ->where('target_id', $teacher->id)
+            ->whereNotNull('rating')
+            ->with('author')
+            ->latest()
+            ->get();
+
+        $averageRating = $reviews->avg('rating');
+        $reviewsCount = $reviews->count();
 
         $resources = collect();
         $canViewResources = false;
@@ -63,6 +80,6 @@ class TeacherController extends Controller
             }
         }
 
-        return view('teacher.show', compact('teacher', 'resources', 'canViewResources'));
+        return view('teacher.show', compact('teacher', 'resources', 'canViewResources', 'reviews', 'averageRating', 'reviewsCount'));
     }
 }
