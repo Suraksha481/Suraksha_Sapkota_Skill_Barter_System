@@ -194,4 +194,13 @@ class SessionRequestController extends Controller
 
         return view('requests.show', ['requestModel' => $requestModel]);
     }
+
+    public function classroom($id)
+    {
+
+        $session = SessionModel::with(['teacher','student','materials','assignments'])->findOrFail($id);
+
+        return view('sessions.classroom',compact('session'));
+
+    }
 }
