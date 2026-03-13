@@ -91,6 +91,32 @@
                 @enderror
             </div>
 
+            {{-- Avatar Field --}}
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #000; font-size: 14px;">
+                    Profile Picture (Avatar)
+                </label>
+                <input
+                    type="file"
+                    name="avatar"
+                    accept="image/*"
+                    style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s ease;"
+                    onmouseover="this.style.borderColor='#ccc'"
+                    onmouseout="this.style.borderColor='#e0e0e0'"
+                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0';"
+                >
+                @error('avatar')
+                    <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
+                @enderror
+                @if($user->avatar)
+                    <div style="margin-top: 10px;">
+                        <img src="{{ $user->avatar }}" alt="Current Avatar" style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #e0e0e0; object-fit: cover;">
+                        <span style="font-size: 12px; color: #666; vertical-align: middle; margin-left: 10px;">Current Avatar</span>
+                    </div>
+                @endif
+            </div>
+
             {{-- Action Buttons --}}
             <div style="display: flex; gap: 15px;">
                 <button

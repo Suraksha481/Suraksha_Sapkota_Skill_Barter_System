@@ -43,4 +43,8 @@ return [
         'redirect' => env('APPLE_REDIRECT_URI', '/auth/apple/callback'),
     ],
 
+    'khalti' => [
+        'secret_key' => env('KHALTI_SECRET_KEY', 'live_secret_key_68791341fdd94846a146f0457ff7b455'), // fallback to test key if env is missing
+    ],
+
 ];

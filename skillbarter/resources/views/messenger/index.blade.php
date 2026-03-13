@@ -358,7 +358,7 @@ html, body {
 </style>
 
 <div class="messenger-container" id="messenger-app">
-    
+
     <!-- Left Sidebar -->
     <div class="messenger-sidebar" id="messenger-sidebar">
         <div class="sidebar-header">
@@ -443,7 +443,7 @@ html, body {
     searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
         const query = this.value.trim();
-        
+
         if (query.length < 2) {
             searchResults.style.display = 'none';
             return;
@@ -481,6 +481,7 @@ html, body {
         }
     });
 
+
     function startNewChat(userId, userName, avatarUrl) {
         searchResults.style.display = 'none';
         searchInput.value = '';
@@ -492,16 +493,16 @@ html, body {
         chatHeader.style.display = 'flex';
         messagesContainer.style.display = 'flex';
         chatInputArea.style.display = 'flex';
-        
+
         document.getElementById('chat-header-name').innerText = userName;
         document.getElementById('chat-header-img').src = avatarUrl;
         messagesContainer.innerHTML = '<div class="text-center w-100 mt-4 text-muted">Send a message to start the conversation</div>';
-        
+
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
         chatInput.focus();
         hideError();
-        
+
         // Hide sidebar on mobile
         if(window.innerWidth <= 768) {
             document.getElementById('messenger-sidebar').classList.add('hidden');
@@ -509,10 +510,11 @@ html, body {
         }
     }
 
+
     function loadConversation(convId, userName, avatarUrl) {
         currentConversationId = convId;
         targetUserId = null; // We are in an existing chat
-        
+
         // Highlight active
         document.querySelectorAll('.conversation-item').forEach(el => el.classList.remove('active'));
         const item = document.querySelector(`.conversation-item[data-id="${convId}"]`);
@@ -522,14 +524,14 @@ html, body {
         chatHeader.style.display = 'flex';
         messagesContainer.style.display = 'flex';
         chatInputArea.style.display = 'flex';
-        
+
         document.getElementById('chat-header-name').innerText = userName;
         document.getElementById('chat-header-img').src = avatarUrl;
-        
+
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
         hideError();
-        
+
         fetch(`/messenger/${convId}`)
             .then(res => res.json())
             .then(data => {
@@ -539,13 +541,14 @@ html, body {
                 });
                 scrollToBottom();
             });
-            
+
         // Hide sidebar on mobile
         if(window.innerWidth <= 768) {
             document.getElementById('messenger-sidebar').classList.add('hidden');
             document.getElementById('back-to-list').style.display = 'block';
         }
     }
+
 
     // Input events
     chatInput.addEventListener('keypress', function(e) {
@@ -564,21 +567,21 @@ html, body {
 
         chatInput.disabled = true;
         chatSendBtn.disabled = true;
-        
+
         const payload = {
             body: body,
             _token: '{{ csrf_token() }}'
         };
 
-        // If inside an existing convo, we need to pass the "target_user_id" by figuring it out 
+        // If inside an existing convo, we need to pass the "target_user_id" by figuring it out
         // OR we can just change our backend so we always pass target_user_id. Let's just always pass target_user_id
         if (currentConversationId) {
             // we know the target user id from the list, or we can let backend figure it out.
             // But our backend store() method expects target_user_id.
-            // Let's attach target user id to the conversation element? 
+            // Let's attach target user id to the conversation element?
             // Better: update backend, or fetch targetUserId easily.
         }
-        
+
         // Let's find target_user_id if not set (meaning we clicked a conversation)
         // Hmm, our backend store requires target_user_id. I should define targetUserId when clicking a conversation too.
         // Let's fix that.
@@ -587,7 +590,7 @@ html, body {
         if(!actualTargetId && currentConversationId) {
             // Find the other user from the conversations list?
             // Easy fix: just send a POST to some generic endpoint or we can add data-target to the list items.
-            // Since time is short, I'll pass target_user_id as part of the backend. 
+            // Since time is short, I'll pass target_user_id as part of the backend.
         }
 
         fetch('/messenger/messages', {
@@ -607,7 +610,7 @@ html, body {
             chatInput.disabled = false;
             chatSendBtn.disabled = false;
             chatInput.focus();
-            
+
             if (res.status === 429) {
                 showError(res.body.message);
                 return;
@@ -616,18 +619,18 @@ html, body {
                 showError("An error occurred");
                 return;
             }
-            
+
             chatInput.value = '';
-            
+
             // If it was a draft new conversation, we clear the message empty state
             if(targetUserId) {
                 messagesContainer.innerHTML = '';
             }
-            
+
             // Append
             appendMessage(res.body.message);
             scrollToBottom();
-            
+
             // Update sidebar (if new chat, reload page to see it in list, or just pretend)
             if (targetUserId && !currentConversationId) {
                 window.location.reload();
@@ -635,14 +638,15 @@ html, body {
         });
     }
 
+    
     function extractTargetIdFromDom() {
         // Fallback to get target id from an existing conversation if needed for backend
         // Not ideal, let's fix backend or pass it cleanly if this was production.
         return null; // backend validation might fail if we don't pass it properly.
     }
-    
+
     // Better fix: overwrite the onclick handler to pass target_user_id
-    // Wait, in blade: data-target="{{ $otherUser->id }}"
+    // Wait, in blade: data-target="target_id_here"
     // Let's use JS hook to get it from .active element if targetUserId is null
 </script>
 
@@ -651,9 +655,9 @@ html, body {
     const originalLoad = loadConversation;
     window.loadConversation = function(convId, userName, avatarUrl, otherId) {
         originalLoad(convId, userName, avatarUrl);
-        targetUserId = otherId; 
+        targetUserId = otherId;
     }
-    
+
     // update blade rendering to include otherId
     document.querySelectorAll('.conversation-item').forEach(item => {
         // extract info somehow? I will modify the blade part above.
@@ -673,19 +677,29 @@ html, body {
         const div = document.createElement('div');
         const isSent = msg.sender_id === currentUserId;
         div.className = `message-wrapper ${isSent ? 'sent' : 'received'}`;
-        div.innerHTML = `<div class="message-bubble">${msg.body}</div>`;
+
+        if (!isSent) {
+            const avatarUrl = document.getElementById('chat-header-img').src;
+            div.innerHTML = `
+                <img src="${avatarUrl}" alt="Avatar" style="width: 28px; height: 28px; border-radius: 50%; margin-right: 8px; align-self: flex-end; background-color: #4e4f50;">
+                <div class="message-bubble">${msg.body}</div>
+            `;
+        } else {
+            div.innerHTML = `<div class="message-bubble">${msg.body}</div>`;
+        }
+
         messagesContainer.appendChild(div);
     }
-    
+
     function scrollToBottom() {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
-    
+
     function showError(msg) {
-        errorBanner.innerText = msg;
+        errorBanner.innerHTML = msg;
         errorBanner.style.display = 'block';
     }
-    
+
     function hideError() {
         errorBanner.style.display = 'none';
         errorBanner.innerText = '';

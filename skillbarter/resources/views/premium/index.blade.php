@@ -58,11 +58,11 @@
                     @endforeach
                 </ul>
 
-                <form method="POST" action="{{ route('premium.subscribe') }}">
+                <form method="POST" action="{{ route('khalti.initiate') }}">
                     @csrf
                     <input type="hidden" name="plan" value="{{ $key }}">
-                    <button type="submit" class="btn {{ $key === 'quarterly' ? 'primary' : 'ghost' }}" style="width: 100%;">
-                        {{ $isPremium ? 'Switch Plan' : 'Subscribe' }}
+                    <button type="submit" class="btn primary" style="width: 100%; border-radius: 6px; padding: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #5C2D91; color: white; border: none; cursor: pointer;">
+                        Pay with Khalti
                     </button>
                 </form>
             </div>

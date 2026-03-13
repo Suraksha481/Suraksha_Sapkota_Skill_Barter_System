@@ -54,9 +54,7 @@
                         </div>
                     @endif
 
-                    <div style="margin-top:0.5rem;display:flex;gap:0.5rem;align-items:center;">
-                        <a href="{{ route('chat.show', $request) }}" class="btn small">Open Chat</a>
-                    </div>
+
 
                     @if($request->status === 'accepted')
                         <form method="POST" action="{{ route('requests.complete', $request) }}" style="margin-top: 0.5rem;">
@@ -95,9 +93,7 @@
                         </form>
                     @endif
 
-                    <div style="margin-top:0.5rem;display:flex;gap:0.5rem;align-items:center;">
-                        <a href="{{ route('chat.show', $request) }}" class="btn small">Open Chat</a>
-                    </div>
+                    
 
                     @if($request->status === 'accepted')
                         <form method="POST" action="{{ route('requests.complete', $request) }}" style="margin-top: 0.5rem;">

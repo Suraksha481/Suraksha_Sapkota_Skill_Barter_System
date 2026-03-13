@@ -44,7 +44,7 @@
                     </form>
                 @endif
 
-                <a href="{{ route('chat.show', $requestModel) }}" class="btn">Open Chat</a>
+                
             @endcan
         </div>
     </div>

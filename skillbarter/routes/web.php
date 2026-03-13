@@ -47,11 +47,7 @@ Route::get('/teachers/{teacher}', [TeacherController::class, 'show'])->name('tea
 Route::get('/find-skill', [SkillController::class, 'index'])->name('find-skill');
 Route::get('/skill/{skill}', [SkillController::class, 'show'])->name('skill.show');
 
-Route::get('/match', function () {
-    return auth()->check()
-        ? redirect()->route('requests.index')
-        : redirect()->route('find-skill');
-})->name('match');
+Route::get('/match', [\App\Http\Controllers\MatchController::class, 'index'])->name('match');
 
 /*
 |--------------------------------------------------------------------------
@@ -257,6 +253,8 @@ if (app()->environment('local')) {
         return redirect('/');
     })->name('dev.login-as');
 }
+
+Route::get('/session/{id}/classroom',[SessionController::class,'classroom'])->name('session.classroom');
 
 /*
 |--------------------------------------------------------------------------
