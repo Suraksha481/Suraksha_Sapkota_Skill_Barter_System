@@ -17,6 +17,8 @@ class PremiumMembership extends Model
         'currency',
         'features_json',
         'billing_cycle',
+        'transaction_id',
+        'payment_method',
     ];
 
     protected $casts = [
