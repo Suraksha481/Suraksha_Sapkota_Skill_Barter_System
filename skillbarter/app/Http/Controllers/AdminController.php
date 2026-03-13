@@ -82,6 +82,15 @@ class AdminController extends Controller
     }
 
     /**
+     * Show detailed user profile
+     */
+    public function showUser($id)
+    {
+        $user = User::with(['teacherProfile', 'studentProfile', 'skillsOffered.skill', 'skillsWanted.skill'])->findOrFail($id);
+        return view('admin.user-show', compact('user'));
+    }
+
+    /**
      * Pending teachers
      */
     public function pendingTeachers()
