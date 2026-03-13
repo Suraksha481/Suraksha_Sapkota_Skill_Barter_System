@@ -32,6 +32,10 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
             'role' => 'required|in:teacher,student',
+            'bank_account' => 'required_if:role,teacher|nullable|string|max:255',
+            'cv' => 'required_if:role,teacher|nullable|file|mimes:pdf,doc,docx|max:5120',
+            'certificate' => 'required_if:role,teacher|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'citizenship' => 'required_if:role,teacher|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         // we no longer persist the user immediately; store pending data in session
@@ -41,6 +45,19 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ];
+
+        if ($request->role === 'teacher') {
+            $pending['bank_account'] = $request->bank_account;
+            if ($request->hasFile('cv')) {
+                $pending['cv_path'] = $request->file('cv')->store('pending_documents', 'public');
+            }
+            if ($request->hasFile('certificate')) {
+                $pending['certificate_path'] = $request->file('certificate')->store('pending_documents', 'public');
+            }
+            if ($request->hasFile('citizenship')) {
+                $pending['citizenship_path'] = $request->file('citizenship')->store('pending_documents', 'public');
+            }
+        }
 
         // generate a random verification code and keep it with the pending data
         $code = $this->generateVerificationCode();
