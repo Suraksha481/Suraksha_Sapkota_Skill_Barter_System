@@ -13,35 +13,36 @@ class AdminController extends Controller
     /**
      * Admin Dashboard
      */
- public function dashboard()
-{
-    $totalUsers = \App\Models\User::count();
+    public function dashboard()
+    {
+        $totalUsers = \App\Models\User::count();
+        $totalTeachers = \App\Models\User::where('role', 'teacher')->count();
+        $totalStudents = \App\Models\User::where('role', 'student')->count();
+        $totalSkills = \App\Models\Skill::count();
+        $totalRequests = \App\Models\RequestModel::count();
+        $totalSessions = \App\Models\SessionModel::count();
+        $totalPremium = \App\Models\PremiumMembership::where('status', 'active')->count();
+        $totalFeedbacks = \App\Models\Feedback::count();
 
-    $totalTeachers = \App\Models\User::where('role', 'teacher')->count();
+        // Revenue Stats
+        $totalRevenue = \App\Models\Transaction::sum('amount');
+        $adminShare = \App\Models\Transaction::sum('admin_share');
+        $teacherShare = \App\Models\Transaction::sum('teacher_share');
 
-    $totalStudents = \App\Models\User::where('role', 'student')->count();
-
-    $totalSkills = \App\Models\Skill::count();
-
-    $totalRequests = \App\Models\RequestModel::count();
-
-    $totalSessions = \App\Models\SessionModel::count();
-
-    $totalPremium = \App\Models\PremiumMembership::where('status', 'active')->count();
-
-    $totalFeedbacks = \App\Models\Feedback::count();
-
-    return view('admin.dashboard', [
-        'totalUsers' => $totalUsers,
-        'totalTeachers' => $totalTeachers,
-        'totalStudents' => $totalStudents,
-        'totalSkills' => $totalSkills,
-        'totalRequests' => $totalRequests,
-        'totalSessions' => $totalSessions,
-        'totalPremium' => $totalPremium,
-        'totalFeedbacks' => $totalFeedbacks,
-    ]);
-}
+        return view('admin.dashboard', [
+            'totalUsers' => $totalUsers,
+            'totalTeachers' => $totalTeachers,
+            'totalStudents' => $totalStudents,
+            'totalSkills' => $totalSkills,
+            'totalRequests' => $totalRequests,
+            'totalSessions' => $totalSessions,
+            'totalPremium' => $totalPremium,
+            'totalFeedbacks' => $totalFeedbacks,
+            'totalRevenue' => $totalRevenue,
+            'adminShare' => $adminShare,
+            'teacherShare' => $teacherShare,
+        ]);
+    }
 
     /**
      * Users list
@@ -163,9 +164,24 @@ class AdminController extends Controller
      */
     public function subscriptions()
     {
-        $subs = PremiumMembership::latest()->paginate(15);
-        $revenue = PremiumMembership::where('status', 'active')->sum('price');
+        $subs = PremiumMembership::with('user')->latest()->paginate(15);
+        $revenue = 0;
+        
+        // Handle missing column gracefully during migration transition
+        if (\Illuminate\Support\Facades\Schema::hasColumn('premium_memberships', 'price')) {
+            $revenue = PremiumMembership::where('status', 'active')->sum('price');
+        }
+        
         return view('admin.subscriptions', compact('subs', 'revenue'));
+    }
+
+    /**
+     * Payouts management
+     */
+    public function payouts()
+    {
+        $transactions = \App\Models\Transaction::with(['student', 'teacher'])->latest()->paginate(15);
+        return view('admin.payouts', compact('transactions'));
     }
 
     public function cancelSubscription($id)
