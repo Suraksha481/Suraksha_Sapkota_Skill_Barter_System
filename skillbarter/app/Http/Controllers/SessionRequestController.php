@@ -96,18 +96,16 @@ class SessionRequestController extends Controller
     }
 
     public function accept($requestModelId)
-{
-    $requestModel = RequestModel::findOrFail($requestModelId);
-    $user = auth()->user();
+    {
+        $requestModel = RequestModel::findOrFail($requestModelId);
+        $user = auth()->user();
 
-    // SECURITY CHECKS
-    if (!$user->canTeach()) {
-        abort(403, 'You are not authorized to accept sessions.');
-    }
-
-    if ($requestModel->responder_id !== $user->id) {
-        abort(403);
-    }
+        // SECURITY CHECKS
+        // We only check if the current user is the responder for this request.
+        // This allows students to accept "offers to teach" from teachers.
+        if ($requestModel->responder_id !== $user->id) {
+            abort(403, 'You are not authorized to accept this request.');
+        }
 
     // at creation we set status to "open" so treat open or pending as acceptable
     if (! in_array($requestModel->status, ['open', 'pending'])) {
