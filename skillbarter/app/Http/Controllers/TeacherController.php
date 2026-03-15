@@ -39,7 +39,9 @@ class TeacherController extends Controller
 
     public function show(User $teacher)
     {
-        if (! $teacher->isTeacher()) {
+        // We allow viewing any user profile that is active, 
+        // especially for matching purposes between teachers and students.
+        if (!$teacher->is_active) {
             abort(404);
         }
 
