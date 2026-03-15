@@ -23,14 +23,15 @@ class RequestDeclined extends Notification
 
     public function toArray($notifiable)
     {
-        $teacher = $this->requestModel->responder->name;
+        $userName = $this->requestModel->responder->name;
         $skill = $this->requestModel->userSkill->skill->title ?? '';
+        $type = $this->requestModel->userSkill->type === 'offer' ? 'offer' : 'request';
 
         return [
             'type' => 'request_declined',
             'request_id' => $this->requestModel->id,
             'by_user_id' => $this->requestModel->responder_id,
-            'message' => "{$teacher} declined your request for {$skill}.",
+            'message' => "{$userName} declined your {$type} for {$skill}.",
             'url' => route('requests.show', $this->requestModel->id),
         ];
     }
