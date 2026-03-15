@@ -24,7 +24,7 @@ class PremiumController extends Controller
         $plans = [
             'monthly' => [
                 'name' => 'Monthly',
-                'price' => 9.99,
+                'price' => 1000,
                 'duration' => '1 month',
                 'features' => [
                     'Unlimited skill requests',
@@ -36,7 +36,7 @@ class PremiumController extends Controller
             ],
             'quarterly' => [
                 'name' => 'Quarterly',
-                'price' => 24.99,
+                'price' => 2500,
                 'duration' => '3 months',
                 'savings' => '17%',
                 'features' => [
@@ -47,7 +47,7 @@ class PremiumController extends Controller
             ],
             'yearly' => [
                 'name' => 'Yearly',
-                'price' => 79.99,
+                'price' => 8000,
                 'duration' => '12 months',
                 'savings' => '33%',
                 'features' => [
