@@ -4,7 +4,7 @@
     <h1>Subscriptions</h1>
     @if(session('status'))<div class="alert">{{ session('status') }}</div>@endif
 
-    <div style="margin-bottom:1rem">Active revenue: <strong>{{ money_format('%.2n', $revenue ?? 0) ?? $revenue }}</strong></div>
+    <div style="margin-bottom:1rem">Active revenue: <strong>NPR {{ number_format($revenue ?? 0, 2) }}</strong></div>
 
     <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
         <thead style="background:#f8fafc"><tr><th style="padding:8px">ID</th><th style="padding:8px">User</th><th style="padding:8px">Plan</th><th style="padding:8px">Price</th><th style="padding:8px">Status</th><th style="padding:8px">Actions</th></tr></thead>
