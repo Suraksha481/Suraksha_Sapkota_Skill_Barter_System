@@ -86,8 +86,8 @@
                 <div id="teacher_fields" style="display: none; margin-bottom: 20px; padding: 15px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
                     <h3 style="margin-bottom: 15px; font-size: 16px; color: #333;">Teacher Verification Documents</h3>
                     
-                    <input type="text" name="bank_account" placeholder="Bank Account Number" value="{{ old('bank_account') }}">
-                    @error('bank_account') <small class="error">{{ $message }}</small> @enderror
+                    <input type="text" name="khalti_id" placeholder="Khalti ID (Phone Number)" value="{{ old('khalti_id') }}">
+                    @error('khalti_id') <small class="error">{{ $message }}</small> @enderror
 
                     <div style="margin-top: 15px;">
                         <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #555;">Upload CV (PDF, DOCX)</label>
