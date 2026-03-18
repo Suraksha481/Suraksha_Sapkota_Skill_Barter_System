@@ -36,6 +36,11 @@
                 Subscriptions
             </a>
         </li>
+        <li>
+            <a href="{{ route('admin.payouts') }}">
+                Payouts
+            </a>
+        </li>
 
         <li>
             <a href="{{ route('admin.feedbacks') }}">
