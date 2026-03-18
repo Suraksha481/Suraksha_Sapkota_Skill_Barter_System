@@ -41,11 +41,20 @@
         <p>{{ $totalPremium }}</p>
     </div>
 
-    <div class="stat-card">
-        <h4>Total Feedbacks</h4>
-        <p>{{ $totalFeedbacks }}</p>
+    <div class="stat-card" style="background: #2ecc71; color: white;">
+        <h4>Platform Revenue</h4>
+        <p>NPR {{ number_format($totalRevenue, 2) }}</p>
     </div>
 
+    <div class="stat-card" style="background: #3498db; color: white;">
+        <h4>Admin Share (50%)</h4>
+        <p>NPR {{ number_format($adminShare, 2) }}</p>
+    </div>
+
+    <div class="stat-card" style="background: #f1c40f; color: white;">
+        <h4>Teacher Payouts (50%)</h4>
+        <p>NPR {{ number_format($teacherShare, 2) }}</p>
+    </div>
 </div>
 
 @endsection
