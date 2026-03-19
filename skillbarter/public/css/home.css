@@ -79,8 +79,7 @@
 }
 
 .main-nav ul li a:hover {
-  color: #e8bce0;
-
+  text-decoration: none !important;
 }
 
 .hero-buttons .btn.ghost {
@@ -128,7 +127,7 @@
 }
 
 .search-hero button:hover {
-  background: #333333;
+  opacity: 1 !important;
 }
 
 /* BUTTONS */
@@ -161,11 +160,11 @@
 }
 
 .btn.primary:hover {
-  transform: scale(1.05);
+  text-decoration: none !important;
 }
 
 .ghost:hover {
-  transform: scale(1.05);
+  text-decoration: none !important;
 }
 
 .user-profile {
@@ -224,8 +223,8 @@
 
 .user-profile .dropdown ul li a:hover,
 .user-profile .dropdown ul li button:hover {
-  background-color: #f5f5f5;
-  color: #000000;
+  background-color: transparent !important;
+  text-decoration: none !important;
 }
 
 
@@ -322,8 +321,8 @@
 }
 
 .step:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 6px 20px rgba(51, 49, 54, 0.2);
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* POPULAR SKILLS */
@@ -376,8 +375,8 @@
 }
 
 .skill:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 6px 20px rgba(51, 49, 54, 0.2);
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 
@@ -426,8 +425,8 @@
 }
 
 .testimonial-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 6px 20px rgba(51, 49, 54, 0.2);
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* ---------- CTA BANNER ---------- */
@@ -443,10 +442,12 @@
 .service-cta h3 {
   font-size: 28px;
   margin-bottom: 15px;
+  color: #ffffff !important;
 }
 
 .service-cta p.muted {
-  color: #f0e5ff;
+  color: #ffffff !important;
+  opacity: 0.9;
   margin-bottom: 25px;
 }
 
@@ -506,7 +507,7 @@ footer p {
 }
 
 .footer-links a:hover {
-  color: #efb8e3;
+  text-decoration: none !important;
 }
 
 .footer-bottom {

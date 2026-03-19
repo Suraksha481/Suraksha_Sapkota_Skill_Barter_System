@@ -116,13 +116,13 @@ p {
 
 a {
     color: var(--primary-black);
-    text-decoration: none;
+    text-decoration: none !important;
     transition: all 0.3s ease;
 }
 
 a:hover {
     color: var(--gray-600);
-    text-decoration: underline;
+    text-decoration: none !important;
 }
 
 /* ============================================
@@ -136,12 +136,15 @@ a:hover {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none !important;
     display: inline-block;
     text-align: center;
-    text-decoration: none;
+    text-decoration: none !important;
     outline: none;
+    box-shadow: none !important;
 }
+
+
 
 /* PRIMARY BUTTON - Brownish */
 .btn.primary {
@@ -150,17 +153,8 @@ a:hover {
     border: 2px solid var(--primary-main);
 }
 
-.btn.primary:hover {
-    background-color: var(--primary-dark);
-    border-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(173, 125, 82, 0.3);
-}
 
-.btn.primary:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+
 
 /* SECONDARY BUTTON - White with Black Border */
 .btn.secondary {
@@ -169,11 +163,7 @@ a:hover {
     border: 2px solid var(--primary-black);
 }
 
-.btn.secondary:hover {
-    background-color: var(--gray-100);
-    border-color: var(--gray-600);
-    color: var(--gray-600);
-}
+
 
 /* GHOST BUTTON - Transparent with Admin Color */
 .btn.ghost {
@@ -182,10 +172,7 @@ a:hover {
     border: 2px solid var(--primary-main);
 }
 
-.btn.ghost:hover {
-    background-color: var(--gray-100);
-    border-color: var(--primary-main);
-}
+
 
 /* DANGER BUTTON - Red for delete/cancel */
 .btn.danger {
@@ -194,11 +181,7 @@ a:hover {
     border: 2px solid var(--error);
 }
 
-.btn.danger:hover {
-    background-color: #b71c1c;
-    border-color: #b71c1c;
-    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
-}
+
 
 /* SUCCESS BUTTON - Green */
 .btn.success {
@@ -207,11 +190,7 @@ a:hover {
     border: 2px solid var(--success);
 }
 
-.btn.success:hover {
-    background-color: #1b5e20;
-    border-color: #1b5e20;
-    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
-}
+
 
 /* BUTTON SIZES */
 .btn.small {
@@ -611,6 +590,17 @@ footer a:hover {
     .grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* HIGH CONTRAST VISIBILITY FIXES */
+.service-cta, .find-skill-hero, .rewards-header, .bg-black, .hero {
+    color: #ffffff !important;
+}
+.service-cta h1, .service-cta h2, .service-cta h3, .service-cta p,
+.find-skill-hero h1, .find-skill-hero p,
+.rewards-header h1, .rewards-header h2, .rewards-header p, .rewards-header h3,
+.hero h1, .hero p, .hero span {
+    color: #ffffff !important;
 }
 
 @media (max-width: 480px) {

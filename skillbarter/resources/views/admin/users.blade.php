@@ -44,5 +44,3 @@
 
     <div style="margin-top:1rem">{{ $users->links() }}</div>
 @endsection
-
-@endsection

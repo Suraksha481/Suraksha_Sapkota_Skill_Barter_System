@@ -84,9 +84,7 @@ body {
 .admin-sidebar .admin-menu li a:hover,
 .admin-sidebar .admin-menu li a.active,
 .admin-sidebar .admin-menu li .logout-btn:hover {
-    background: var(--primary-light);
-    /* Dark Gray */
-    color: #ffffff;
+    text-decoration: none !important;
 }
 
 .admin-main {

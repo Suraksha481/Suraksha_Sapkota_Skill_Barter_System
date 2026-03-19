@@ -138,8 +138,9 @@ body {
 
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+    transform: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 
@@ -176,8 +177,7 @@ body {
 }
 
 .info-item a:hover {
-    color: #1a1a1a;
-    text-decoration: underline;
+    text-decoration: none !important;
 }
 
 /* ========== SOCIAL LINKS ========== */
@@ -200,10 +200,9 @@ body {
 }
 
 .social-links a:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.35);
-    text-decoration: none;
-    color: white;
+    transform: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 /* ========== ALERT MESSAGES ========== */
@@ -280,8 +279,8 @@ body {
 }
 
 .faq-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: none !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
 }
 
 .faq-item h4 {

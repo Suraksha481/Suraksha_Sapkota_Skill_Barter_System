@@ -29,5 +29,3 @@
 
     <div style="margin-top:1rem">{{ $feedbacks->links() }}</div>
 @endsection
-
-@endsection

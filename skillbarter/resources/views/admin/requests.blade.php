@@ -34,5 +34,3 @@
 
     <div style="margin-top:1rem">{{ $requests->links() }}</div>
 @endsection
-
-@endsection

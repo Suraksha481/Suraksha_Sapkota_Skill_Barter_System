@@ -33,4 +33,3 @@
     <div style="margin-top:1rem">{{ $subs->links() }}</div>
 @endsection
 
-@endsection

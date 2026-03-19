@@ -77,10 +77,6 @@ body {
     box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
 }
 
-.card-right input:hover {
-    border-color: #999999;
-}
-
 .card-right button {
     width: 100%;
     padding: 12px;
@@ -96,14 +92,11 @@ body {
 }
 
 .card-right button:hover {
-    background-color: #333333;
-    border-color: #333333;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 1 !important;
 }
 
 .card-right button:active {
-    transform: translateY(0);
+    transform: none !important;
 }
 
 .links {
@@ -119,7 +112,7 @@ body {
 }
 
 .links a:hover {
-    color: #666666;
+    text-decoration: none !important;
 }
 
 .error {
