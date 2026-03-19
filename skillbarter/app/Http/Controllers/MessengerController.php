@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Events\MessageSent;
 
 class MessengerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
         $conversations = Conversation::where('user_one_id', $user->id)
@@ -18,7 +19,9 @@ class MessengerController extends Controller
             ->latest('updated_at')
             ->get();
 
-        return view('messenger.index', compact('conversations', 'user'));
+        $target_user_id = $request->get('user');
+
+        return view('messenger.index', compact('conversations', 'user', 'target_user_id'));
     }
 
     public function show(Conversation $conversation)
@@ -97,7 +100,19 @@ class MessengerController extends Controller
             if ($recentMessagesCount >= 5) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'You have reached your limit of 5 messages per week. <a href="' . route('premium.index') . '" style="color: #fff; text-decoration: underline; font-weight: bold;">Upgrade to Premium for unlimited chats!</a>',
+                    'message' => 'You have reached your limit of 5 messages per week. <a href="' . route('premium.index', ['ref' => $targetId]) . '" style="color: #fff; text-decoration: underline; font-weight: bold;">Upgrade to Premium for more chats!</a>',
+                ], 429);
+            }
+        } else {
+            $monthlyMessagesCount = Message::where('sender_id', $user->id)
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count();
+                
+            if ($monthlyMessagesCount >= 100) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You have reached your Premium limit of 100 messages per month.',
                 ], 429);
             }
         }
@@ -118,6 +133,8 @@ class MessengerController extends Controller
         ]);
 
         $conversation->touch(); // Update updated_at for sorting
+
+        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json([
             'status' => 'ok',

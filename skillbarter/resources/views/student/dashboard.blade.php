@@ -34,16 +34,22 @@
     </div>
 
     <!-- LEARNING SKILLS -->
-    <div class="dashboard-section">
-        <h2>Skills I'm Learning</h2>
-        <div class="skills-box">
+    <div class="dashboard-section" style="margin-top: 3rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem;">Skills I'm Learning</h2>
+        <div class="skills-box" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
             @forelse($learningSkills as $userSkill)
-                <div class="skill-card">
-                    <h4>{{ $userSkill->skill->title ?? 'Untitled' }}</h4>
-                    <p>{{ $userSkill->skill->description ?? '' }}</p>
+                <div class="skill-card" style="background: #fff; border: 2px solid #000; padding: 25px; border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                    <h4 style="margin: 0 0 10px 0; font-size: 1.2rem; font-weight: 800; text-transform: uppercase;">{{ $userSkill->skill->title ?? 'Untitled Skill' }}</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.6;">{{ $userSkill->skill->description ?? 'No description provided.' }}</p>
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f0f0f0;">
+                         <span style="font-size: 11px; font-weight: bold; background: #000; color: #fff; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;">LEARNING</span>
+                    </div>
                 </div>
             @empty
-                <p class="empty">You haven't selected any skills to learn yet. <a href="{{ route('my.skills') }}">Add skills</a></p>
+                <div style="grid-column: 1/-1; padding: 40px; background: #fff; border: 1px dashed #ccc; border-radius: 12px; text-align: center;">
+                    <p style="color: #666; font-style: italic;">You haven't selected any skills to learn yet.</p>
+                    <a href="{{ route('my.skills') }}" class="btn primary" style="margin-top: 1rem;">Add skills</a>
+                </div>
             @endforelse
         </div>
     </div>

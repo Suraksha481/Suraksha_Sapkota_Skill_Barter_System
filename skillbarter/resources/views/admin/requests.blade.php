@@ -1,9 +1,10 @@
 @extends('admin.layout')
 
+@section('title', 'Session Requests')
+@section('subtitle', 'Monitor and manage session interactions between users')
+
 @section('content')
-<section class="container">
-    <h1>Session Requests</h1>
-    @if(session('status'))<div class="alert">{{ session('status') }}</div>@endif
+    @if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
 
     <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
         <thead style="background:#f8fafc"><tr><th style="padding:8px">ID</th><th style="padding:8px">Requester</th><th style="padding:8px">Responder</th><th style="padding:8px">Status</th><th style="padding:8px">Actions</th></tr></thead>
@@ -32,6 +33,6 @@
     </table>
 
     <div style="margin-top:1rem">{{ $requests->links() }}</div>
-</section>
+@endsection
 
 @endsection

@@ -16,6 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'role',
         'is_active',
@@ -149,6 +150,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function feedbackGiven()
     {
         return $this->hasMany(Feedback::class, 'author_id');
+    }
+
+    public function receivedFeedback()
+    {
+        return $this->morphMany(Feedback::class, 'target');
     }
 
     public function teacherProfile()

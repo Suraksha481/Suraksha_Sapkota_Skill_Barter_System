@@ -43,24 +43,59 @@
     </div>
 
     <div class="dashboard-section">
-        <h2>Offered Skills</h2>
+        <h2>{{ $teacher->isTeacher() ? 'Offered Skills (Teaching)' : 'Requested Skills (Learning)' }}</h2>
         <div class="skills-grid">
-            @forelse($teacher->userSkills as $us)
+            @forelse($teacher->userSkills()->where('type', $teacher->isTeacher() ? 'offer' : 'request')->get() as $us)
                 <div class="skill-card">
                     <h4>{{ $us->skill->title ?? 'Skill' }}</h4>
                     <p>{{ Str::limit($us->skill->description ?? '', 100) }}</p>
                     <p><strong>Level:</strong> {{ ucfirst($us->level ?? 'N/A') }}</p>
                     @auth
-                        <a href="{{ route('requests.create', $us) }}" class="btn primary">Request this Teacher</a>
+                        <a href="{{ route('requests.create', $us) }}" class="btn primary">
+                            {{ $teacher->isTeacher() ? 'Request this Teacher' : 'Offer to Teach' }}
+                        </a>
                     @else
-                        <a href="{{ route('register') }}" class="btn primary">Sign up to Request</a>
+                        <a href="{{ route('register') }}" class="btn primary">Sign up to Interact</a>
                     @endauth
                 </div>
             @empty
-                <p class="empty">This teacher has not listed any skills.</p>
+                <p class="empty">This user has not listed any skills for this section.</p>
             @endforelse
         </div>
     </div>
+
+    @if($teacher->isTeacher() && $teacher->userSkills()->where('type', 'request')->exists())
+        <div class="dashboard-section">
+            <h2>Also Wants to Learn</h2>
+            <div class="skills-grid">
+                @foreach($teacher->userSkills()->where('type', 'request')->get() as $us)
+                    <div class="skill-card">
+                        <h4>{{ $us->skill->title ?? 'Skill' }}</h4>
+                        <p>{{ Str::limit($us->skill->description ?? '', 100) }}</p>
+                        <p><strong>Level:</strong> {{ ucfirst($us->level ?? 'N/A') }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    @if($teacher->isStudent() && $teacher->userSkills()->where('type', 'offer')->exists())
+        <div class="dashboard-section">
+            <h2>Also Offers to Teach</h2>
+            <div class="skills-grid">
+                @foreach($teacher->userSkills()->where('type', 'offer')->get() as $us)
+                    <div class="skill-card">
+                        <h4>{{ $us->skill->title ?? 'Skill' }}</h4>
+                        <p>{{ Str::limit($us->skill->description ?? '', 100) }}</p>
+                        <p><strong>Level:</strong> {{ ucfirst($us->level ?? 'N/A') }}</p>
+                        @auth
+                            <a href="{{ route('requests.create', $us) }}" class="btn primary">Request this Skill</a>
+                        @endauth
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
 
     @if(isset($canViewResources) && $canViewResources)
         <div class="dashboard-section">

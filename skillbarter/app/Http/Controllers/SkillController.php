@@ -57,6 +57,13 @@ class SkillController extends Controller
             ->with('userSkills.skill')
             ->get();
 
-        return view('skill-detail', compact('skill','teachers'));
+        $isAdded = false;
+        if (auth()->check()) {
+            $isAdded = auth()->user()->userSkills()
+                ->where('skill_id', $skill->id)
+                ->exists();
+        }
+
+        return view('skill-detail', compact('skill','teachers', 'isAdded'));
     }
 }

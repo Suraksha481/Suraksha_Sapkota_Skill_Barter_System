@@ -1,8 +1,9 @@
 @extends('admin.layout')
+@section('title', 'System Subscriptions')
+@section('subtitle', 'Monitor active plans and platform revenue')
+
 @section('content')
-<section class="container">
-    <h1>Subscriptions</h1>
-    @if(session('status'))<div class="alert">{{ session('status') }}</div>@endif
+    @if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
 
     <div style="margin-bottom:1rem">Active revenue: <strong>NPR {{ number_format($revenue ?? 0, 2) }}</strong></div>
 
@@ -30,6 +31,6 @@
     </table>
 
     <div style="margin-top:1rem">{{ $subs->links() }}</div>
-</section>
+@endsection
 
 @endsection

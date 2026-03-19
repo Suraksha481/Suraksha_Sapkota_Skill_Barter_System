@@ -16,12 +16,8 @@ return new class extends Migration
 
             $table->dateTime('end_time')->nullable();
 
-            $table->enum('status',[
-                'scheduled',
-                'live',
-                'completed',
-                'cancelled'
-            ])->default('scheduled');
+            // We remove the status column here because the 'sessions' table already has a 'status' string column.
+            // When inserting a session, we'll explicitly pass 'status' => 'scheduled'.
 
         });
     }

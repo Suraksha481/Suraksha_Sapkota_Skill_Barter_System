@@ -10,14 +10,16 @@ class SessionModel extends Model
     protected $table = 'sessions';
     protected $fillable = [
 
-        'teacher_id',
-        'student_id',
+        'organiser_id',
+        'participant_id',
         'skill_id',
+        'request_id',
 
         'start_time',
         'end_time',
 
         'meeting_link',
+        'is_live',
 
         'status'
 
@@ -26,11 +28,11 @@ class SessionModel extends Model
     public function organiser() { return $this->belongsTo(User::class,'organiser_id'); }
 
     public function teacher(){
-        return $this->belongsTo(User::class,'teacher_id');
+        return $this->belongsTo(User::class,'organiser_id');
     }
 
     public function student(){
-        return $this->belongsTo(User::class,'student_id');
+        return $this->belongsTo(User::class,'participant_id');
     }
 
     public function materials(){
@@ -40,5 +42,12 @@ class SessionModel extends Model
     public function assignments(){
         return $this->hasMany(SessionAssignment::class,'session_id');
     }
-    
+
+    public function skill(){
+        return $this->belongsTo(Skill::class, 'skill_id');
+    }
+
+    public function request(){
+        return $this->belongsTo(RequestModel::class, 'request_id');
+    }
 }

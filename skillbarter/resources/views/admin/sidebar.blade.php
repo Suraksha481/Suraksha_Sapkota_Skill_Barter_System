@@ -30,6 +30,11 @@
                 Skills
             </a>
         </li>
+        <li>
+            <a href="{{ route('admin.services') }}">
+                Services
+            </a>
+        </li>
 
         <li>
             <a href="{{ route('admin.subscriptions') }}">

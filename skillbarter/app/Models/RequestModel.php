@@ -13,4 +13,5 @@ class RequestModel extends Model
     public function requester() { return $this->belongsTo(User::class,'requester_id'); }
     public function responder() { return $this->belongsTo(User::class,'responder_id'); }
     public function userSkill() { return $this->belongsTo(UserSkill::class,'user_skill_id'); }
+    public function sessions() { return $this->hasMany(SessionModel::class, 'request_id'); }
 }

@@ -18,7 +18,12 @@
     <div class="admin-main">
 
         <div class="admin-topbar">
-            <h2>@yield('title')</h2>
+            <div class="topbar-left">
+                <h2 class="page-title">@yield('title')</h2>
+                @hasSection('subtitle')
+                    <p class="page-subtitle">@yield('subtitle')</p>
+                @endif
+            </div>
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
                 <button class="btn-danger">Logout</button>

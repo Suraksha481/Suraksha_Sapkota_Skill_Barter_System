@@ -15,7 +15,7 @@ class TeacherProfile extends Model
         'experience_years',
         'teaching_style',
         'rating',
-        'bank_account',
+        'khalti_id',
         'cv_path',
         'certificate_path',
         'citizenship_path',

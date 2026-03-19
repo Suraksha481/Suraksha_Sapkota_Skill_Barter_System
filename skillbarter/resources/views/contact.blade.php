@@ -1,5 +1,7 @@
 @extends('app')
 
+@section('page_title', 'Contact')
+
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('css/contact.css') }}">

@@ -33,7 +33,7 @@ class ChatController extends Controller
 
         $data = $request->validate(['body' => 'required|string|max:2000']);
 
-        // Enforce free message limit for non-premium users
+        // Enforce limits
         if (! $user->isPremium()) {
             $limit = (int) config('chat.free_messages_per_day', 50);
             $sentToday = Message::where('sender_id', $user->id)
@@ -41,9 +41,22 @@ class ChatController extends Controller
                 ->count();
 
             if ($sentToday >= $limit) {
+                $targetId = $requestModel->responder_id === $user->id ? $requestModel->requester_id : $requestModel->responder_id;
                 return response()->json([
                     'status' => 'error',
-                    'message' => config('chat.limit_reached_message'),
+                    'message' => config('chat.limit_reached_message', 'You have reached your daily message limit. <a href="' . route('premium.index', ['ref' => $targetId]) . '" style="color: blue; text-decoration: underline;">Upgrade to Premium</a>'),
+                ], 429);
+            }
+        } else {
+            $monthlyMessagesCount = Message::where('sender_id', $user->id)
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count();
+                
+            if ($monthlyMessagesCount >= 100) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You have reached your Premium limit of 100 messages per month.',
                 ], 429);
             }
         }

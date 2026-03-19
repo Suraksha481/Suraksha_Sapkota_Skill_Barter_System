@@ -1,9 +1,10 @@
 @extends('admin.layout')
 
+@section('title', 'User Feedbacks')
+@section('subtitle', 'View and manage user-submitted feedback and ratings')
+
 @section('content')
-<section class="container">
-    <h1>Feedbacks</h1>
-    @if(session('status'))<div class="alert">{{ session('status') }}</div>@endif
+    @if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
 
     <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
         <thead style="background:#f8fafc"><tr><th style="padding:8px">ID</th><th style="padding:8px">Author</th><th style="padding:8px">Target</th><th style="padding:8px">Comment</th><th style="padding:8px">Actions</th></tr></thead>
@@ -27,6 +28,6 @@
     </table>
 
     <div style="margin-top:1rem">{{ $feedbacks->links() }}</div>
-</section>
+@endsection
 
 @endsection

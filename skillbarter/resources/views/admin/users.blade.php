@@ -1,9 +1,10 @@
 @extends('admin.layout')
 
+@section('title', 'User Management')
+@section('subtitle', 'Manage platform users, roles, and account status')
+
 @section('content')
-<section class="container">
-    <h1>Users</h1>
-    @if(session('status'))<div class="alert">{{ session('status') }}</div>@endif
+    @if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
 
     <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
         <thead style="background:#f8fafc"><tr><th style="padding:8px">Name</th><th style="padding:8px">Email</th><th style="padding:8px">Role</th><th style="padding:8px">Active</th><th style="padding:8px">Actions</th></tr></thead>
@@ -42,6 +43,6 @@
     </table>
 
     <div style="margin-top:1rem">{{ $users->links() }}</div>
-</section>
+@endsection
 
 @endsection

@@ -30,7 +30,8 @@ use App\Http\Controllers\{
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/service', [PageController::class, 'service'])->name('service');
-Route::get('/blogs', [PageController::class, 'blogs'])->name('blogs');
+Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('privacy-policy');
+
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
@@ -121,12 +122,14 @@ Route::middleware(['auth'])->group(function () {
     */
 
     Route::get('/requests', [SessionRequestController::class, 'index'])->name('requests.index');
+    Route::get('/sessions', [SessionRequestController::class, 'sessions'])->name('sessions.index');
     Route::get('/requests/new/{userSkill}', [SessionRequestController::class, 'create'])->name('requests.create');
     Route::post('/requests', [SessionRequestController::class, 'store'])->name('requests.store');
 
     Route::get('/requests/{requestModel}', [SessionRequestController::class, 'show'])->name('requests.show');
 
     Route::post('/requests/{requestModel}/accept', [SessionRequestController::class, 'accept'])->name('requests.accept');
+    Route::post('/requests/{requestModel}/schedule', [SessionRequestController::class, 'schedule'])->name('requests.schedule');
     Route::post('/requests/{requestModel}/decline', [SessionRequestController::class, 'decline'])->name('requests.decline');
     Route::post('/requests/{requestModel}/complete', [SessionRequestController::class, 'complete'])->name('requests.complete');
     Route::post('/requests/{requestModel}/cancel', [SessionRequestController::class, 'cancel'])->name('requests.cancel');
@@ -254,8 +257,14 @@ if (app()->environment('local')) {
     })->name('dev.login-as');
 }
 
-Route::get('/session/{id}/classroom',[SessionController::class,'classroom'])->name('session.classroom');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/session/{session}/classroom', [SessionRequestController::class, 'classroom'])->name('session.classroom');
+    Route::post('/session/{session}/link', [SessionRequestController::class, 'updateLink'])->name('session.update-link');
+    Route::post('/session/{session}/material', [SessionRequestController::class, 'uploadMaterial'])->name('session.upload-material');
+    Route::post('/session/{session}/practice', [SessionRequestController::class, 'submitPractice'])->name('session.submit-practice');
+    Route::post('/session/{session}/complete', [SessionRequestController::class, 'completeSession'])->name('session.complete-session');
+    Route::post('/session/{session}/toggle-live', [SessionRequestController::class, 'toggleLive'])->name('session.toggle-live');
+});
 /*
 |--------------------------------------------------------------------------
 | ADMIN ROUTES
@@ -287,11 +296,18 @@ Route::prefix('admin')->group(function () {
         Route::get('/subscriptions', [\App\Http\Controllers\AdminController::class, 'subscriptions'])->name('admin.subscriptions');
         Route::post('/subscriptions/{id}/cancel', [\App\Http\Controllers\AdminController::class, 'cancelSubscription'])->name('admin.subscriptions.cancel');
 
+        Route::get('/payouts', [\App\Http\Controllers\AdminController::class, 'payouts'])->name('admin.payouts');
+        Route::post('/payouts/{id}/pay', [\App\Http\Controllers\AdminController::class, 'markPayoutPaid'])->name('admin.payouts.pay');
+
         Route::get('/feedbacks', [\App\Http\Controllers\AdminController::class, 'feedbacks'])->name('admin.feedbacks');
         Route::delete('/feedbacks/{id}', [\App\Http\Controllers\AdminController::class, 'deleteFeedback'])->name('admin.feedbacks.delete');
 
         Route::get('/requests', [\App\Http\Controllers\AdminController::class, 'requests'])->name('admin.requests');
         Route::post('/requests/{id}/status', [\App\Http\Controllers\AdminController::class, 'updateRequestStatus'])->name('admin.requests.update-status');
+
+        Route::get('/services', [\App\Http\Controllers\AdminController::class, 'services'])->name('admin.services');
+        Route::post('/services', [\App\Http\Controllers\AdminController::class, 'storeService'])->name('admin.services.store');
+        Route::delete('/services/{id}', [\App\Http\Controllers\AdminController::class, 'deleteService'])->name('admin.services.delete');
 
     });
 });

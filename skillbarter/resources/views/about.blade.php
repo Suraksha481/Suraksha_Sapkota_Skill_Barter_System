@@ -1,5 +1,7 @@
 @extends('app')
 
+@section('page_title', 'About')
+
 @section('content')
 
 

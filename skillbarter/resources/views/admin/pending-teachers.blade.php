@@ -1,10 +1,9 @@
 @extends('admin.layout')
 
 @section('title', 'Teacher Approvals')
-@section('page-title', 'Teacher Approvals')
+@section('subtitle', 'Review and approve new teacher applications')
 
 @section('content')
-    <p>The tables below show all teacher accounts on the system. Use the approve buttons for new applicants and the unapprove links to revoke access.</p>
 
     {{-- pending teachers first --}}
     <h2 style="margin-top:1.5rem;font-size:1.25rem;">Pending Approvals</h2>

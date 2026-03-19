@@ -184,6 +184,13 @@ class AdminController extends Controller
         return view('admin.payouts', compact('transactions'));
     }
 
+    public function markPayoutPaid($id)
+    {
+        $transaction = \App\Models\Transaction::findOrFail($id);
+        $transaction->update(['status' => 'paid_to_teacher']);
+        return back()->with('success', 'Payout marked as paid to teacher.');
+    }
+
     public function cancelSubscription($id)
     {
         $sub = PremiumMembership::findOrFail($id);
@@ -224,5 +231,33 @@ class AdminController extends Controller
         $req->save();
 
         return back()->with('status', 'Request status updated.');
+    }
+
+    /**
+     * Services management
+     */
+    public function services()
+    {
+        $services = \App\Models\Service::latest()->paginate(10);
+        return view('admin.services', compact('services'));
+    }
+
+    public function storeService(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
+        ]);
+
+        \App\Models\Service::create($request->only(['title', 'description', 'category']));
+
+        return back()->with('success', 'Service added successfully.');
+    }
+
+    public function deleteService($id)
+    {
+        \App\Models\Service::findOrFail($id)->delete();
+        return back()->with('success', 'Service deleted successfully.');
     }
 }

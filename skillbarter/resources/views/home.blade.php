@@ -1,5 +1,7 @@
 @extends('app')
 
+@section('page_title', 'Home')
+
 @section('content')
 
 <!-- HERO -->
@@ -22,6 +24,175 @@
              alt="Students sharing skills">
     </div>
 </section>
+
+@auth
+    @if(auth()->user()->isStudent())
+        <!-- STUDENT PREMIUM DASHBOARD -->
+        <section class="role-dashboard student-dashboard premium-theme">
+            <div class="container">
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-8">
+                        <h2 class="display-5 fw-bold">Welcome back, <span class="text-primary">{{ auth()->user()->name }}</span>!</h2>
+                        <p class="lead text-muted">Continue mastering your skills and unlocking your potential.</p>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-lg-7">
+                        <div class="dashboard-card main-card">
+                            <div class="card-header-premium">
+                                <h3>📚 Enrolled Skills</h3>
+                                <a href="{{ route('find-skill') }}" class="btn-link">Browse more</a>
+                            </div>
+                            <div class="card-list">
+                                @forelse($enrolledSkills as $skill)
+                                    <div class="list-item-premium">
+                                        <div class="skill-main">
+                                            <div class="skill-icon">✨</div>
+                                            <div class="skill-text">
+                                                <span class="skill-title-text">{{ $skill->title }}</span>
+                                                <small class="text-muted">{{ $skill->category }}</small>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('student.skill-progress', $skill->id) }}" class="btn btn-outline-dark btn-sm rounded-pill">View Path</a>
+                                    </div>
+                                @empty
+                                    <div class="empty-state-card">
+                                        <p>You haven't enrolled in any skills yet.</p>
+                                        <a href="{{ route('find-skill') }}" class="btn btn-primary px-4 rounded-pill">Explore Skills</a>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="dashboard-card side-card">
+                            <div class="card-header-premium">
+                                <h3>🔔 Recent Status</h3>
+                            </div>
+                            <div class="card-list">
+                                @forelse($recentRequests as $req)
+                                    <div class="list-item-premium">
+                                        <div class="skill-text">
+                                            <span class="skill-title-text">{{ $req->skill->title ?? 'Deleted Skill' }}</span>
+                                            <span class="status-badge-premium {{ $req->status }}">{{ ucfirst($req->status) }}</span>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-center py-4 text-muted">No recent requests.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @elseif(auth()->user()->isTeacher())
+        <!-- TEACHER PREMIUM DASHBOARD -->
+        <section class="role-dashboard teacher-dashboard premium-theme">
+            <div class="container">
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-8">
+                        <h2 class="display-5 fw-bold">Hello, <span class="text-success">Mentor {{ auth()->user()->name }}</span></h2>
+                        <p class="lead text-muted">Your expertise is making a difference today.</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-7">
+                        <div class="dashboard-card main-card">
+                            <div class="card-header-premium">
+                                <h3>🎓 My Expertise</h3>
+                                <a href="{{ route('my.skills') }}" class="btn-link">Manage Skills</a>
+                            </div>
+                            <div class="card-list">
+                                @forelse($teachingSkills as $skill)
+                                    <div class="list-item-premium">
+                                        <div class="skill-main">
+                                            <div class="skill-icon text-success">✔</div>
+                                            <div class="skill-text">
+                                                <span class="skill-title-text">{{ $skill->title }}</span>
+                                                <small class="text-muted">Currently teaching</small>
+                                            </div>
+                                        </div>
+                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Active</span>
+                                    </div>
+                                @empty
+                                    <div class="empty-state-card">
+                                        <p>You haven't listed any skills to teach yet.</p>
+                                        <a href="{{ route('my.skills') }}" class="btn btn-success px-4 rounded-pill">Start Teaching</a>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="dashboard-card side-card">
+                            <div class="card-header-premium">
+                                <h3>📥 Interaction Requests</h3>
+                            </div>
+                            <div class="card-list">
+                                @forelse($pendingRequests as $req)
+                                    <div class="list-item-premium">
+                                        <div class="skill-text">
+                                            <span class="skill-title-text">From: {{ $req->requester->name ?? 'User' }}</span>
+                                            <small class="d-block text-muted">For: {{ $req->skill->title ?? 'Skill' }}</small>
+                                        </div>
+                                        <a href="{{ route('requests.index') }}" class="btn btn-primary btn-sm rounded-pill">Review</a>
+                                    </div>
+                                @empty
+                                    <p class="text-center py-4 text-muted">No pending requests.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+@endauth
+
+<style>
+    .premium-theme { padding: 5rem 0; background: #fff; }
+    .dashboard-card { 
+        background: #fff; 
+        border: 1px solid #f0f0f0; 
+        border-radius: 24px; 
+        padding: 2rem; 
+        box-shadow: 0 10px 40px rgba(0,0,0,0.02); 
+        height: 100%;
+        transition: transform 0.3s;
+    }
+    .dashboard-card:hover { transform: translateY(-5px); }
+    
+    .card-header-premium { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .card-header-premium h3 { font-weight: 900; font-size: 1.5rem; margin: 0; letter-spacing: -0.5px; }
+    
+    .list-item-premium { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 1.5rem 0; 
+        border-bottom: 1px solid #f8f8f8; 
+    }
+    .list-item-premium:last-child { border-bottom: none; }
+    
+    .skill-main { display: flex; align-items: center; gap: 1rem; }
+    .skill-icon { width: 45px; height: 45px; background: #f0f7ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .skill-title-text { font-weight: 800; color: #1a1a1a; display: block; font-size: 1.1rem; }
+    
+    .status-badge-premium { padding: 6px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; }
+    .status-badge-premium.pending { background: #fff4e6; color: #d9480f; }
+    .status-badge-premium.accepted { background: #ebfbee; color: #2b8a3e; }
+    .status-badge-premium.completed { background: #e7f5ff; color: #1971c2; }
+    
+    .empty-state-card { text-align: center; padding: 3rem 0; }
+    .empty-state-card p { color: #666; margin-bottom: 1.5rem; }
+    
+    .btn-link { color: #000; font-weight: 800; text-decoration: underline; font-size: 0.9rem; }
+</style>
 
 <section class="how-it-works">
     <h2>How it Works</h2>

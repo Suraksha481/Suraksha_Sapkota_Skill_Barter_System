@@ -72,7 +72,27 @@
                 @enderror
             </div>
 
-            {{-- Bio Field --}}
+            {{-- Phone Field --}}
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #000; font-size: 14px;">
+                    Phone Number
+                </label>
+                <input
+                    type="text"
+                    name="phone"
+                    value="{{ old('phone', $user->phone) }}"
+                    placeholder="98XXXXXXXX"
+                    style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s ease;"
+                    onmouseover="this.style.borderColor='#ccc'"
+                    onmouseout="this.style.borderColor='#e0e0e0'"
+                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0';"
+                >
+                <p style="color: #666; font-size: 12px; margin-top: 5px;">This number will be used for payments.</p>
+                @error('phone')
+                    <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
+                @enderror
+            </div>
             <div style="margin-bottom: 30px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #000; font-size: 14px;">
                     Bio <span style="color: #999;">(optional)</span>
@@ -90,6 +110,23 @@
                     <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
                 @enderror
             </div>
+
+            @if($user->isTeacher())
+            {{-- Khalti ID Field --}}
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #000; font-size: 14px;">
+                    Khalti ID (Mobile Number for Payouts)
+                </label>
+                <input
+                    type="text"
+                    name="khalti_id"
+                    value="{{ old('khalti_id', $user->teacherProfile->khalti_id ?? '') }}"
+                    placeholder="98XXXXXXXX"
+                    style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px;"
+                >
+                <p style="color: #666; font-size: 12px; margin-top: 5px;">Admin will use this ID to send your 50% share after payments.</p>
+            </div>
+            @endif
 
             {{-- Avatar Field --}}
             <div style="margin-bottom: 30px;">

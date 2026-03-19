@@ -317,7 +317,9 @@
         <li><a href="{{ url('/') }}">Home</a></li>
         <li><a href="{{ url('/service') }}">Service</a></li>
         <li><a href="{{ url('/find-skill') }}">Find Skill</a></li>
-        <li><a href="{{ url('/blogs') }}">Blogs</a></li>
+        @auth
+        <li><a href="{{ url('/match') }}">Match</a></li>
+        @endauth
         <li><a href="{{ url('/about') }}">About</a></li>
     </ul>
 </nav>
@@ -367,8 +369,8 @@
 
         <div class="notif-body">
             @forelse($notifications as $notification)
-                <div class="notif-item {{ $notification->read_at ? '' : 'unread' }}">
-                    <a href="{{ isset($notification->data['request_id']) ? route('requests.index') : '#' }}">
+                <div class="notif-item {{ $notification->read_at ? '' : 'unread' }}" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+                    <a href="{{ isset($notification->data['request_id']) ? route('requests.index') : '#' }}" style="flex-grow: 1;">
                         <div class="notif-message">
                             {{ $notification->data['message'] ?? 'New notification' }}
                         </div>
@@ -376,6 +378,12 @@
                             {{ $notification->created_at->diffForHumans() }}
                         </small>
                     </a>
+                    @if(!$notification->read_at)
+                        <form method="POST" action="{{ route('notifications.read', $notification->id) }}" style="margin-top: 5px;">
+                            @csrf
+                            <button type="submit" class="btn tiny bw" style="font-size: 10px; padding: 2px 6px;">Read</button>
+                        </form>
+                    @endif
                 </div>
             @empty
                 <div class="empty-notif">
@@ -421,8 +429,11 @@
             <li><a href="{{ route('profile.show') }}">Profile</a></li>
             <li><a href="{{ route('my.skills') }}">My Skills</a></li>
             <li><a href="{{ route('requests.index') }}">Requests</a></li>
+            <li><a href="{{ route('sessions.index') }}">Sessions</a></li>
             <li><a href="{{ route('rewards.index') }}">Rewards</a></li>
+            @if(Auth::user()->isStudent())
             <li><a href="{{ route('premium.index') }}">Premium</a></li>
+            @endif
 
             <li>
                 <form action="{{ route('logout') }}" method="POST">

@@ -23,6 +23,9 @@ class MessageSent implements ShouldBroadcastNow
 
     public function broadcastOn(): PrivateChannel
     {
+        if ($this->message->conversation_id) {
+            return new PrivateChannel('conversation.' . $this->message->conversation_id);
+        }
         return new PrivateChannel('request.' . $this->message->request_id);
     }
 
@@ -31,6 +34,7 @@ class MessageSent implements ShouldBroadcastNow
         return [
             'id' => $this->message->id,
             'request_id' => $this->message->request_id,
+            'conversation_id' => $this->message->conversation_id,
             'sender_id' => $this->message->sender_id,
             'sender_name' => $this->message->sender->name ?? null,
             'body' => $this->message->body,

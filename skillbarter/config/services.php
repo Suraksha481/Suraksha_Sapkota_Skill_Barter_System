@@ -44,7 +44,8 @@ return [
     ],
 
     'khalti' => [
-        'secret_key' => env('KHALTI_SECRET_KEY', 'live_secret_key_68791341fdd94846a146f0457ff7b455'), // fallback to test key if env is missing
+        'base_url' => env('KHALTI_BASE_URL', 'https://a.khalti.com/api/v2/'),
+        'secret_key' => env('KHALTI_SECRET_KEY', 'c5a3259154cd4e38b949eb95576bf657'), // Change this to your live key for production
     ],
 
 ];

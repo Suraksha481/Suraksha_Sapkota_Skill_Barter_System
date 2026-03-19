@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
             'role' => 'required|in:teacher,student',
-            'bank_account' => 'required_if:role,teacher|nullable|string|max:255',
+            'khalti_id' => 'required_if:role,teacher|nullable|string|max:20',
             'cv' => 'required_if:role,teacher|nullable|file|mimes:pdf,doc,docx|max:5120',
             'certificate' => 'required_if:role,teacher|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'citizenship' => 'required_if:role,teacher|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
         ];
 
         if ($request->role === 'teacher') {
-            $pending['bank_account'] = $request->bank_account;
+            $pending['khalti_id'] = $request->khalti_id;
             if ($request->hasFile('cv')) {
                 $pending['cv_path'] = $request->file('cv')->store('pending_documents', 'public');
             }

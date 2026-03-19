@@ -64,7 +64,7 @@ class VerifyEmailCodeController extends Controller
             if ($user->role === 'teacher') {
                 \App\Models\TeacherProfile::create([
                     'user_id' => $user->id,
-                    'bank_account' => $pending['bank_account'] ?? null,
+                    'khalti_id' => $pending['khalti_id'] ?? null,
                     'cv_path' => $pending['cv_path'] ?? null,
                     'certificate_path' => $pending['certificate_path'] ?? null,
                     'citizenship_path' => $pending['citizenship_path'] ?? null,

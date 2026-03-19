@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Log;
 class KhaltiController extends Controller
 {
     protected $gamificationService;
-    
-    // Using Khalti Sandbox endpoint by default. For production, change to: https://khalti.com/api/v2/
-    protected $khaltiBaseUrl = 'https://a.khalti.com/api/v2/';
+
+    // Default to Sandbox URL. Can be overridden in config/services.php or .env
+    protected $khaltiBaseUrl;
 
     public function __construct(GamificationService $gamificationService)
     {
         $this->gamificationService = $gamificationService;
+        $this->khaltiBaseUrl = config('services.khalti.base_url', 'https://khalti.com/api/v2/');
     }
 
     /**
@@ -34,13 +35,15 @@ class KhaltiController extends Controller
 
         // Define plan prices in NPR. Khalti expects amount in Paisa.
         $prices = [
-            'monthly' => 1000, // 1000 NPR
-            'quarterly' => 2500, // 2500 NPR
-            'yearly' => 8000, // 8000 NPR
+            'monthly' => 25, // 25 NPR
+            'quarterly' => 50, // 50 NPR
+            'yearly' => 100, // 8000 NPR
         ];
 
         $amountInPaisa = $prices[$plan] * 100;
-        $purchaseOrderId = 'PREM_' . $user->id . '_' . time();
+
+        $teacherId = $request->teacher_id;
+        $purchaseOrderId = 'PREM_' . $user->id . '_' . time() . ($teacherId ? '_T' . $teacherId : '');
 
         $payload = [
             'return_url' => route('khalti.callback'),
@@ -51,8 +54,9 @@ class KhaltiController extends Controller
             'customer_info' => [
                 'name' => $user->name,
                 'email' => $user->email,
-                'phone' => '9800000000', // Mock data, usually from user profile
+                'phone' => $user->phone ?? '9800000000', 
             ],
+            'remarks' => 'Payment to Admin Account: 9849587005',
             // Pass the selected plan along so we can use it on the callback
             'amount_breakdown' => [
                 [
@@ -79,12 +83,13 @@ class KhaltiController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
+            Log::info('Khalti Initiation Success for order: ' . $purchaseOrderId . ' - Data: ' . json_encode($data));
             // Redirect user to Khalti payment page
             return redirect()->away($data['payment_url']);
         }
 
-        Log::error('Khalti Initiate Failed: ' . $response->body());
-        return redirect()->route('premium.index')->with('error', 'Failed to initiate Khalti payment. Please try again.');
+        Log::error('Khalti Initiation Failed for order: ' . $purchaseOrderId . ' - Error: ' . $response->body());
+        return redirect()->route('premium.index')->with('error', 'Failed to initiate Khalti payment. Response: ' . $response->body());
     }
 
     /**
@@ -114,21 +119,29 @@ class KhaltiController extends Controller
 
             if ($data['status'] === 'Completed') {
                 $user = $request->user();
-                
+
                 // We extract the plan name either from the custom purchase order ID, or product details. 
                 // In our initiate method, we prefixed purchase_order_name with the plan. 
                 // As a fallback, assuming it's monthly if we can't parse it precisely.
                 $plan = 'monthly';
-                if(strpos(strtolower(basename($purchaseOrderId)), 'yearly') !== false || $amountPaisa == 1039800) $plan = 'yearly';
-                elseif(strpos(strtolower(basename($purchaseOrderId)), 'quarterly') !== false || $amountPaisa == 324800) $plan = 'quarterly';
+                if (strpos(strtolower(basename($purchaseOrderId)), 'yearly') !== false || $amountPaisa == 1039800)
+                    $plan = 'yearly';
+                elseif (strpos(strtolower(basename($purchaseOrderId)), 'quarterly') !== false || $amountPaisa == 324800)
+                    $plan = 'quarterly';
 
                 $priceInNpr = $amountPaisa / 100;
                 $adminShare = $priceInNpr * 0.5;
                 $teacherShare = $priceInNpr * 0.5;
+                
+                $teacherId = null;
+                if (preg_match('/_T(\d+)$/', $purchaseOrderId, $matches)) {
+                    $teacherId = $matches[1];
+                }
 
                 // Create Transaction Record
                 \App\Models\Transaction::create([
                     'user_id' => $user->id,
+                    'teacher_id' => $teacherId,
                     'amount' => $priceInNpr,
                     'admin_share' => $adminShare,
                     'teacher_share' => $teacherShare,
@@ -145,7 +158,7 @@ class KhaltiController extends Controller
                 ];
 
                 $existingMembership = $user->premiumMembership;
-                
+
                 $startsAt = now();
                 if ($existingMembership && $existingMembership->status === 'active') {
                     $startsAt = $existingMembership->expires_at;
@@ -163,7 +176,8 @@ class KhaltiController extends Controller
                         'transaction_id' => $data['transaction_id'] ?? $transactionId,
                         'payment_method' => 'khalti'
                     ]);
-                } else {
+                }
+                else {
                     PremiumMembership::create([
                         'user_id' => $user->id,
                         'plan' => $plan,
@@ -188,7 +202,8 @@ class KhaltiController extends Controller
                 // For now, I'll ensure the Transaction model can handle teacher_id.
 
                 return redirect()->route('premium.index')->with('success', 'Payment successful! Welcome to Premium.');
-            } else {
+            }
+            else {
                 return redirect()->route('premium.index')->with('error', 'Payment was not completed. Status: ' . $data['status']);
             }
         }

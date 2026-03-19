@@ -13,6 +13,10 @@
         <div class="alert success">{{ session('success') }}</div>
     @endif
 
+    @if(session('error'))
+        <div class="alert error">{{ session('error') }}</div>
+    @endif
+
     @if($isPremium && $membership)
     <!-- Current Plan -->
     <div class="dashboard-section" style="max-width: 600px; margin-bottom: 2rem;">
@@ -38,17 +42,23 @@
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
             @foreach($plans as $key => $plan)
-            <div style="border: 1px solid #ddd; border-radius: 12px; padding: 2rem; text-align: center; {{ $key === 'quarterly' ? 'border-color: #6366f1; box-shadow: 0 4px 12px rgba(99,102,241,0.15);' : '' }}">
+            <div style="border: 2px solid {{ ($isPremium && $membership && $membership->plan === $key) ? '#6366f1' : '#ddd' }}; border-radius: 12px; padding: 2rem; text-align: center; position: relative; {{ $key === 'quarterly' && !($isPremium && $membership && $membership->plan === $key) ? 'box-shadow: 0 4px 12px rgba(99,102,241,0.15);' : '' }}">
                 @if(isset($plan['savings']))
                     <span style="background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">
                         Save {{ $plan['savings'] }}
                     </span>
                 @endif
 
+                @if($isPremium && $membership && $membership->plan === $key)
+                    <span style="position: absolute; top: 1rem; right: 1rem; background: #e0e7ff; color: #6366f1; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; border: 1px solid #6366f1;">
+                        CURRENT
+                    </span>
+                @endif
+
                 <h3 style="margin-top: 1rem; font-size: 1.25rem;">{{ $plan['name'] }}</h3>
 
                 <div style="margin: 1rem 0;">
-                    <span style="font-size: 2.5rem; font-weight: 700;">${{ $plan['price'] }}</span>
+                    <span style="font-size: 2.5rem; font-weight: 700;">NPR {{ number_format($plan['price']) }}</span>
                     <span style="color: #666;">/{{ $plan['duration'] }}</span>
                 </div>
 
@@ -58,13 +68,22 @@
                     @endforeach
                 </ul>
 
-                <form method="POST" action="{{ route('khalti.initiate') }}">
-                    @csrf
-                    <input type="hidden" name="plan" value="{{ $key }}">
-                    <button type="submit" class="btn primary" style="width: 100%; border-radius: 6px; padding: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #5C2D91; color: white; border: none; cursor: pointer;">
-                        Pay with Khalti
+                @if($isPremium && $membership && $membership->plan === $key)
+                    <button disabled style="width: 100%; border-radius: 6px; padding: 12px; font-weight: 600; background-color: #f3f4f6; color: #9ca3af; border: 1px solid #d1d5db; cursor: not-allowed;">
+                        Your current plan
                     </button>
-                </form>
+                @else
+                    <form method="POST" action="{{ route('khalti.initiate') }}">
+                        @csrf
+                        <input type="hidden" name="plan" value="{{ $key }}">
+                        @if(isset($teacher_id))
+                            <input type="hidden" name="teacher_id" value="{{ $teacher_id }}">
+                        @endif
+                        <button type="submit" class="btn primary" style="width: 100%; border-radius: 6px; padding: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #5C2D91; color: white; border: none; cursor: pointer;">
+                            Pay with Khalti
+                        </button>
+                    </form>
+                @endif
             </div>
             @endforeach
         </div>

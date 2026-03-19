@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
-@section('title','Dashboard')
+@section('title','Platform Overview')
+@section('subtitle', 'Quick statistics and system health')
 
 @section('content')
 

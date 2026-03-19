@@ -39,8 +39,8 @@
     background: #000;
     border-radius: 18px;
     padding: 30px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* IMAGE */
@@ -50,7 +50,7 @@
     max-height: 360px;
     object-fit: cover;
     border-radius: 14px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 /* INFO */
@@ -82,7 +82,7 @@
 }
 
 .skill-meta span {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     padding: 8px 14px;
     border-radius: 20px;
     font-size: 14px;
@@ -103,7 +103,7 @@
 
 .skill-detail-info .btn.primary:hover {
     transform: translateY(-2px) scale(1.05);
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* ===========================

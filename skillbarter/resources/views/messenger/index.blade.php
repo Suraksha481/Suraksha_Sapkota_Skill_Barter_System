@@ -20,11 +20,14 @@ html, body {
 /* Base Messenger Container */
 .messenger-container {
     display: flex;
-    height: calc(100vh - 64px); /* Assuming top navbar takes ~64px */
+    height: 80vh; /* Fixed height relative to viewport to ensure it fits with header/footer */
+    min-height: 600px;
     max-width: 100%;
     overflow: hidden;
     background: #242526;
-    border-top: 1px solid #3e4042;
+    border: 1px solid #3e4042;
+    margin: 20px;
+    border-radius: 12px;
 }
 
 /* Left Sidebar */
@@ -422,11 +425,10 @@ html, body {
         </div>
     </div>
 </div>
-
 <script>
     const currentUserId = {{ $user->id }};
     let currentConversationId = null;
-    let targetUserId = null; // Used when starting a new chat via search
+    let targetUserId = null; 
 
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
@@ -438,17 +440,25 @@ html, body {
     const chatSendBtn = document.getElementById('chat-send-btn');
     const errorBanner = document.getElementById('chat-error-banner');
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const autoTargetId = @json($target_user_id ?? null);
+        if (autoTargetId) {
+            const existingConv = document.querySelector(`.conversation-item[data-target="${autoTargetId}"]`);
+            if (existingConv) {
+                existingConv.click();
+            }
+        }
+    });
+
     // Search functionality
     let searchTimeout;
     searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
         const query = this.value.trim();
-
         if (query.length < 2) {
             searchResults.style.display = 'none';
             return;
         }
-
         searchTimeout = setTimeout(() => {
             fetch(`/messenger/search?q=${encodeURIComponent(query)}`)
                 .then(res => res.json())
@@ -474,13 +484,9 @@ html, body {
         }, 500);
     });
 
-    // Hide search results on click outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.search-container')) {
-            searchResults.style.display = 'none';
-        }
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) searchResults.style.display = 'none';
     });
-
 
     function startNewChat(userId, userName, avatarUrl) {
         searchResults.style.display = 'none';
@@ -488,7 +494,6 @@ html, body {
         currentConversationId = null;
         targetUserId = userId;
 
-        // Visual setup for "draft" chat mode
         chatEmpty.style.display = 'none';
         chatHeader.style.display = 'flex';
         messagesContainer.style.display = 'flex';
@@ -503,19 +508,16 @@ html, body {
         chatInput.focus();
         hideError();
 
-        // Hide sidebar on mobile
         if(window.innerWidth <= 768) {
             document.getElementById('messenger-sidebar').classList.add('hidden');
             document.getElementById('back-to-list').style.display = 'block';
         }
     }
 
-
-    function loadConversation(convId, userName, avatarUrl) {
+    function loadConversation(convId, userName, avatarUrl, otherId) {
         currentConversationId = convId;
-        targetUserId = null; // We are in an existing chat
+        targetUserId = otherId;
 
-        // Highlight active
         document.querySelectorAll('.conversation-item').forEach(el => el.classList.remove('active'));
         const item = document.querySelector(`.conversation-item[data-id="${convId}"]`);
         if(item) item.classList.add('active');
@@ -527,81 +529,52 @@ html, body {
 
         document.getElementById('chat-header-name').innerText = userName;
         document.getElementById('chat-header-img').src = avatarUrl;
-
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
         hideError();
+
+        // Echo Real-time
+        if (window.Echo) {
+            window.Echo.leaveAllChannels();
+            window.Echo.private(`conversation.${convId}`)
+                .listen('MessageSent', (e) => {
+                    if (e.sender_id !== currentUserId) {
+                        appendMessage({ body: e.body, sender_id: e.sender_id });
+                        scrollToBottom();
+                    }
+                });
+        }
 
         fetch(`/messenger/${convId}`)
             .then(res => res.json())
             .then(data => {
                 messagesContainer.innerHTML = '';
-                data.messages.forEach(msg => {
-                    appendMessage(msg);
-                });
+                data.messages.forEach(appendMessage);
                 scrollToBottom();
             });
 
-        // Hide sidebar on mobile
         if(window.innerWidth <= 768) {
             document.getElementById('messenger-sidebar').classList.add('hidden');
             document.getElementById('back-to-list').style.display = 'block';
         }
     }
 
-
-    // Input events
-    chatInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
     chatSendBtn.addEventListener('click', sendMessage);
 
     function sendMessage() {
         const body = chatInput.value.trim();
-        if (!body) return;
-
-        // If we don't have a new target user or an existing conversation, do nothing
-        if (!targetUserId && !currentConversationId) return;
+        if (!body || (!targetUserId && !currentConversationId)) return;
 
         chatInput.disabled = true;
         chatSendBtn.disabled = true;
 
-        const payload = {
-            body: body,
-            _token: '{{ csrf_token() }}'
-        };
-
-        // If inside an existing convo, we need to pass the "target_user_id" by figuring it out
-        // OR we can just change our backend so we always pass target_user_id. Let's just always pass target_user_id
-        if (currentConversationId) {
-            // we know the target user id from the list, or we can let backend figure it out.
-            // But our backend store() method expects target_user_id.
-            // Let's attach target user id to the conversation element?
-            // Better: update backend, or fetch targetUserId easily.
-        }
-
-        // Let's find target_user_id if not set (meaning we clicked a conversation)
-        // Hmm, our backend store requires target_user_id. I should define targetUserId when clicking a conversation too.
-        // Let's fix that.
-        // Actually, since I didn't pass targetUserId in loadConversation, I'll fetch it from the active item.
-        let actualTargetId = targetUserId;
-        if(!actualTargetId && currentConversationId) {
-            // Find the other user from the conversations list?
-            // Easy fix: just send a POST to some generic endpoint or we can add data-target to the list items.
-            // Since time is short, I'll pass target_user_id as part of the backend.
-        }
-
         fetch('/messenger/messages', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
                 body: body,
-                target_user_id: actualTargetId || extractTargetIdFromDom(),
+                target_user_id: targetUserId,
                 _token: '{{ csrf_token() }}'
             })
         })
@@ -611,104 +584,39 @@ html, body {
             chatSendBtn.disabled = false;
             chatInput.focus();
 
-            if (res.status === 429) {
-                showError(res.body.message);
-                return;
-            }
-            if (res.status !== 200) {
-                showError("An error occurred");
-                return;
-            }
+            if (res.status === 429) { showError(res.body.message); return; }
+            if (res.status !== 200) { showError("An error occurred"); return; }
 
             chatInput.value = '';
+            if(!currentConversationId) { messagesContainer.innerHTML = ''; window.location.reload(); return; }
 
-            // If it was a draft new conversation, we clear the message empty state
-            if(targetUserId) {
-                messagesContainer.innerHTML = '';
-            }
-
-            // Append
             appendMessage(res.body.message);
             scrollToBottom();
-
-            // Update sidebar (if new chat, reload page to see it in list, or just pretend)
-            if (targetUserId && !currentConversationId) {
-                window.location.reload();
-            }
         });
     }
 
-    
-    function extractTargetIdFromDom() {
-        // Fallback to get target id from an existing conversation if needed for backend
-        // Not ideal, let's fix backend or pass it cleanly if this was production.
-        return null; // backend validation might fail if we don't pass it properly.
-    }
-
-    // Better fix: overwrite the onclick handler to pass target_user_id
-    // Wait, in blade: data-target="target_id_here"
-    // Let's use JS hook to get it from .active element if targetUserId is null
-</script>
-
-<script>
-    // Monkey patch the load function to capture target id
-    const originalLoad = loadConversation;
-    window.loadConversation = function(convId, userName, avatarUrl, otherId) {
-        originalLoad(convId, userName, avatarUrl);
-        targetUserId = otherId;
-    }
-
-    // update blade rendering to include otherId
-    document.querySelectorAll('.conversation-item').forEach(item => {
-        // extract info somehow? I will modify the blade part above.
-    });
-
-    // Actually, I can just redefine extractTargetIdFromDom
-    window.extractTargetIdFromDom = function() {
-        const active = document.querySelector('.conversation-item.active');
-        if(active) return active.getAttribute('data-target');
-        return null;
-    }
-</script>
-
-<script>
-    // helper functions
     function appendMessage(msg) {
         const div = document.createElement('div');
         const isSent = msg.sender_id === currentUserId;
         div.className = `message-wrapper ${isSent ? 'sent' : 'received'}`;
-
         if (!isSent) {
             const avatarUrl = document.getElementById('chat-header-img').src;
-            div.innerHTML = `
-                <img src="${avatarUrl}" alt="Avatar" style="width: 28px; height: 28px; border-radius: 50%; margin-right: 8px; align-self: flex-end; background-color: #4e4f50;">
-                <div class="message-bubble">${msg.body}</div>
-            `;
+            div.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width: 28px; height: 28px; border-radius: 50%; margin-right: 8px; align-self: flex-end; background-color: #4e4f50;">
+                             <div class="message-bubble">${msg.body}</div>`;
         } else {
             div.innerHTML = `<div class="message-bubble">${msg.body}</div>`;
         }
-
         messagesContainer.appendChild(div);
     }
 
-    function scrollToBottom() {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
+    function scrollToBottom() { messagesContainer.scrollTop = messagesContainer.scrollHeight; }
+    function showError(msg) { errorBanner.innerHTML = msg; errorBanner.style.display = 'block'; }
+    function hideError() { errorBanner.style.display = 'none'; errorBanner.innerText = ''; }
 
-    function showError(msg) {
-        errorBanner.innerHTML = msg;
-        errorBanner.style.display = 'block';
-    }
-
-    function hideError() {
-        errorBanner.style.display = 'none';
-        errorBanner.innerText = '';
-    }
-
-    // mobile nav
     document.getElementById('back-to-list').onclick = function() {
         document.getElementById('messenger-sidebar').classList.remove('hidden');
         this.style.display = 'none';
     }
 </script>
 @endsection
+```

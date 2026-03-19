@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
-@section('title', $title ?? 'Teachers')
-@section('page-title', $title ?? 'Teachers')
+@section('title', $title ?? 'Teacher Directory')
+@section('subtitle', 'Directory of all teachers and their approval status')
 
 @section('content')
     <table style="width:100%;border-collapse:collapse">

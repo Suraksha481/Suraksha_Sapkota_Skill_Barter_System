@@ -60,7 +60,7 @@
     background: #fff;
     border-radius: 14px;
     padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     position: relative;
     transition: transform 0.2s ease;
 }
@@ -115,4 +115,3 @@
     display: flex;
     justify-content: center;
 }
-

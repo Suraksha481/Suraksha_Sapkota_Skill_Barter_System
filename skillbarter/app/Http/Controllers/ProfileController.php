@@ -52,6 +52,13 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        if ($request->user()->isTeacher() && $request->has('khalti_id')) {
+            $request->user()->teacherProfile()->updateOrCreate(
+                ['user_id' => $request->user()->id],
+                ['khalti_id' => $request->khalti_id]
+            );
+        }
+
         return Redirect::route('profile.show')->with('status', 'Profile updated successfully!');
     }
 

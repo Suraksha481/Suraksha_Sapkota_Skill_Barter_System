@@ -1,5 +1,7 @@
 @extends('app')
 
+@section('page_title', 'Services')
+
 @section('content')
 
 <!-- HERO / BANNER -->
@@ -12,7 +14,7 @@
         <p class="muted">Discover a comprehensive suite of services designed to make skill exchange seamless, effective, and enjoyable for everyone — students, tutors, and campus organizers.</p>
         <div class="hero-ctas">
           <a href="{{ url('/find-skill') }}" class="btn primary">Browse Skills</a>
-          <a href="{{ url('/signup') }}" class="btn ghost">Join Now</a>
+          <a href="{{ auth()->check() ? route('home') : route('register') }}" class="btn ghost">Join Now</a>
         </div>
       </div>
 
@@ -107,7 +109,7 @@
   <div class="container">
     <h3>Ready to experience our services?</h3>
     <p class="muted">Join thousands of learners who already benefit from our community-driven platform.</p>
-    <a class="btn primary large" href="{{ url('/signup') }}">Get Started Today</a>
+    <a class="btn primary large" href="{{ auth()->check() ? route('home') : route('register') }}">Get Started Today</a>
   </div>
 </section>
 
