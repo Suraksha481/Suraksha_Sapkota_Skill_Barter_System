@@ -86,12 +86,9 @@
     .admin-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
     .admin-card { background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
     .admin-form .form-group { margin-bottom: 1rem; }
-    .admin-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-    .admin-form input, .admin-form textarea { width: 100%; padding: 0.75rem; border: 1px solid #dee2e6; border-radius: 6px; }
-    .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    .admin-table th, .admin-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
-    .admin-table th { background: #f8f9fa; font-weight: 600; }
-    .badge { background: #e9ecef; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+    .admin-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.95rem; color: var(--text-slate); }
+    .admin-form input, .admin-form textarea { width: 100%; padding: 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; transition: border 0.3s; }
+    .admin-form input:focus, .admin-form textarea:focus { border-color: var(--primary-teal); outline: none; }
     .btn-icon.delete { color: #dc3545; background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 4px; transition: background 0.2s; }
     .btn-icon.delete:hover { background: #fff5f5; }
     .pagination-wrapper { margin-top: 1.5rem; }

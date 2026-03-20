@@ -15,15 +15,15 @@
         <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden;">
 
             {{-- Header Section --}}
-            <div style="background: #000; color: white; padding: 40px 30px; text-align: center;">
+            <div style="background: var(--primary-teal); color: white; padding: 40px 30px; text-align: center;">
                 <img
-                    src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name='.$user->name.'&background=000&color=fff' }}"
+                    src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name='.$user->name.'&background=20a68a&color=fff' }}"
                     style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 15px;"
                     alt="Profile Avatar"
                 >
                 <h1 style="margin: 0 0 5px 0; font-size: 32px; font-weight: 700;">{{ $user->name }}</h1>
                 <p style="margin: 5px 0; color: #d1d5db; font-size: 14px;">{{ $user->email }}</p>
-                <span style="display: inline-block; background: white; color: #000; padding: 6px 16px; border-radius: 20px; font-weight: 600; margin-top: 12px; font-size: 13px;">
+                <span style="display: inline-block; background: white; color: var(--primary-teal); padding: 6px 16px; border-radius: 20px; font-weight: 600; margin-top: 12px; font-size: 13px;">
                     {{ ucfirst($user->role) }}
                 </span>
             </div>
@@ -33,7 +33,7 @@
 
                 {{-- About Section --}}
                 <div style="margin-bottom: 35px;">
-                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #000;">About</h3>
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-slate);">About</h3>
                     <p style="color: #475569; line-height: 1.6; margin: 0;">
                         {{ $user->bio ?? 'No bio added yet.' }}
                     </p>
@@ -52,7 +52,7 @@
                             @if($user->skillsOffered && $user->skillsOffered->count() > 0)
                                 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
                                     @foreach($user->skillsOffered as $userSkill)
-                                        <div style="background: #f0f0f0; color: #000; padding: 10px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; border: 1px solid #d0d0d0; text-align: center;">
+                                        <div style="background: var(--bg-light-teal); color: var(--text-slate); padding: 10px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; border: 1px solid var(--primary-teal-light); text-align: center;">
                                             {{ $userSkill->skill->title ?? 'Unknown Skill' }}
                                             <span style="display: block; font-size: 11px; color: #666; margin-top: 3px;">{{ ucfirst($userSkill->level) }}</span>
                                         </div>
@@ -71,7 +71,7 @@
                             @if($user->skillsWanted && $user->skillsWanted->count() > 0)
                                 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
                                     @foreach($user->skillsWanted as $userSkill)
-                                        <div style="background: #f0f0f0; color: #000; padding: 10px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; border: 1px solid #d0d0d0; text-align: center;">
+                                        <div style="background: var(--bg-light-teal); color: var(--text-slate); padding: 10px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; border: 1px solid var(--primary-teal-light); text-align: center;">
                                             {{ $userSkill->skill->title ?? 'Unknown Skill' }}
                                             <span style="display: block; font-size: 11px; color: #666; margin-top: 3px;">{{ ucfirst($userSkill->level) }}</span>
                                         </div>
@@ -88,13 +88,13 @@
 
                 {{-- Action Buttons --}}
                 <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                    <a href="{{ route('profile.edit') }}" style="display: inline-block; background: #000; color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                    <a href="{{ route('profile.edit') }}" class="btn-pill primary" style="text-decoration:none;">
                         Edit Profile
                     </a>
-                    <a href="{{ route('my.skills') }}" style="display: inline-block; background: #000; color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                    <a href="{{ route('my.skills') }}" class="btn-pill primary" style="text-decoration:none;">
                         Manage Skills
                     </a>
-                    <a href="{{ route('dashboard') }}" style="display: inline-block; background: #f5f5f5; color: #000; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid #e0e0e0; transition: all 0.3s ease;">
+                    <a href="{{ route('dashboard') }}" class="btn-pill secondary" style="text-decoration:none;">
                         Dashboard
                     </a>
                 </div>

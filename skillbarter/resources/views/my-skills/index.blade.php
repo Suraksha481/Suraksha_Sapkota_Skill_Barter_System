@@ -6,8 +6,8 @@
 
         {{-- Page Title --}}
         <div style="text-align: center; margin-bottom: 40px;">
-            <h1 style="font-size: 36px; font-weight: 700; color: #000; margin-bottom: 10px;">My Skills</h1>
-            <p style="color: #666; font-size: 16px;">Manage the skills you teach or want to learn</p>
+            <h1 style="font-size: 36px; font-weight: 800; color: var(--primary-teal); margin-bottom: 10px;">My Skills</h1>
+            <p style="color: var(--text-secondary); font-size: 16px; font-weight: 600;">Manage the skills you teach or want to learn</p>
         </div>
 
         {{-- Success Message --}}
@@ -25,8 +25,8 @@
         @endif
 
         {{-- Add Skill Card --}}
-        <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 40px; margin-bottom: 40px;">
-            <h2 style="font-size: 24px; font-weight: 700; color: #000; margin-bottom: 30px; text-align: center;">➕ Add a Skill</h2>
+        <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 40px; margin-bottom: 40px; border: 1px solid var(--primary-teal-light);">
+            <h2 style="font-size: 24px; font-weight: 800; color: var(--text-dark); margin-bottom: 30px; text-align: center;">➕ Add a Skill</h2>
 
             <form action="{{ route('my.skills.store') }}" method="POST">
                 @csrf
@@ -89,7 +89,7 @@
 
                 {{-- Submit Button --}}
                 <div style="text-align: center;">
-                    <button type="submit" style="background: #000; color: white; padding: 12px 40px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.3s ease;">
+                    <button type="submit" class="btn-pill primary" style="padding: 12px 60px; font-size: 16px; border:none; cursor:pointer;">
                         Add Skill
                     </button>
                 </div>
@@ -99,17 +99,17 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
 
             {{-- Skills I Teach --}}
-            <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 30px;">
-                <h3 style="font-size: 20px; font-weight: 700; color: #000; margin-bottom: 20px; text-align: center;">
+            <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 30px; border: 1px solid var(--primary-teal-light);">
+                <h3 style="font-size: 20px; font-weight: 800; color: var(--primary-teal); margin-bottom: 20px; text-align: center;">
                     💡 Skills I Teach
                 </h3>
                 @if($teachSkills && $teachSkills->count() > 0)
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         @foreach($teachSkills as $userSkill)
-                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #000; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="background: var(--bg-light-teal); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary-teal); display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <p style="margin: 0 0 5px 0; font-weight: 600; color: #000;">{{ $userSkill->skill->title }}</p>
-                                    <p style="margin: 0; font-size: 12px; color: #666;">{{ ucfirst($userSkill->level) }} level</p>
+                                    <p style="margin: 0 0 5px 0; font-weight: 700; color: var(--text-dark);">{{ $userSkill->skill->title }}</p>
+                                    <p style="margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 600;">{{ ucfirst($userSkill->level) }} level</p>
                                 </div>
                                 <form action="{{ route('my.skills.destroy', $userSkill->id) }}" method="POST" style="display: inline;">
                                     @csrf
@@ -127,17 +127,17 @@
             </div>
 
             {{-- Skills I Want to Learn --}}
-            <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 30px;">
-                <h3 style="font-size: 20px; font-weight: 700; color: #000; margin-bottom: 20px; text-align: center;">
+            <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 30px; border: 1px solid var(--primary-teal-light);">
+                <h3 style="font-size: 20px; font-weight: 800; color: var(--primary-teal); margin-bottom: 20px; text-align: center;">
                     📚 Skills I Want to Learn
                 </h3>
                 @if($learnSkills && $learnSkills->count() > 0)
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         @foreach($learnSkills as $userSkill)
-                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #000; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="background: var(--bg-light-teal); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary-teal); display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <p style="margin: 0 0 5px 0; font-weight: 600; color: #000;">{{ $userSkill->skill->title }}</p>
-                                    <p style="margin: 0; font-size: 12px; color: #666;">{{ ucfirst($userSkill->level) }} level</p>
+                                    <p style="margin: 0 0 5px 0; font-weight: 700; color: var(--text-dark);">{{ $userSkill->skill->title }}</p>
+                                    <p style="margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 600;">{{ ucfirst($userSkill->level) }} level</p>
                                 </div>
                                 <form action="{{ route('my.skills.destroy', $userSkill->id) }}" method="POST" style="display: inline;">
                                     @csrf
@@ -158,7 +158,7 @@
 
 {{-- Back Button --}}
     <div style="text-align: center; margin-bottom: 40px;">
-        <a href="{{ route('profile.show') }}" style="display:inline-block; background:#000; color:white; padding:10px 24px; border-radius:8px; text-decoration:none; font-weight:600; font-size:16px; transition:background 0.3s ease;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#000'">
+        <a href="{{ route('profile.show') }}" class="btn-pill secondary" style="text-decoration:none;">
                 ← Back to Profile
             </a>
         </div>

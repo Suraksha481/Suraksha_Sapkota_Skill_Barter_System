@@ -132,6 +132,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(SessionModel::class, 'organiser_id');
     }
 
+    public function participatingSessions()
+    {
+        return $this->belongsToMany(SessionModel::class, 'session_participants', 'user_id', 'session_id')
+            ->withTimestamps();
+    }
+
     public function resources()
     {
         return $this->hasMany(Resource::class);

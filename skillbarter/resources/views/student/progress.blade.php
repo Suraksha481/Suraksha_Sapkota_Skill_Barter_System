@@ -110,17 +110,20 @@
     }
 
     .stat-card {
-        background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 8px;
+        background: #fff;
+        color: var(--text-dark);
+        padding: 25px;
+        border-radius: 16px;
         text-align: center;
-        border: 1px solid #e0e0e0;
+        border: 1px solid var(--primary-teal-light);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
     }
 
     .stat-card h3 {
         margin: 0;
-        font-size: 28px;
+        font-size: 32px;
+        color: var(--primary-teal);
+        font-weight: 800;
     }
 
     .stat-card p {
@@ -177,7 +180,7 @@
     }
 
     .progress-fill {
-        background: linear-gradient(90deg, #1a1a1a 0%, #333333 100%);
+        background: linear-gradient(90deg, var(--primary-teal) 0%, var(--primary-teal-dark) 100%);
         height: 100%;
         transition: width 0.3s;
     }
@@ -206,7 +209,7 @@
         top: 0;
         width: 16px;
         height: 16px;
-        background: #1a1a1a;
+        background: var(--primary-teal);
         border-radius: 50%;
         border: 3px solid white;
     }
@@ -248,7 +251,7 @@
     .feedback-item {
         padding: 15px;
         background: #f9f9f9;
-        border-left: 4px solid #1a1a1a;
+        border-left: 4px solid var(--primary-teal);
         margin-bottom: 15px;
         border-radius: 4px;
     }

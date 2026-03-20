@@ -31,6 +31,12 @@ class SessionModel extends Model
         return $this->belongsTo(User::class,'organiser_id');
     }
 
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'session_participants', 'session_id', 'user_id')
+            ->withTimestamps();
+    }
+
     public function student(){
         return $this->belongsTo(User::class,'participant_id');
     }

@@ -20,8 +20,12 @@ class MessengerController extends Controller
             ->get();
 
         $target_user_id = $request->get('user');
+        $targetUser = null;
+        if ($target_user_id) {
+            $targetUser = User::find($target_user_id);
+        }
 
-        return view('messenger.index', compact('conversations', 'user', 'target_user_id'));
+        return view('messenger.index', compact('conversations', 'user', 'target_user_id', 'targetUser'));
     }
 
     public function show(Conversation $conversation)

@@ -49,30 +49,6 @@ class PageController extends Controller
         ]);
     }
 
-    // BLOG PAGE (STATIC CONTENT, DYNAMIC STRUCTURE)
-    public function blogs()
-    {
-        $blogs = [
-            [
-                'title' => 'Top 10 Tech Skills to Learn in 2025',
-                'desc'  => 'Future-proof your career with high-demand skills.',
-                'image' => 'https://images.unsplash.com/photo-1518770660439-4636190af475'
-            ],
-            [
-                'title' => 'How to Become a Graphic Designer',
-                'desc'  => 'Learn design fundamentals step by step.',
-                'image' => 'https://images.unsplash.com/photo-1526498460520-4c246339dccb'
-            ],
-            [
-                'title' => 'Freelancing Tips for Beginners',
-                'desc'  => 'Start your freelancing journey confidently.',
-                'image' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f'
-            ],
-        ];
-
-        return view('blogs', compact('blogs'));
-    }
-
     // CONTACT PAGE
     public function contact()
     {
@@ -83,5 +59,17 @@ class PageController extends Controller
     public function privacy()
     {
         return view('privacy-policy');
+    }
+
+    // HELP CENTER
+    public function helpCenter()
+    {
+        return view('help-center');
+    }
+
+    // TERMS OF USE
+    public function terms()
+    {
+        return view('terms-of-use');
     }
 }

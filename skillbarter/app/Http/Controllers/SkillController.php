@@ -15,13 +15,19 @@ class SkillController extends Controller
 {
     $query = Skill::query();
 
-    // Search by keyword
+    // Search by keyword (Precision Search)
     if ($request->filled('q')) {
-        $query->where(function ($q) use ($request) {
-            $q->where('title', 'like', '%' . $request->q . '%')
-              ->orWhere('description', 'like', '%' . $request->q . '%')
-              ->orWhere('category', 'like', '%' . $request->q . '%');
-        });
+        $q = $request->q;
+        if (strlen($q) < 2) {
+            // If just a letter, don't show any results as requested
+            $query->where('id', 0); 
+        } else {
+            $query->where(function ($sub) use ($q) {
+                // Focus primarily on title and category for precision
+                $sub->where('title', 'like', '%' . $q . '%')
+                  ->orWhere('category', 'like', '%' . $q . '%');
+            });
+        }
     }
 
     // Filter by category

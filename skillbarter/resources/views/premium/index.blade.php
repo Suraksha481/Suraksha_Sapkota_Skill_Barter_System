@@ -21,8 +21,8 @@
     <!-- Current Plan -->
     <div class="dashboard-section" style="max-width: 600px; margin-bottom: 2rem;">
         <h2>Your Current Plan</h2>
-        <div style="padding: 1.5rem; border: 2px solid #6366f1; border-radius: 12px; background: #f5f3ff;">
-            <h3 style="color: #6366f1; margin-bottom: 0.5rem;">{{ ucfirst($membership->plan ?? 'Premium') }} Plan</h3>
+        <div style="padding: 1.5rem; border: 2px solid var(--primary-teal); border-radius: 12px; background: var(--bg-light-teal);">
+            <h3 style="color: var(--primary-teal); margin-bottom: 0.5rem;">{{ ucfirst($membership->plan ?? 'Premium') }} Plan</h3>
             <p><strong>Status:</strong> <span style="color: green;">Active</span></p>
             <p><strong>Expires:</strong> {{ $membership->expires_at ? $membership->expires_at->format('M d, Y') : 'N/A' }}</p>
 
@@ -42,15 +42,15 @@
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
             @foreach($plans as $key => $plan)
-            <div style="border: 2px solid {{ ($isPremium && $membership && $membership->plan === $key) ? '#6366f1' : '#ddd' }}; border-radius: 12px; padding: 2rem; text-align: center; position: relative; {{ $key === 'quarterly' && !($isPremium && $membership && $membership->plan === $key) ? 'box-shadow: 0 4px 12px rgba(99,102,241,0.15);' : '' }}">
+            <div style="border: 2px solid {{ ($isPremium && $membership && $membership->plan === $key) ? 'var(--primary-teal)' : '#ddd' }}; border-radius: 16px; padding: 2.5rem; text-align: center; position: relative; {{ $key === 'quarterly' && !($isPremium && $membership && $membership->plan === $key) ? 'box-shadow: 0 10px 30px rgba(32, 166, 138, 0.15); border-color: var(--primary-teal-light);' : '' }} background: white; transition: all 0.3s ease;">
                 @if(isset($plan['savings']))
-                    <span style="background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">
+                    <span style="background: var(--primary-teal); color: white; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">
                         Save {{ $plan['savings'] }}
                     </span>
                 @endif
 
                 @if($isPremium && $membership && $membership->plan === $key)
-                    <span style="position: absolute; top: 1rem; right: 1rem; background: #e0e7ff; color: #6366f1; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; border: 1px solid #6366f1;">
+                    <span style="position: absolute; top: 1rem; right: 1rem; background: var(--bg-light-teal); color: var(--primary-teal); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 800; border: 1px solid var(--primary-teal);">
                         CURRENT
                     </span>
                 @endif
@@ -79,8 +79,8 @@
                         @if(isset($teacher_id))
                             <input type="hidden" name="teacher_id" value="{{ $teacher_id }}">
                         @endif
-                        <button type="submit" class="btn primary" style="width: 100%; border-radius: 6px; padding: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #5C2D91; color: white; border: none; cursor: pointer;">
-                            Pay with Khalti
+                        <button type="submit" class="btn-pill primary" style="width: 100%; border: none; padding: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; cursor:pointer;">
+                             Pay with Khalti
                         </button>
                     </form>
                 @endif

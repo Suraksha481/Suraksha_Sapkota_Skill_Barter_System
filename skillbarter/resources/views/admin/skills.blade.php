@@ -64,30 +64,33 @@
         background: #fff; 
         padding: 0; 
         border-radius: 16px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03); 
         overflow: hidden;
-        border: 1px solid #f0f0f0;
+        border: 1px solid var(--primary-teal-light);
     }
     
     .table-responsive { width: 100%; overflow-x: auto; }
     .admin-table { width: 100%; border-collapse: collapse; }
     .admin-table th { 
-        background: #fafafa; 
-        padding: 1.25rem 1.5rem; 
+        background: #f8fafc; 
+        padding: 18px 20px;
         text-align: left; 
-        font-weight: 700; 
+        font-weight: 800; 
         text-transform: uppercase; 
-        font-size: 0.75rem; 
-        letter-spacing: 1px;
-        color: #888;
-        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.85rem; 
+        letter-spacing: 0.5px;
+        color: var(--text-slate);
+        border-bottom: 2px solid var(--primary-teal-light);
     }
     .admin-table td { 
-        padding: 1.25rem 1.5rem; 
-        border-bottom: 1px solid #f8f8f8;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.95rem;
+        color: #475569;
         vertical-align: middle;
     }
-    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr { transition: all 0.2s ease; }
+    .admin-table tbody tr:hover { background: #f8fafc; }
     
     .skill-name { font-weight: 700; color: #1a1a1a; font-size: 1rem; }
     .badge { 

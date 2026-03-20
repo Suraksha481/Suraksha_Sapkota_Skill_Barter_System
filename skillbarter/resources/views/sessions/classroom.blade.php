@@ -153,21 +153,56 @@
             </div>
         </div>
         <div class="card-body">
-            <div style="display: flex; gap: 40px; margin-bottom: 20px;">
-                <div>
-                    <label style="display: block; font-size: 12px; color: #666;">TEACHER</label>
-                    <strong>{{ $session->teacher->name }}</strong>
-                    @if(auth()->id() !== $session->organiser_id)
-                        <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-outline" style="font-size: 10px; margin-left:10px; padding: 2px 8px;">CHAT</a>
-                    @endif
+            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px;">
+                <div style="display: flex; gap: 40px; align-items: flex-start;">
+                    <div>
+                        <label style="display: block; font-size: 12px; color: #666;">TEACHER</label>
+                        <strong>{{ $session->teacher->name }}</strong>
+                        @if(auth()->id() !== $session->organiser_id)
+                            <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-outline" style="font-size: 10px; margin-left:10px; padding: 2px 8px;">CHAT</a>
+                        @endif
+                    </div>
+                    <div style="flex-grow: 1;">
+                        <label style="display: block; font-size: 12px; color: #666;">STUDENTS IN THIS CLASS</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px;">
+                            @forelse($session->participants as $p)
+                                <div style="display: flex; align-items: center; border: 1px solid #000; padding: 5px 12px;">
+                                    <strong>{{ $p->name }}</strong>
+                                    @if(auth()->id() === $session->organiser_id && $p->id !== auth()->id())
+                                        <a href="{{ route('messenger.index') }}?user={{ $p->id }}" class="btn-outline" style="font-size: 10px; margin-left:10px; padding: 2px 8px;">CHAT</a>
+                                    @endif
+                                </div>
+                            @empty
+                                <span style="color: #888;">No students attached to this session yet.</span>
+                            @endforelse
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label style="display: block; font-size: 12px; color: #666;">STUDENT</label>
-                    <strong>{{ $session->student->name }}</strong>
-                    @if(auth()->id() === $session->organiser_id)
-                        <a href="{{ route('messenger.index') }}?user={{ $session->participant_id }}" class="btn-outline" style="font-size: 10px; margin-left:10px; padding: 2px 8px;">CHAT</a>
-                    @endif
-                </div>
+
+                @if(auth()->id() === $session->organiser_id)
+                    <div style="background: #f9f9f9; padding: 15px; border: 1px dashed #000;">
+                        <form action="{{ route('session.add-participant', $session->id) }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
+                            @csrf
+                            <label style="font-size: 12px; font-weight: bold;">ADD ANOTHER ACCEPTED STUDENT:</label>
+                            <select name="user_id" required style="padding: 8px; border: 2px solid #000;">
+                                <option value="">Select Student...</option>
+                                @php
+                                    $acceptedRequests = \App\Models\RequestModel::where('responder_id', auth()->id())
+                                        ->where('status', 'accepted')
+                                        ->where('user_skill_id', $session->request->user_skill_id ?? 0)
+                                        ->with('requester')
+                                        ->get();
+                                @endphp
+                                @foreach($acceptedRequests as $ar)
+                                    @if(!$session->participants->contains($ar->requester_id))
+                                        <option value="{{ $ar->requester_id }}">{{ $ar->requester->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn-bw" style="padding: 8px 15px; font-size: 12px;">ADD TO CLASS</button>
+                        </form>
+                    </div>
+                @endif
             </div>
 
             <!-- MEETING LINK SECTION -->
@@ -244,11 +279,11 @@
                                     </div>
                                 @else
                                     <div style="background: #fcfcfc; padding: 30px; border: 1px dashed #000;">
-                                        <h3 style="margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Meeting Link Ready</h3>
-                                        <p style="color: #666; margin-bottom: 25px;">The link is available, but the teacher has not marked the session as "Live" yet.</p>
+                                        <h3 style="margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Teacher has not started</h3>
+                                        <p style="color: #666; margin-bottom: 25px;">The meeting link is ready, but the teacher has not started the live class yet. Please wait or message them.</p>
                                         <div style="display: flex; flex-direction: column; gap: 15px;">
-                                            <a href="{{ $session->meeting_link }}" target="_blank" class="btn-primary-bw" style="width: 100%;">JOIN MEETING ROOM</a>
-                                            <p style="font-size: 12px; color: #999; font-style: italic;">Note: You can join the room and wait for the teacher to arrive.</p>
+                                            <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-secondary-bw" style="width: 100%;">MESSAGE TEACHER</a>
+                                            <p style="font-size: 12px; color: #999; font-style: italic;">Note: The join button will appear here once the teacher starts the live session.</p>
                                         </div>
                                     </div>
                                 @endif

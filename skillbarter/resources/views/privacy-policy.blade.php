@@ -57,7 +57,7 @@
     .privacy-header h1 { font-size: 3rem; font-weight: 900; letter-spacing: -1px; }
     .muted { color: #666; font-size: 0.95rem; }
     .privacy-content section { margin-bottom: 2.5rem; }
-    .privacy-content h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+    .privacy-content h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; color: var(--primary-teal); }
     .privacy-content p, .privacy-content ul { color: #444; line-height: 1.8; font-size: 1.1rem; }
     .privacy-content ul { padding-left: 1.5rem; margin-top: 1rem; }
     .privacy-content li { margin-bottom: 0.5rem; }

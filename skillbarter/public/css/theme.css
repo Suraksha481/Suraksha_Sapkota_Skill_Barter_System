@@ -3,11 +3,18 @@
    ============================================ */
 
 :root {
-    /* PRIMARY COLORS (BLACK & WHITE THEME) */
-    --primary-main: #1a1a1a;
-    /* Deep Black/Slate */
-    --primary-dark: #000000;
-    /* Pure Black */
+    /* TEAL THEME COLORS */
+    --primary-teal: #20a68a;
+    --primary-teal-dark: #157e6a;
+    --primary-teal-light: #e9f7f4;
+    --text-slate: #2d3e50;
+    --bg-light-teal: #f4fbf9;
+
+    /* EXISTING PRIMARY COLORS (UPDATED TO TEAL) */
+    --primary-main: #20a68a;
+    /* Premium Teal */
+    --primary-dark: #157e6a;
+    /* Dark Teal */
     --primary-light: #4a4a4a;
     /* Steel Gray */
     --bg-creamy: #ffffff;
@@ -23,21 +30,21 @@
     --gray-100: #f5f5f5;
 
     /* TEXT COLORS */
-    --text-dark: #000000;
-    /* Pure black */
+    --text-dark: #1a202c;
+    /* Dark Slate (Modern) */
     --text-white: #ffffff;
-    --text-secondary: #666666;
-    /* Medium gray */
+    --text-secondary: #64748b;
+    /* Cool gray */
 
     /* BORDERS */
     --border-color: #e0e0e0;
     --border-light: #f0f0f0;
 
     /* STATUS COLORS */
-    --success: #1a1a1a;
-    --warning: #333333;
-    --error: #000000;
-    --info: #444444;
+    --success: #20a68a;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
 
     /* SPACING */
     --spacing-xs: 4px;
@@ -80,7 +87,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: #000000;
+    color: var(--text-dark);
     font-weight: 800;
     margin-bottom: var(--spacing-md);
 }
@@ -130,37 +137,45 @@ a:hover {
    ============================================ */
 
 .btn {
-    padding: 12px 24px;
+    height: 46px; /* Standardized height */
+    padding: 0 24px;
     border: none;
     border-radius: var(--radius-md);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: none !important;
-    display: inline-block;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     text-decoration: none !important;
     outline: none;
-    box-shadow: none !important;
 }
 
 
 
-/* PRIMARY BUTTON - Brownish */
+/* PRIMARY BUTTON - Teal */
 .btn.primary {
-    background-color: var(--primary-main);
+    background-color: var(--primary-teal);
     color: var(--text-white);
-    border: 2px solid var(--primary-main);
+    border: 2px solid var(--primary-teal);
 }
 
+.btn.primary:hover {
+    background-color: var(--primary-teal-dark);
+    border-color: var(--primary-teal-dark);
+}
 
-
-
-/* SECONDARY BUTTON - White with Black Border */
+/* SECONDARY BUTTON - White with Teal Border */
 .btn.secondary {
-    background-color: var(--primary-white);
-    color: var(--primary-black);
-    border: 2px solid var(--primary-black);
+    background-color: #ffffff;
+    color: var(--primary-teal);
+    border: 2px solid var(--primary-teal);
+}
+
+.btn.secondary:hover {
+    background-color: var(--primary-teal-light);
 }
 
 
@@ -188,6 +203,47 @@ a:hover {
     background-color: var(--success);
     color: var(--primary-white);
     border: 2px solid var(--success);
+}
+
+/* PILL BUTTONS (Premium Look) */
+.btn-pill {
+    height: 46px; /* Match standard .btn height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    text-decoration: none !important;
+}
+
+.btn-pill.primary {
+    background: var(--primary-teal);
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(32, 166, 138, 0.2);
+}
+
+.btn-pill.primary:hover {
+    background: var(--primary-teal-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(32, 166, 138, 0.3);
+    color: #ffffff !important;
+}
+
+.btn-pill.secondary {
+    background: #ffffff;
+    color: var(--primary-teal) !important;
+    border: 2px solid var(--primary-teal);
+}
+
+.btn-pill.secondary:hover {
+    background: var(--primary-teal-light);
+    transform: translateY(-2px);
 }
 
 
@@ -226,14 +282,13 @@ input:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: var(--primary-black);
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-teal);
 }
 
 input:hover,
 textarea:hover,
 select:hover {
-    border-color: var(--gray-400);
+    border-color: var(--gray-300);
 }
 
 input[type="checkbox"],
@@ -317,7 +372,7 @@ label {
     font-size: 12px;
     font-weight: 600;
     background-color: var(--gray-200);
-    color: var(--primary-black);
+    color: var(--primary-teal);
     margin-right: var(--spacing-sm);
 }
 
@@ -328,7 +383,7 @@ label {
 
 .badge-light {
     background-color: var(--gray-100);
-    color: var(--primary-black);
+    color: var(--primary-teal);
     border: 1px solid var(--gray-300);
 }
 
@@ -370,15 +425,15 @@ tbody tr:hover {
 
 header,
 nav {
-    background-color: var(--primary-dark);
-    color: var(--text-white);
+    background-color: #fff;
+    color: var(--text-slate);
     padding: var(--spacing-md) var(--spacing-lg);
-    border-bottom: 2px solid var(--primary-main);
+    border-bottom: 1px solid #f0f0f0;
 }
 
 header a,
 nav a {
-    color: var(--primary-white);
+    color: var(--primary-teal);
 }
 
 header a:hover,
@@ -391,10 +446,10 @@ nav a:hover {
    ============================================ */
 
 footer {
-    background-color: var(--primary-dark);
+    background-color: var(--gray-900); /* Dark Gray for footer */
     color: var(--text-white);
     padding: var(--spacing-xl) var(--spacing-lg);
-    border-top: 2px solid var(--primary-main);
+    border-top: 1px solid rgba(255,255,255,0.05);
     margin-top: var(--spacing-xl);
 }
 
@@ -593,13 +648,12 @@ footer a:hover {
 }
 
 /* HIGH CONTRAST VISIBILITY FIXES */
-.service-cta, .find-skill-hero, .rewards-header, .bg-black, .hero {
+.service-cta, .find-skill-hero, .rewards-header, .bg-black {
     color: #ffffff !important;
 }
 .service-cta h1, .service-cta h2, .service-cta h3, .service-cta p,
 .find-skill-hero h1, .find-skill-hero p,
-.rewards-header h1, .rewards-header h2, .rewards-header p, .rewards-header h3,
-.hero h1, .hero p, .hero span {
+.rewards-header h1, .rewards-header h2, .rewards-header p, .rewards-header h3 {
     color: #ffffff !important;
 }
 
@@ -612,4 +666,24 @@ footer a:hover {
     td {
         padding: var(--spacing-sm);
     }
+}
+
+/* ============================================
+   CTA BOX (SHARED)
+   ============================================ */
+.cta-box {
+    background: #fff;
+    margin: 80px 5% 150px; /* Increased bottom margin for better gap before footer */
+    padding: 60px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.08);
+}
+.cta-box h2 { margin: 0; font-size: 2rem; color: var(--text-slate); }
+.cta-box .text-teal { color: var(--primary-teal); font-weight: 700; }
+
+@media (max-width: 992px) {
+    .cta-box { flex-direction: column; text-align: center; gap: 30px; border-radius: 40px; }
 }

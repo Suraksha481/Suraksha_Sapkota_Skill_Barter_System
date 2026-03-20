@@ -5,6 +5,7 @@
     <title>Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 <body>

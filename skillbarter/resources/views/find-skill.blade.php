@@ -1,121 +1,118 @@
 @extends('app')
 
-@section('page_title', 'Find Skill')
+@section('page_title', 'Find Skills - SkillSwap')
 
 @section('content')
 
-<section class="find-skill-hero">
-    <h1>Find Skills</h1>
-    <p>Discover skills you can learn or teach from the community</p>
+<style>
+.find-hero-v2 {
+    background: var(--bg-light-teal);
+    padding: 80px 5%;
+    text-align: center;
+}
+.find-hero-v2 h1 { font-size: 3rem; margin-bottom: 20px; letter-spacing: -1.5px; }
+
+.search-container-v2 {
+    max-width: 1000px;
+    margin: -40px auto 60px;
+    background: #fff;
+    padding: 8px;
+    border-radius: 100px;
+    display: flex;
+    align-items: stretch;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+.search-container-v2 input { flex: 2.2; border: none; padding: 18px 30px; border-radius: 100px 0 0 100px; outline: none; font-size: 1.05rem; background: transparent; }
+.search-container-v2 select { flex: 1; border: none; border-left: 1px solid #eee; padding: 0 25px; outline: none; font-weight: 600; color: #666; background: transparent; }
+.search-container-v2 button { background: var(--primary-teal); color: #fff; border: none; padding: 0 45px; border-radius: 100px; font-weight: 700; cursor: pointer; transition: background 0.3s ease; display: flex; align-items: center; justify-content: center; }
+.search-container-v2 button:hover { background: var(--primary-teal-dark); }
+
+.skills-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding-bottom: 80px;
+}
+.skill-card-v2 {
+    background: #fff;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid #f0f0f0;
+    transition: transform 0.3s;
+}
+.skill-card-v2:hover { transform: translateY(-10px); }
+.skill-img-v2 { height: 200px; position: relative; }
+.skill-img-v2 img { width: 100%; height: 100%; object-fit: cover; }
+.cat-badge-v2 { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.9); padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--primary-teal); }
+
+.skill-info-v2 { padding: 30px; }
+.skill-info-v2 h3 { font-size: 1.3rem; margin-bottom: 15px; }
+.skill-info-v2 p { font-size: 0.9rem; color: #777; line-height: 1.6; margin-bottom: 25px; height: 4.8em; overflow: hidden; }
+
+.skill-footer-v2 { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f8f8f8; padding-top: 20px; }
+.learner-count-v2 { font-size: 0.85rem; color: #999; font-weight: 600; }
+.btn-view-v2 { color: var(--primary-teal); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+
+@media (max-width: 992px) {
+    .skills-grid-v2 { grid-template-columns: 1fr; }
+    .search-container-v2 { flex-direction: column; border-radius: 20px; padding: 20px; margin-top: 20px; }
+    .search-container-v2 select { border-left: none; border-top: 1px solid #eee; margin: 10px 0; padding: 10px 0; }
+}
+</style>
+
+<section class="find-hero-v2">
+    <div class="container">
+        <span class="badge-teal">EXPLORE KNOWLEDGE</span>
+        <h1>What do you want to <span class="text-teal">learn</span> today?</h1>
+        <p>Discover expert mentors and fellow students ready to share their expertise.</p>
+    </div>
 </section>
 
-<section class="find-skill-container">
-
-    <!-- SEARCH & FILTER -->
-    <form class="find-skill-search" method="GET" action="{{ route('find-skill') }}">
-        <input
-            type="search"
-            name="q"
-            placeholder="Search skills like Python, Design, Marketing..."
-            value="{{ request('q') }}"
-        >
-
+<div class="container">
+    <form class="search-container-v2" method="GET" action="{{ route('find-skill') }}">
+        <input type="search" name="q" placeholder="Search skills (e.g. Photoshop, Marketing...)" value="{{ request('q') }}">
         <select name="category">
             <option value="">All Categories</option>
             @foreach($categories as $category)
-                <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>
-                    {{ $category }}
-                </option>
+                <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
             @endforeach
         </select>
-
-        <button type="submit">Search</button>
+        <button type="submit">Search Skill</button>
     </form>
 
-    <!-- SKILLS GRID -->
     @if(request('q'))
-    <p class="search-info">
-        Showing results for: <strong>{{ request('q') }}</strong>
-    </p>
+        <p style="margin-bottom: 30px; color: #777;">Showing results for: <strong class="text-teal">{{ request('q') }}</strong></p>
     @endif
 
-    <div class="skills-grid">
+    <div class="skills-grid-v2">
         @forelse($skills as $skill)
-            <div class="skill-card-premium">
-                <div class="card-image">
+            <div class="skill-card-v2">
+                <div class="skill-img-v2">
                     <img src="https://via.placeholder.com/400x250?text={{ urlencode($skill->title) }}" alt="{{ $skill->title }}">
-                    <div class="category-tag">{{ $skill->category }}</div>
+                    <div class="cat-badge-v2">{{ $skill->category }}</div>
                 </div>
-
-                <div class="card-body">
+                <div class="skill-info-v2">
                     <h3>{{ $skill->title }}</h3>
-                    <p>{{ Str::limit($skill->description, 120) }}</p>
-                    
-                    <div class="card-footer">
-                        <span class="user-count">{{ $skill->users_count ?? 0 }} learners</span>
-                        <a href="{{ route('skill.show', $skill) }}" class="btn-details">
-                            View Details
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                            </svg>
-                        </a>
+                    <p>{{ Str::limit($skill->description, 100) }}</p>
+                    <div class="skill-footer-v2">
+                        <span class="learner-count-v2">👥 {{ $skill->users_count ?? 0 }} learners</span>
+                        <a href="{{ route('skill.show', $skill) }}" class="btn-view-v2">Details →</a>
                     </div>
                 </div>
             </div>
         @empty
-            <div class="empty-state">
-                <div class="empty-icon">📂</div>
+            <div style="grid-column: 1/-1; text-align: center; padding: 100px 0;">
+                <div style="font-size: 4rem; margin-bottom: 20px;">📂</div>
                 <h3>No skills found</h3>
-                <p>Try a different keyword or category.</p>
+                <p>Try searching for a different keyword or category.</p>
             </div>
         @endforelse
     </div>
 
-    <div class="pagination-center">
+    <div class="pagination-center" style="margin-bottom: 80px; display: flex; justify-content: center;">
         {{ $skills->appends(request()->query())->links('partials.pagination') }}
     </div>
-
-</section>
-
-<style>
-    .find-skill-hero { text-align: center; padding: 5rem 2rem; background: #000; color: #fff; border-radius: 0 0 40px 40px; }
-    .find-skill-hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 1rem; }
-    
-    .find-skill-container { max-width: 1300px; margin: -3rem auto 4rem; padding: 0 2rem; }
-    
-    .find-skill-search { background: #fff; padding: 1.5rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); display: flex; gap: 1rem; margin-bottom: 4rem; }
-    .find-skill-search input { flex: 2; padding: 1rem; border: 2px solid #eee; border-radius: 12px; font-weight: 600; outline: none; }
-    .find-skill-search select { flex: 1; padding: 1rem; border: 2px solid #eee; border-radius: 12px; font-weight: 600; outline: none; }
-    .find-skill-search button { padding: 1rem 2rem; background: #000; color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: transform 0.2s; }
-    .find-skill-search button:hover { transform: scale(1.02); }
-
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2.5rem; }
-    
-    .skill-card-premium { background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid #f0f0f0; }
-    .skill-card-premium:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); border-color: #000; }
-    
-    .card-image { position: relative; height: 220px; overflow: hidden; }
-    .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-    .skill-card-premium:hover .card-image img { transform: scale(1.1); }
-    
-    .category-tag { position: absolute; top: 1.5rem; left: 1.5rem; background: #000; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-    
-    .card-body { padding: 2rem; }
-    .card-body h3 { font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; letter-spacing: -0.5px; }
-    .card-body p { color: #666; line-height: 1.7; font-size: 1rem; margin-bottom: 2rem; }
-    
-    .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 1.5rem; }
-    .user-count { font-weight: 700; color: #999; font-size: 0.9rem; }
-    .btn-details { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #000; text-decoration: none; border-bottom: 2px solid #000; padding-bottom: 2px; }
-    
-    .pagination-center { margin-top: 5rem; display: flex; justify-content: center; }
-    .empty-state { grid-column: 1 / -1; text-align: center; padding: 5rem; }
-    .empty-icon { font-size: 4rem; margin-bottom: 2rem; }
-    
-    @media (max-width: 768px) {
-        .find-skill-search { flex-direction: column; }
-        .find-skill-hero h1 { font-size: 2.5rem; }
-    }
-</style>
+</div>
 
 @endsection

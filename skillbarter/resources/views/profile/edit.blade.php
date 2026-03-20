@@ -5,7 +5,7 @@
 
     <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 40px;">
 
-        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 30px; color: #000;">Edit Profile</h2>
+        <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 30px; color: var(--text-slate);">Edit Profile</h2>
 
         {{-- Success Message --}}
         @if(session('status'))
@@ -43,8 +43,8 @@
                     style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s ease;"
                     onmouseover="this.style.borderColor='#ccc'"
                     onmouseout="this.style.borderColor='#e0e0e0'"
-                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
-                    onblur="this.style.borderColor='#e0e0e0';"
+                    onfocus="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='0 0 0 4px rgba(32,166,138,0.15)'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
                 >
                 @error('name')
                     <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
@@ -64,8 +64,8 @@
                     style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s ease;"
                     onmouseover="this.style.borderColor='#ccc'"
                     onmouseout="this.style.borderColor='#e0e0e0'"
-                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
-                    onblur="this.style.borderColor='#e0e0e0';"
+                    onfocus="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='0 0 0 4px rgba(32,166,138,0.15)'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
                 >
                 @error('email')
                     <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
@@ -85,8 +85,8 @@
                     style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s ease;"
                     onmouseover="this.style.borderColor='#ccc'"
                     onmouseout="this.style.borderColor='#e0e0e0'"
-                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
-                    onblur="this.style.borderColor='#e0e0e0';"
+                    onfocus="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='0 0 0 4px rgba(32,166,138,0.15)'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
                 >
                 <p style="color: #666; font-size: 12px; margin-top: 5px;">This number will be used for payments.</p>
                 @error('phone')
@@ -103,8 +103,8 @@
                     style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; transition: border-color 0.3s ease;"
                     onmouseover="this.style.borderColor='#ccc'"
                     onmouseout="this.style.borderColor='#e0e0e0'"
-                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
-                    onblur="this.style.borderColor='#e0e0e0';"
+                    onfocus="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='0 0 0 4px rgba(32,166,138,0.15)'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
                 >{{ old('bio', $user->bio) }}</textarea>
                 @error('bio')
                     <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
@@ -140,8 +140,8 @@
                     style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.3s ease;"
                     onmouseover="this.style.borderColor='#ccc'"
                     onmouseout="this.style.borderColor='#e0e0e0'"
-                    onfocus="this.style.borderColor='#000'; this.style.outline='none';"
-                    onblur="this.style.borderColor='#e0e0e0';"
+                    onfocus="this.style.borderColor='var(--primary-teal)'; this.style.boxShadow='0 0 0 4px rgba(32,166,138,0.15)'; this.style.outline='none';"
+                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
                 >
                 @error('avatar')
                     <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
@@ -158,19 +158,15 @@
             <div style="display: flex; gap: 15px;">
                 <button
                     type="submit"
-                    style="flex: 1; background: #000; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.3s ease;"
-                    onmouseover="this.style.background='#333'"
-                    onmouseout="this.style.background='#000'"
-                    onclick="this.style.transform='scale(0.98)'"
-                    onmouseup="this.style.transform='scale(1)'"
+                    style="flex: 1; border: none; padding: 14px 24px; cursor: pointer; text-align: center;"
+                    class="btn-pill primary"
                 >
                     Save Changes
                 </button>
                 <a
                     href="{{ route('profile.show') }}"
-                    style="flex: 1; background: #f5f5f5; color: #000; padding: 12px 24px; border: 1px solid #e0e0e0; border-radius: 8px; font-weight: 600; text-decoration: none; text-align: center; font-size: 14px; transition: all 0.3s ease;"
-                    onmouseover="this.style.background='#e8e8e8'"
-                    onmouseout="this.style.background='#f5f5f5'"
+                    style="flex: 1; padding: 14px 24px; text-decoration: none; text-align: center; border: 2px solid var(--primary-teal); background: white;"
+                    class="btn-pill secondary"
                 >
                     Cancel
                 </a>

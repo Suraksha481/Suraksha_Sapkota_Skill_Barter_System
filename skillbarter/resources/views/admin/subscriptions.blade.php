@@ -7,28 +7,43 @@
 
     <div style="margin-bottom:1rem">Active revenue: <strong>NPR {{ number_format($revenue ?? 0, 2) }}</strong></div>
 
-    <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
-        <thead style="background:#f8fafc"><tr><th style="padding:8px">ID</th><th style="padding:8px">User</th><th style="padding:8px">Plan</th><th style="padding:8px">Price</th><th style="padding:8px">Status</th><th style="padding:8px">Actions</th></tr></thead>
-        <tbody>
-        @foreach($subs as $s)
-            <tr>
-                <td style="padding:8px">{{ $s->id }}</td>
-                <td style="padding:8px">{{ $s->user->name ?? $s->user_id }}</td>
-                <td style="padding:8px">{{ $s->plan }}</td>
-                <td style="padding:8px">{{ $s->price }} {{ $s->currency }}</td>
-                <td style="padding:8px">{{ $s->status }}</td>
-                <td style="padding:8px">
-                    @if($s->status === 'active')
-                    <form method="POST" action="{{ route('admin.subscriptions.cancel', $s->id) }}">
-                        @csrf
-                        <button type="submit" onclick="return confirm('Cancel subscription?')">Cancel</button>
-                    </form>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Plan</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach($subs as $s)
+                <tr>
+                    <td>{{ $s->id }}</td>
+                    <td>{{ $s->user->name ?? $s->user_id }}</td>
+                    <td><span class="admin-badge badge-gray">{{ ucfirst($s->plan) }}</span></td>
+                    <td><strong>{{ $s->price }} {{ $s->currency }}</strong></td>
+                    <td><span class="admin-badge {{ $s->status === 'active' ? 'badge-teal' : 'badge-red' }}">{{ ucfirst($s->status) }}</span></td>
+                    <td>
+                        @if($s->status === 'active')
+                        <div class="action-buttons">
+                            <form method="POST" action="{{ route('admin.subscriptions.cancel', $s->id) }}">
+                                @csrf
+                                <button type="submit" class="btn-admin btn-delete-admin" onclick="return confirm('Cancel subscription?')">Cancel</button>
+                            </form>
+                        </div>
+                        @else
+                        -
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <div style="margin-top:1rem">{{ $subs->links() }}</div>
 @endsection

@@ -260,4 +260,40 @@ class AdminController extends Controller
         \App\Models\Service::findOrFail($id)->delete();
         return back()->with('success', 'Service deleted successfully.');
     }
+
+    // ── DISPUTE MANAGEMENT ──────────────────────────────────────────────────
+
+    public function disputes()
+    {
+        $disputes = \App\Models\Dispute::with(['filer', 'sessionRequest.requester', 'sessionRequest.responder'])
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.disputes', compact('disputes'));
+    }
+
+    public function resolveDispute(\Illuminate\Http\Request $request, $id)
+    {
+        $dispute = \App\Models\Dispute::findOrFail($id);
+        $action  = $request->input('action'); // 'refund' or 'dismiss'
+
+        if ($action === 'refund') {
+            $dispute->update([
+                'status'      => 'resolved_refunded',
+                'admin_notes' => $request->input('admin_notes'),
+            ]);
+            // Optionally cancel the session
+            if ($dispute->sessionRequest) {
+                $dispute->sessionRequest->update(['status' => 'cancelled']);
+            }
+            return back()->with('success', 'Dispute resolved: session cancelled and marked as refunded.');
+        }
+
+        $dispute->update([
+            'status'      => 'resolved_dismissed',
+            'admin_notes' => $request->input('admin_notes'),
+        ]);
+        return back()->with('success', 'Dispute dismissed.');
+    }
 }
+

@@ -8,19 +8,20 @@
     <style>
         .verify-code-card {
             display: flex;
-            width: 700px;
+            width: 800px;
             max-width: 90%;
             background: #fff;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 50px rgba(32, 166, 138, 0.08);
+            border: 1px solid var(--primary-teal-light);
             margin: 0 auto;
         }
 
         .verify-code-left {
             flex: 1;
-            background: linear-gradient(135deg, #1a1a1a, #333333);
-            padding: 40px 30px;
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
+            padding: 50px 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -64,8 +65,9 @@
         .verify-code-right h2 {
             text-align: center;
             margin: 0 0 10px 0;
-            color: #1a1a1a;
-            font-size: 24px;
+            color: var(--text-slate);
+            font-size: 26px;
+            font-weight: 800;
         }
 
         .verify-code-right .subtitle {
@@ -76,13 +78,13 @@
         }
 
         .verify-code-right .info-text {
-            background: #f0f4ff;
+            background: var(--primary-teal-light);
             padding: 12px 15px;
-            border-left: 4px solid #1a1a1a;
+            border-left: 4px solid var(--primary-teal);
             margin-bottom: 25px;
-            border-radius: 4px;
-            font-size: 13px;
-            color: #333;
+            border-radius: 8px;
+            font-size: 13.5px;
+            color: var(--text-slate);
         }
 
         .code-input-group {
@@ -98,19 +100,21 @@
 
         .code-input-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 18px;
+            padding: 14px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 20px;
             text-align: center;
-            letter-spacing: 8px;
+            letter-spacing: 12px;
             font-weight: bold;
-            transition: border-color 0.3s;
+            color: var(--text-slate);
+            transition: all 0.3s;
         }
 
         .code-input-group input:focus {
             outline: none;
-            border-color: #1a1a1a;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(32, 166, 138, 0.15);
         }
 
         .code-input-group input::placeholder {
@@ -120,22 +124,22 @@
 
         .verify-code-right button {
             width: 100%;
-            padding: 12px;
-            background: #1a1a1a;
-            border: 2px solid #1a1a1a;
+            padding: 14px;
+            background: var(--primary-teal);
+            border: none;
             color: white;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: all 0.3s;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 10px;
         }
 
         .verify-code-right button:hover {
-            background: #0d0d99;
+            background: var(--primary-teal-dark);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(21, 21, 230, 0.3);
+            box-shadow: 0 8px 20px rgba(32, 166, 138, 0.3);
         }
 
         .resend-section {
@@ -153,21 +157,23 @@
 
         .resend-btn {
             background: transparent;
-            color: #1a1a1a;
-            border: 2px solid #1a1a1a;
-            padding: 10px 20px;
-            border-radius: 6px;
+            color: var(--primary-teal);
+            border: 2px solid var(--primary-teal);
+            padding: 10px 24px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 14.5px;
             font-weight: 600;
             transition: all 0.3s;
             width: auto;
             margin-top: 0;
+            display: inline-block;
         }
 
         .resend-btn:hover {
-            background: #1a1a1a;
+            background: var(--primary-teal);
             color: white;
+            box-shadow: 0 4px 15px rgba(32, 166, 138, 0.2);
         }
 
         .error-message {
@@ -222,11 +228,10 @@
     <div class="page-center">
         <div class="verify-code-card">
             <!-- Left Section -->
-            <div class="verify-code-left">
-                <div class="code-icon">📧</div>
-                <h1>Verify Email</h1>
-                <p>We've sent a 6-digit code to your email address. Please enter it below to complete your registration.</p>
-            </div>
+            <div class="verification-header">
+            <h3>Verify Your Email</h3>
+            <p>We've sent a 6-digit verification code to <strong style="color: var(--text-slate);">{{ auth()->user()->email }}</strong>.</p>
+        </div>
 
             <!-- Right Section -->
             <div class="verify-code-right">

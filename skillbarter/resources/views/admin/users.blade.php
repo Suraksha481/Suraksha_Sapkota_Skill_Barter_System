@@ -6,41 +6,44 @@
 @section('content')
     @if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
 
-    <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
-        <thead style="background:#f8fafc"><tr><th style="padding:8px">Name</th><th style="padding:8px">Email</th><th style="padding:8px">Role</th><th style="padding:8px">Active</th><th style="padding:8px">Actions</th></tr></thead>
-        <tbody>
+    <div class="table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
         @foreach($users as $u)
             <tr>
-                <td style="padding:8px"><a href="{{ route('admin.users.show', $u->id) }}" style="color: #2563eb; text-decoration: none; font-weight: 500;">{{ $u->name }}</a></td>
-                <td style="padding:8px">{{ $u->email }}</td>
-                <td style="padding:8px">{{ $u->role ?? '-' }}</td>
-                <td style="padding:8px">{{ $u->is_active ? 'Yes' : 'No' }}</td>
-                <td style="padding:8px">
+                <td><a href="{{ route('admin.users.show', $u->id) }}">{{ $u->name }}</a></td>
+                <td>{{ $u->email }}</td>
+                <td><span class="admin-badge badge-teal">{{ ucfirst($u->role ?? 'Unassigned') }}</span></td>
+                <td><span class="admin-badge {{ $u->is_active ? 'badge-teal' : 'badge-red' }}">{{ $u->is_active ? 'Active' : 'Banned' }}</span></td>
+                <td>
+                    <div class="action-buttons">
                     <form method="POST" action="{{ route('admin.users.toggle-active', $u->id) }}" style="display:inline">
                         @csrf
-                        <button type="submit">{{ $u->is_active ? 'Deactivate' : 'Activate' }}</button>
-                    </form>
-
-                    <form method="POST" action="{{ route('admin.users.change-role', $u->id) }}" style="display:inline;margin-left:8px">
-                        @csrf
-                        <select name="role" onchange="this.form.submit()">
-                            <option value="" {{ $u->role ? '' : 'selected' }}>No role</option>
-                            <option value="student" {{ $u->role==='student' ? 'selected' : '' }}>Student</option>
-                            <option value="teacher" {{ $u->role==='teacher' ? 'selected' : '' }}>Teacher</option>
-                            <option value="admin" {{ $u->role==='admin' ? 'selected' : '' }}>Admin</option>
-                        </select>
+                        <button type="submit" class="btn-admin {{ $u->is_active ? 'btn-delete-admin' : 'btn-primary-admin' }}">
+                            {{ $u->is_active ? 'Deactivate' : 'Activate' }}
+                        </button>
                     </form>
 
                     <form method="POST" action="{{ route('admin.users.delete', $u->id) }}" style="display:inline;margin-left:8px">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+                        <button type="submit" class="btn-admin btn-delete-admin" onclick="return confirm('Delete this user?')">Delete</button>
                     </form>
                 </td>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <div style="margin-top:1rem">{{ $users->links() }}</div>
 @endsection

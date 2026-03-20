@@ -7,20 +7,20 @@
 <div class="rewards-container">
     <!-- Header -->
     <div class="rewards-header">
-        <h1>Welcome, {{ $user->name }}! 🎯</h1>
+        <h1>Welcome, {{ $user->name }}</h1>
         <p>Your gamification dashboard</p>
 
         <div class="header-stats">
             <div class="stat-badge">
-                <span class="number">{{ $stats['sessions_taught'] + $stats['sessions_learned'] }}</span>
+                <span class="number">{{ $user->total_sessions }}</span>
                 <span class="label">Sessions</span>
             </div>
             <div class="stat-badge">
-                <span class="number">{{ $stats['skills_count'] }}</span>
+                <span class="number">{{ $user->userSkills()->where('type', 'offer')->count() }}</span>
                 <span class="label">Skills</span>
             </div>
             <div class="stat-badge">
-                <span class="number">{{ $stats['feedback_given'] }}</span>
+                <span class="number">{{ $user->averageRating() ? number_format($user->averageRating(), 1) : 'No' }}</span>
                 <span class="label">Feedback</span>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 </div>
             @else
                 <div class="empty-state">
-                    <div class="empty-state-icon">🏅</div>
+                    <div class="empty-state-icon"></div>
                     <p>Start earning badges by being active in the community!</p>
                 </div>
             @endif
@@ -122,13 +122,6 @@
                         <li class="leaderboard-item {{ $entry->user_id === $user->id ? 'user-rank' : '' }}">
                             <div class="leaderboard-rank">
                                 {{ $index + 1 }}
-                                @if($index === 0)
-                                    🏆
-                                @elseif($index === 1)
-                                    🥈
-                                @elseif($index === 2)
-                                    🥉
-                                @endif
                             </div>
                             <div class="leaderboard-info">
                                 <p class="leaderboard-name">{{ $entry->user->name }}</p>
@@ -199,8 +192,8 @@
 
     <!-- Action Buttons -->
     <div class="button-section">
-        <a href="{{ url('/') }}" class="btn secondary">Back to Home</a>
-        <a href="{{ route('dashboard') }}" class="btn primary">Back to Dashboard</a>
+        <a href="{{ url('/') }}" class="btn-pill secondary" style="text-decoration:none;">Back to Home</a>
+        <a href="{{ route('dashboard') }}" class="btn-pill primary" style="text-decoration:none;">Back to Dashboard</a>
     </div>
 </div>
 

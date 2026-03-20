@@ -1,121 +1,128 @@
 @extends('app')
 
-@section('page_title', 'Services')
+@section('page_title', 'Our Services - SkillSwap')
 
 @section('content')
 
-<!-- HERO / BANNER -->
-<section class="services-hero">
-  <div class="container">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <div class="kicker">Our Services</div>
-        <h1>Everything You Need to Master New Skills</h1>
-        <p class="muted">Discover a comprehensive suite of services designed to make skill exchange seamless, effective, and enjoyable for everyone — students, tutors, and campus organizers.</p>
-        <div class="hero-ctas">
-          <a href="{{ url('/find-skill') }}" class="btn primary">Browse Skills</a>
-          <a href="{{ auth()->check() ? route('home') : route('register') }}" class="btn ghost">Join Now</a>
+<style>
+.services-hero-v2 {
+    padding: 120px 5% 80px;
+    background: #fff;
+}
+.services-hero-v2 .container { display: flex; align-items: center; gap: 80px; }
+.srv-hero-text { flex: 1.2; }
+.srv-hero-text h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 25px; line-height: 1.1; letter-spacing: -2px; }
+.srv-hero-text p { font-size: 1.2rem; color: #666; margin-bottom: 40px; }
+.srv-hero-img { flex: 1; border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
+.srv-hero-img img { width: 100%; display: block; }
+
+.services-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 80px 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+}
+.srv-card-v2 {
+    background: #fff;
+    padding: 60px 40px;
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+    transition: all 0.3s;
+}
+.srv-card-v2:hover { background: var(--bg-light-teal); transform: scale(1.02); z-index: 2; border-color: transparent; box-shadow: 0 20px 40px rgba(32, 166, 138, 0.1); }
+.srv-card-v2 .icon { font-size: 3rem; margin-bottom: 25px; display: block; }
+.srv-card-v2 h3 { font-size: 1.4rem; margin-bottom: 15px; }
+.srv-card-v2 p { color: #888; font-size: 0.95rem; line-height: 1.6; }
+
+.categories-v2 { background: var(--bg-light-teal); padding: 100px 5%; text-align: center; }
+.cat-list-v2 { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 40px; }
+.cat-tag-v2 {
+    background: var(--primary-teal);
+    padding: 12px 30px;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(32,166,138,0.2);
+}
+.cat-tag-v2:hover { background: var(--primary-teal-dark); color: #fff; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(32,166,138,0.3); }
+
+@media (max-width: 992px) {
+    .services-hero-v2 .container { flex-direction: column; text-align: center; }
+    .services-grid-v2 { grid-template-columns: 1fr; }
+}
+</style>
+
+<section class="services-hero-v2">
+    <div class="container">
+        <div class="srv-hero-text">
+            <span class="badge-teal">OUR SERVICES</span>
+            <h1>Everything you need to <span class="text-teal">master</span> new skills.</h1>
+            <p>Discover a comprehensive suite of services designed to make skill exchange seamless, effective, and enjoyable for everyone.</p>
+            <div class="hero-btns">
+                <a href="{{ url('/find-skill') }}" class="btn-pill primary">Browse All Skills</a>
+            </div>
         </div>
-      </div>
-
-      <div class="hero-media">
-        <img src="{{ asset('https://www.altamira.ai/wp-content/uploads/2022/05/skill-sharing.jpg') }}" alt="Students sharing skills">
-      </div>
+        <div class="srv-hero-img">
+            <img src="{{ asset('images/home_redesign/hero_students.png') }}" alt="Services Hero">
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- SERVICE CARDS -->
-<section class="services-cards">
-  <div class="container">
-    <div class="cards-grid">
-      <div class="service-card">
-        <img src="{{ asset('images/services/icon-lesson.png') }}" alt="One-on-one">
-        <h3>One-on-One Sessions</h3>
-        <p>Personalized tutoring sessions for focused, hands-on learning with schedule flexibility.</p>
-      </div>
-
-      <div class="service-card">
-        <img src="{{ asset('images/services/icon-workshop.png') }}" alt="Workshops">
-        <h3>Workshops & Events</h3>
-        <p>Organize group workshops and campus events to teach practical skills at scale.</p>
-      </div>
-
-      <div class="service-card">
-        <img src="{{ asset('images/services/icon-match.png') }}" alt="Smart matching">
-        <h3>Smart Matching</h3>
-        <p>Intelligent matching suggests peers who have complementary skills and availability.</p>
-      </div>
-
-      <div class="service-card">
-        <img src="{{ asset('images/services/icon-cert.png') }}" alt="Badges">
-        <h3>Badges & Rewards</h3>
-        <p>Earn badges and points for teaching, hosting events, and contributing to the community.</p>
-      </div>
-
-      <div class="service-card">
-        <img src="{{ asset('images/services/icon-resources.png') }}" alt="Resources">
-        <h3>Learning Resources</h3>
-        <p>Access curated materials — slides, templates, starter projects, and recordings.</p>
-      </div>
-
-      <div class="service-card">
-        <img src="{{ asset('images/services/icon-support.png') }}" alt="Support">
-        <h3>Mentor Support</h3>
-        <p>Find experienced mentors for longer-term guidance and portfolio reviews.</p>
-      </div>
+<section class="container">
+    <div class="services-grid-v2">
+        <div class="srv-card-v2">
+            <span class="icon">👤</span>
+            <h3>1-on-1 Sessions</h3>
+            <p>Personalized tutoring sessions for focused, hands-on learning with schedule flexibility.</p>
+        </div>
+        <div class="srv-card-v2">
+            <span class="icon">🏛️</span>
+            <h3>Campus Workshops</h3>
+            <p>Organize group workshops and campus events to teach practical skills at scale.</p>
+        </div>
+        <div class="srv-card-v2">
+            <span class="icon">🧠</span>
+            <h3>Smart Matching</h3>
+            <p>Intelligent matching suggests peers who have complementary skills and availability.</p>
+        </div>
+        <div class="srv-card-v2">
+            <span class="icon">🏅</span>
+            <h3>Badges & Rewards</h3>
+            <p>Earn badges and points for teaching and contributing to the community.</p>
+        </div>
+        <div class="srv-card-v2">
+            <span class="icon">📚</span>
+            <h3>Learning Resources</h3>
+            <p>Access curated materials — slides, templates, and starter projects.</p>
+        </div>
+        <div class="srv-card-v2">
+            <span class="icon">👨‍🏫</span>
+            <h3>Mentor Support</h3>
+            <p>Find experienced mentors for longer-term guidance and portfolio reviews.</p>
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- CATEGORIES -->
-<section class="service-categories">
-  <div class="container">
-    <h2>Explore Skills Across Multiple Categories</h2>
-    <p class="muted">From technology to arts, find short sessions and workshops that match your goals.</p>
-
-    <div class="categories-grid">
-      <a href="{{ route('find-skill', ['category' => 'Technology']) }}" class="category-btn">Technology</a>
-      <a href="{{ route('find-skill', ['category' => 'Design']) }}" class="category-btn">Design</a>
-      <a href="{{ route('find-skill', ['category' => 'Business']) }}" class="category-btn">Business</a>
-      <a href="{{ route('find-skill', ['category' => 'Language']) }}" class="category-btn">Language</a>
-      <a href="{{ route('find-skill', ['category' => 'Soft Skills']) }}" class="category-btn">Soft Skill</a>
-      <a href="{{ route('find-skill', ['category' => 'Marketing']) }}" class="category-btn">Marketing</a>
-      <a href="{{ route('find-skill', ['category' => 'Data']) }}" class="category-btn">Data</a>
+<section class="categories-v2">
+    <span class="badge-teal">CATEGORIES</span>
+    <h2>Explore skills across many fields</h2>
+    <div class="cat-list-v2">
+        @foreach(['Technology', 'Design', 'Business', 'Language', 'Soft Skills', 'Marketing', 'Data'] as $cat)
+            <a href="{{ route('find-skill', ['category' => $cat]) }}" class="cat-tag-v2">{{ $cat }}</a>
+        @endforeach
     </div>
-  </div>
 </section>
 
-<!-- HOW OUR SERVICE WORKS -->
-<section class="service-how">
-  <div class="container two-col">
-    <div class="how-list">
-      <h2>How Our Service Works</h2>
-      <ol>
-        <li><strong>Profile Creation</strong> — Build a clear profile with skills and availability.</li>
-        <li><strong>Smart Matching</strong> — Get matched with peers who share learning goals.</li>
-        <li><strong>Schedule & Learn</strong> — Book micro-sessions or join workshops.</li>
-        <li><strong>Earn & Share</strong> — Earn badges and share feedback to grow your reputation.</li>
-      </ol>
+<div class="cta-box container">
+    <div>
+        <span class="text-teal">Ready?</span>
+        <h2>Start your own learning journey</h2>
     </div>
-    <div class="how-image">
-      <img src="{{ asset('https://www.udpglobal.com/wp-content/uploads/2024/09/ENTRADAS_BLOG_1_Main_Image-1-1.png') }}" alt="Team teaching">
-    </div>
-  </div>
-</section>
-
-<!-- CTA BANNER -->
-<section class="service-cta">
-  <div class="container">
-    <h3>Ready to experience our services?</h3>
-    <p class="muted">Join thousands of learners who already benefit from our community-driven platform.</p>
-    <a class="btn primary large" href="{{ auth()->check() ? route('home') : route('register') }}">Get Started Today</a>
-  </div>
-</section>
-
-<p class="muted">
-    We currently support {{ $serviceCount }} different skill categories.
-</p>
-
+    <a href="{{ route('register') }}" class="btn-pill primary" style="padding: 15px 40px;">Get Started Now</a>
+</div>
 
 @endsection

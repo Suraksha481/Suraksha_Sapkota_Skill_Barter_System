@@ -78,55 +78,59 @@
 
     .filter-btn {
         background: #fff;
-        padding: 8px 16px;
-        border-radius: 20px;
+        padding: 8px 20px;
+        border-radius: 25px;
         text-decoration: none;
-        color: #000;
-        border: 1px solid #000;
+        color: var(--primary-teal);
+        border: 2px solid var(--primary-teal-light);
         transition: all 0.3s;
-        font-weight: 500;
+        font-weight: 600;
+        font-size: 14px;
     }
 
     .filter-btn:hover {
-        background: #000;
+        background: var(--primary-teal);
         color: #fff;
+        border-color: var(--primary-teal);
     }
 
     .courses-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
         margin: 30px 0;
     }
 
     .course-card {
         background: white;
-        border: 2px solid #000;
-        border-radius: 12px;
+        border: 1px solid var(--primary-teal-light);
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        transition: all 0.3s ease;
     }
 
     .course-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 15px 40px rgba(32, 166, 138, 0.1);
+        border-color: var(--primary-teal);
     }
 
     .course-header {
         background: #fff;
-        color: #000;
-        padding: 20px;
+        color: var(--text-dark);
+        padding: 25px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #f5f5f5;
     }
 
     .course-header h3 {
         margin: 0;
         font-size: 1.25rem;
         font-weight: 800;
+        color: var(--primary-teal);
     }
 
     .course-body {

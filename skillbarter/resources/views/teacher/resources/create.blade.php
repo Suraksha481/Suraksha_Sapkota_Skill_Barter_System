@@ -50,8 +50,8 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn primary">Upload Resource</button>
-                <a href="{{ route('teacher.resources.index') }}" class="btn secondary">❌ Cancel</a>
+                <button type="submit" class="btn-pill primary" style="padding: 12px 30px; border: none; font-size: 1rem; cursor: pointer; display: inline-block;">Upload Resource</button>
+                <a href="{{ route('teacher.resources.index') }}" class="btn-pill secondary" style="padding: 12px 30px; font-size: 1rem; display: inline-block; text-align: center;">Cancel</a>
             </div>
         </form>
     </div>
@@ -59,24 +59,27 @@
 </section>
 
 <style>
+<style>
     .form-container {
         max-width: 600px;
         margin: 30px auto;
         background: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid var(--primary-teal-light);
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
 
     .form-group label {
         display: block;
         margin-bottom: 8px;
         font-weight: 600;
-        color: #333;
+        color: var(--text-slate);
+        font-size: 0.95rem;
     }
 
     .form-group input[type="text"],
@@ -84,52 +87,42 @@
     .form-group textarea,
     .form-group select {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
         font-family: inherit;
-        font-size: 14px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="file"]:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 4px rgba(32, 166, 138, 0.15);
+        background: #fff;
+        outline: none;
     }
 
     .form-group textarea {
         resize: vertical;
+        min-height: 120px;
     }
 
     .form-actions {
         display: flex;
-        gap: 10px;
-        margin-top: 30px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-    }
-
-    .btn.primary {
-        background: #2196f3;
-        color: white;
-    }
-
-    .btn.primary:hover {
-        background: #1976d2;
-    }
-
-    .btn.secondary {
-        background: #999;
-        color: white;
+        gap: 15px;
+        margin-top: 40px;
     }
 
     .error {
-        color: #d32f2f;
-        font-size: 12px;
+        color: #ef4444;
+        font-size: 0.85rem;
         display: block;
-        margin-top: 5px;
+        margin-top: 6px;
+        font-weight: 500;
     }
 </style>
 

@@ -5,21 +5,22 @@
    HEADER BASE
 ================================ */
 #header {
-    background: #000;
-    color: #fff;
-    padding: 15px 30px;
+    background: #fff;
+    color: var(--text-slate);
+    padding: 25px 8%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #f0f0f0;
 }
 
 #header a {
-    color: #fff;
+    color: var(--text-slate);
     text-decoration: none;
+    font-weight: 500;
 }
 
 /* ===============================
@@ -28,426 +29,266 @@
 .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
-.logo-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #fff;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.brand .logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--primary-teal);
+}
+
+.brand a {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text-slate) !important;
 }
 
 /* ===============================
    NAVIGATION
 ================================ */
-.main-nav ul {
+.main-nav-list {
     display: flex;
-    gap: 25px;
+    gap: 30px;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.main-nav a:hover {
-    opacity: 0.7;
+.nav-link {
+    text-decoration: none;
+    color: var(--text-slate);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 10px 18px;
+    border-radius: 30px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-/* ===============================
-   SEARCH
-================================ */
-.search-hero input {
-    padding: 8px 14px;
-    border-radius: 6px;
-    border: 1px solid #333;
-    background: #111;
-    color: #fff;
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-teal);
+    background: rgba(32, 166, 138, 0.08);
 }
 
-.search-hero input:focus {
-    outline: none;
-    border-color: #555;
+.nav-item { position: relative; }
+
+/* Pages Dropdown */
+.pages-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: #fff;
+    min-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+    padding: 10px 0;
+    border: 1px solid #f0f0f0;
 }
 
-/* Notification Button */
-.notif-btn {
+.nav-item:hover .pages-dropdown { display: block; }
+
+.dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-slate);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-light-teal);
+    color: var(--primary-teal);
+}
+
+.header-icon-btn {
     width: 42px;
     height: 42px;
-    background: #fff;
-    color: #000;
-    border-radius: 8px;
+    background: var(--primary-teal);
+    color: #fff;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     position: relative;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(32, 166, 138, 0.2);
+}
+
+.header-icon-btn:hover {
+    background: var(--primary-teal-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(32, 166, 138, 0.3);
 }
 
 .notif-badge {
     position: absolute;
     top: -5px;
     right: -5px;
-    background: #000;
+    background: #ef4444;
     color: #fff;
-    font-size: 11px;
-    padding: 3px 6px;
-    border-radius: 50%;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 2px solid var(--primary-teal);
 }
 
-/* Dropdown Card */
-.notif-card {
-    position: absolute;
-    right: 0;
-    top: 55px;
-    width: 360px;
-    background: #fff;
-    color: #000;
-    border-radius: 14px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-    display: none;
-    overflow: hidden;
-    z-index: 999;
-}
-
-/* Header */
-.notif-header {
-    padding: 14px 16px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.mark-all {
-    background: none;
-    border: none;
-    color: #000;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-/* Fix notification text color */
-.notif-card,
-.notif-card a,
-.notif-card .notif-message,
-.notif-card .notif-time {
-    color: #000 !important;
-}
-
-.notif-item.unread {
-    background: #f2f2f2;
-}
-
-.notif-item.unread a {
-    color: #000 !important;
-}
-
-/* Body */
-.notif-body {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.notif-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.notif-item a {
-    color: #000;
-    text-decoration: none;
-    display: block;
-}
-
-.notif-item:hover {
-    background: #f7f7f7;
-}
-
-.unread {
-    background: #f1f1f1;
-}
-
-.notif-message {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.notif-time {
-    font-size: 12px;
-    color: #777;
-}
-
-/* Empty state */
-.empty-notif {
-    padding: 20px;
-    text-align: center;
-    color: #888;
-}
-
-/* Footer */
-.notif-footer {
-    padding: 10px;
-    text-align: center;
-    border-top: 1px solid #eee;
-}
-
-.notif-footer a {
-    font-size: 13px;
-    color: #000;
-}
-
-/* ===============================
-   PROFILE AVATAR
-================================ */
-.profile-box .profile-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #fff;
-    color: #000;
+/* User Profile Mini */
+.user-avatar-mini {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--primary-teal);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
 }
 
-/* ===============================
-   PROFILE DROPDOWN
-================================ */
-#profile-dropdown {
+/* Dropdowns (Same logic as before, updated styles) */
+.header-dropdown {
     position: absolute;
     right: 0;
-    top: 55px;
-    width: 420px;
+    top: 50px;
+    width: 320px;
     background: #fff;
-    color: #000;
-    border-radius: 14px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     display: none;
+    z-index: 1001;
     overflow: hidden;
+    border: 1px solid #f0f0f0;
 }
 
-#profile-dropdown ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* Profile Header */
-.profile-card {
-    padding: 25px 20px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-
-.profile-card .profile-avatar {
-    width: 70px;
-    height: 70px;
-    margin: 0 auto 10px;
-    background: #f2f2f2;
-    font-size: 26px;
-}
-
-.profile-name {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.profile-sub {
-    font-size: 13px;
-    color: #777;
-}
-
-/* Contact Info */
-.contact-row {
-    padding: 8px 20px;
-    text-align: center;
-    font-size: 14px;
-    color: #444;
-}
-
-/* Section Title */
-.section-title {
-    padding: 8px 20px;
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #888;
-}
-
-/* Links */
-#profile-dropdown li a {
-    display: block;
-    padding: 12px 20px;
-    color: #000;
-}
-
-#profile-dropdown li a:hover {
-    background: #f5f5f5;
-}
-
-/* Logout */
-.logout-btn {
-    width: 100%;
-    padding: 12px 20px;
-    border: none;
-    background: transparent;
-    color: #000;
-    text-align: left;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background: #f5f5f5;
+@media (max-width: 992px) {
+    .main-nav { display: none; }
 }
 </style>
 
 <div class="brand">
-    <span class="logo-circle">SS</span>
-    <a href="{{ url('/') }}">Skill Swap</a>
+    <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+    </svg>
+    <a href="{{ url('/') }}">SkillSwap</a>
 </div>
 
 <nav class="main-nav">
-    <ul>
-        <li><a href="{{ url('/') }}">Home</a></li>
-        <li><a href="{{ url('/service') }}">Service</a></li>
-        <li><a href="{{ url('/find-skill') }}">Find Skill</a></li>
-        @auth
-        <li><a href="{{ url('/match') }}">Match</a></li>
-        @endauth
-        <li><a href="{{ url('/about') }}">About</a></li>
+    <ul class="main-nav-list">
+        <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
+        <li class="nav-item"><a href="{{ url('/about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">About</a></li>
+        <li class="nav-item"><a href="{{ url('/service') }}" class="nav-link {{ request()->is('service') ? 'active' : '' }}">Services</a></li>
+        <li class="nav-item">
+            <a href="#" class="nav-link {{ (request()->is('find-skill') || request()->is('privacy-policy') || request()->is('terms-of-use') || request()->is('help-center')) ? 'active' : '' }}">
+                Pages
+                <svg style="width:14px; height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+            <div class="pages-dropdown">
+                <a href="{{ url('/find-skill') }}" class="dropdown-item">Find Skills</a>
+                @auth <a href="{{ url('/match') }}" class="dropdown-item">Skill Matching</a> @endauth
+                <a href="{{ route('privacy-policy') }}" class="dropdown-item">Privacy Policy</a>
+                <a href="{{ url('/terms-of-use') }}" class="dropdown-item">Terms of Use</a>
+                <a href="{{ url('/help-center') }}" class="dropdown-item">Help Center</a>
+            </div>
+        </li>
+        <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
     </ul>
 </nav>
 
-<form class="search-hero" method="GET" action="{{ route('find-skill') }}">
-    <input type="search" name="q" placeholder="Search skills..." value="{{ request('q') }}">
-</form>
-
 <div class="nav-actions">
 
-@guest
-    <a class="btn ghost" href="{{ route('register') }}">Sign Up</a>
-    <a class="btn primary" href="{{ route('login') }}">Login</a>
-@endguest
+    @guest
+        <a href="{{ route('login') }}" class="btn-pill secondary">Login</a>
+        <a href="{{ route('register') }}" class="btn-pill primary">Get started</a>
+    @endguest
 
-@auth
-<div class="user-profile" style="position:relative; display:flex; gap:15px; align-items:center;">
+    @auth
+        <div class="user-profile" style="position:relative; display:flex; gap:12px; align-items:center;">
+            <!-- Messenger -->
+            <a href="{{ route('messenger.index') }}" class="header-icon-btn" title="Messages">
+                <svg style="width:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+            </a>
 
-  <!-- Notifications -->
-<div class="notifications" style="position:relative;">
-
-    @php
-        $notifications = Auth::user()->notifications()->latest()->take(8)->get();
-        $unreadCount = Auth::user()->unreadNotifications()->count();
-    @endphp
-
-    <!-- Bell -->
-    <div id="notif-toggle" class="notif-btn">
-        🔔
-        @if($unreadCount > 0)
-            <span class="notif-badge">{{ $unreadCount }}</span>
-        @endif
-    </div>
-
-    <!-- Dropdown -->
-    <div id="notif-dropdown" class="notif-card">
-
-        <div class="notif-header">
-            <strong>Notifications</strong>
-            @if($unreadCount > 0)
-            <form method="POST" action="{{ route('notifications.read-all') }}">
-                @csrf
-                <button type="submit" class="mark-all">Mark all read</button>
-            </form>
-            @endif
-        </div>
-
-        <div class="notif-body">
-            @forelse($notifications as $notification)
-                <div class="notif-item {{ $notification->read_at ? '' : 'unread' }}" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
-                    <a href="{{ isset($notification->data['request_id']) ? route('requests.index') : '#' }}" style="flex-grow: 1;">
-                        <div class="notif-message">
-                            {{ $notification->data['message'] ?? 'New notification' }}
-                        </div>
-                        <small class="notif-time">
-                            {{ $notification->created_at->diffForHumans() }}
-                        </small>
-                    </a>
-                    @if(!$notification->read_at)
-                        <form method="POST" action="{{ route('notifications.read', $notification->id) }}" style="margin-top: 5px;">
-                            @csrf
-                            <button type="submit" class="btn tiny bw" style="font-size: 10px; padding: 2px 6px;">Read</button>
-                        </form>
+            <!-- Notifications -->
+            <div style="position:relative;">
+                @php
+                    $notifications = Auth::user()->notifications()->latest()->take(6)->get();
+                    $unreadCount = Auth::user()->unreadNotifications()->count();
+                @endphp
+                <button id="notif-toggle" class="header-icon-btn">
+                    <svg style="width:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                    @if($unreadCount > 0)
+                        <span class="notif-badge">{{ $unreadCount }}</span>
                     @endif
-                </div>
-            @empty
-                <div class="empty-notif">
-                    No notifications yet.
-                </div>
-            @endforelse
-        </div>
-
-        <div class="notif-footer">
-            <a href="{{ route('notifications.index') }}">View all</a>
-        </div>
-
-    </div>
-</div>
-
-  <!-- Messenger -->
-  <a href="{{ route('messenger.index') }}" class="notif-btn" title="Messenger">
-      💬
-  </a>
-
-    <!-- Profile -->
-    <div class="profile-box" id="profile-toggle">
-        <div class="profile-avatar">
-            {{ strtoupper(substr(Auth::user()->name,0,1)) }}
-        </div>
-    </div>
-
-    <div id="profile-dropdown">
-        <ul>
-            <li>
-                <div class="profile-card">
-                    <div class="profile-avatar">
-                        {{ strtoupper(substr(Auth::user()->name,0,1)) }}
+                </button>
+                <div id="notif-dropdown" class="header-dropdown notif-card">
+                    <div class="notif-header" style="padding:15px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="color:#000">Notifications</strong>
+                        @if($unreadCount > 0)
+                            <form method="POST" action="{{ route('notifications.read-all') }}">@csrf<button type="submit" style="background:none; border:none; color:var(--primary-teal); font-size:12px; cursor:pointer;">Mark all read</button></form>
+                        @endif
                     </div>
-                    <div class="profile-name">{{ Auth::user()->name }}</div>
-                    <div class="profile-sub">{{ Auth::user()->username ?? '' }}</div>
+                    <div style="max-height:280px; overflow-y:auto;">
+                        @forelse($notifications as $n)
+                            <div style="padding:12px 15px; border-bottom:1px solid #f9f9f9; background: #fff">
+                                <a href="{{ isset($n->data['request_id']) ? route('requests.index') : '#' }}" style="display:block;">
+                                    <div style="font-size:13px; color:#000">{{ $n->data['message'] ?? 'Notification' }}</div>
+                                    <small style="color:#888;">{{ $n->created_at->diffForHumans() }}</small>
+                                </a>
+                            </div>
+                        @empty
+                            <div style="padding:20px; text-align:center; color:#ccc;">No notifications</div>
+                        @endforelse
+                    </div>
+                    <div style="padding:10px; text-align:center; border-top:1px solid #eee;"><a href="{{ route('notifications.index') }}" style="font-size:13px; color:var(--primary-teal)">View all</a></div>
                 </div>
-            </li>
+            </div>
 
-            <li class="contact-row">{{ Auth::user()->email }}</li>
-
-            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ route('profile.show') }}">Profile</a></li>
-            <li><a href="{{ route('my.skills') }}">My Skills</a></li>
-            <li><a href="{{ route('requests.index') }}">Requests</a></li>
-            <li><a href="{{ route('sessions.index') }}">Sessions</a></li>
-            <li><a href="{{ route('rewards.index') }}">Rewards</a></li>
-            @if(Auth::user()->isStudent())
-            <li><a href="{{ route('premium.index') }}">Premium</a></li>
-            @endif
-
-            <li>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="logout-btn">Logout</button>
-                </form>
-            </li>
-        </ul>
-    </div>
-
+            <!-- Profile -->
+            <div style="position:relative;">
+                <div id="profile-toggle" class="user-avatar-mini">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </div>
+                <div id="profile-dropdown" class="header-dropdown">
+                    <div style="padding:20px; text-align:center; border-bottom:1px solid #eee;">
+                        <div class="user-avatar-mini" style="width:60px; height:60px; margin:0 auto 10px; font-size:24px;">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                        <div style="font-weight:700; color:#000;">{{ Auth::user()->name }}</div>
+                        <div style="font-size:12px; color:#888;">{{ Auth::user()->email }}</div>
+                    </div>
+                    <ul style="list-style:none; padding:10px 0;">
+                        <li><a href="{{ route('dashboard') }}" style="display:block; padding:8px 20px; font-size:14px;">Dashboard</a></li>
+                        @if(Auth::user()->isStudent())
+                            <li><a href="{{ route('premium.index') }}" style="display:block; padding:8px 20px; font-size:14px;">Premium</a></li>
+                        @endif
+                        <li><a href="{{ route('profile.show') }}" style="display:block; padding:8px 20px; font-size:14px;">Profile</a></li>
+                        <li><a href="{{ route('my.skills') }}" style="display:block; padding:8px 20px; font-size:14px;">My Skills</a></li>
+                        <li><a href="{{ route('requests.index') }}" style="display:block; padding:8px 20px; font-size:14px;">Requests</a></li>
+                        <li><a href="{{ route('sessions.index') }}" style="display:block; padding:8px 20px; font-size:14px;">Sessions</a></li>
+                        <li><a href="{{ route('rewards.index') }}" style="display:block; padding:8px 20px; font-size:14px;">Rewards</a></li>
+                        <li style="border-top:1px solid #eee; margin-top:5px; padding-top:5px;">
+                            <form action="{{ route('logout') }}" method="POST">@csrf<button type="submit" style="width:100%; text-align:left; background:none; border:none; padding:8px 20px; font-size:14px; cursor:pointer; color:#e74c3c;">Logout</button></form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endauth
 </div>
-@endauth
 
-</div>
 </header>
 
 <script>
@@ -463,8 +304,10 @@ document.getElementById('profile-toggle')?.addEventListener('click', function(){
 
 document.addEventListener('click', function(e){
     if (!e.target.closest('.user-profile')) {
-        document.getElementById('profile-dropdown').style.display = 'none';
-        document.getElementById('notif-dropdown').style.display = 'none';
+        const pDrop = document.getElementById('profile-dropdown');
+        const nDrop = document.getElementById('notif-dropdown');
+        if(pDrop) pDrop.style.display = 'none';
+        if(nDrop) nDrop.style.display = 'none';
     }
 });
 </script>

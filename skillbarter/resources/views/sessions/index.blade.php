@@ -16,12 +16,12 @@
         <!-- LEARNING SECTION (Prioritized for Students) -->
         @if(count($learningSessions) > 0 || !auth()->user()->isTeacher())
         <div class="dashboard-section">
-            <h2 style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">📘 MY LEARNING SESSIONS</h2>
+            <h2 style="border-bottom: 2px solid var(--primary-teal); padding-bottom: 12px; margin-bottom: 25px; color: var(--text-dark); font-weight: 800;">📘 MY LEARNING SESSIONS</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
                 @forelse($learningSessions as $session)
-                    <div style="padding: 24px; background: #fff; border: 2px solid #000; border-radius: 12px; color: #000; position: relative; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <div style="padding: 24px; background: #fff; border: 1px solid var(--primary-teal-light); border-radius: 16px; color: var(--text-dark); position: relative; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
                         @if($session->is_live)
-                            <span style="position: absolute; top: -10px; right: 10px; background: #000; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">LIVE NOW</span>
+                            <span style="position: absolute; top: -10px; right: 10px; background: var(--primary-teal); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(32, 166, 138, 0.2);">LIVE NOW</span>
                         @endif
                         
                         <h3 style="margin: 0 0 10px 0; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px;">{{ $session->skill->title ?? 'Skill' }}</h3>
@@ -34,8 +34,8 @@
                         @endif
 
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
-                            <span class="badge {{ $session->status }}" style="padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 900; text-transform: uppercase; border: 2px solid #000;">{{ $session->status }}</span>
-                            <a href="{{ route('session.classroom', $session->id) }}" style="background: #000; color: #fff; border: 2px solid #000; padding: 10px 25px; text-decoration: none; font-weight: 800; font-size: 12px; text-transform: uppercase; transition: 0.3s; display: inline-block;">
+                            <span class="badge {{ $session->status }}" style="padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary-teal-light); background: var(--bg-light-teal); color: var(--primary-teal);">{{ $session->status }}</span>
+                            <a href="{{ route('session.classroom', $session->id) }}" class="btn primary" style="padding: 10px 20px; font-size: 12px;">
                                 {{ $session->is_live ? '⚡ JOIN LIVE' : 'ENTER CLASSROOM' }}
                             </a>
                         </div>
@@ -53,21 +53,21 @@
         <!-- TEACHING SECTION (Prioritized for Teachers) -->
         @if(auth()->user()->isTeacher() || count($teachingSessions) > 0)
         <div class="dashboard-section">
-            <h2 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #666; font-size: 1.5rem; font-weight: 700;">🎓 MY TEACHING SESSIONS</h2>
+            <h2 style="border-bottom: 2px solid var(--primary-teal); padding-bottom: 12px; margin-bottom: 25px; color: var(--text-dark); font-weight: 800;">🎓 MY TEACHING SESSIONS</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
                 @forelse($teachingSessions as $session)
-                    <div style="padding: 24px; background: #fff; border: 1px solid #000; border-radius: 12px; color: #000; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.03); position: relative;">
+                    <div style="padding: 24px; background: #fff; border: 1px solid var(--primary-teal-light); border-radius: 16px; color: var(--text-dark); position: relative; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
                         @if($session->is_live)
-                            <span style="position: absolute; top: -10px; right: 10px; background: #000; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">LIVE NOW</span>
+                            <span style="position: absolute; top: -10px; right: 10px; background: var(--primary-teal); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(32, 166, 138, 0.2);">LIVE NOW</span>
                         @endif
                         
                         <h3 style="margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700;">{{ $session->skill->title ?? 'Skill' }}</h3>
                         <p style="margin: 5px 0; color: #666;">Student: <strong style="color: #000;">{{ $session->student->name }}</strong></p>
                         
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #eee;">
-                            <span class="badge {{ $session->status }}" style="padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 900; text-transform: uppercase; border: 2px solid #000;">{{ $session->status }}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f5f5f5;">
+                            <span class="badge {{ $session->status }}" style="padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid var(--primary-teal-light); background: var(--bg-light-teal); color: var(--primary-teal);">{{ $session->status }}</span>
                             <div style="display: flex; gap: 10px;">
-                                <a href="{{ route('session.classroom', $session->id) }}" style="background: #000; color: #fff; border: 2px solid #000; padding: 8px 18px; text-decoration: none; font-weight: 800; font-size: 12px; text-transform: uppercase; transition: 0.3s;">MANAGE CLASS</a>
+                                <a href="{{ route('session.classroom', $session->id) }}" class="btn primary" style="padding: 8px 18px; font-size: 12px;">MANAGE CLASS</a>
                             </div>
                         </div>
                     </div>

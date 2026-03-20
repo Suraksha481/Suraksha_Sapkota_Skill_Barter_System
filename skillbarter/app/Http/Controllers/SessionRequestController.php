@@ -243,11 +243,34 @@ class SessionRequestController extends Controller
 
     public function classroom($id)
     {
+        $session = SessionModel::with(['teacher', 'student', 'participants', 'materials', 'assignments'])->findOrFail($id);
+        $user = auth()->user();
 
-        $session = SessionModel::with(['teacher','student','materials','assignments'])->findOrFail($id);
+        // Check if user is teacher or a participant
+        $isTeacher = ($session->organiser_id === $user->id);
+        $isParticipant = $session->participants->contains($user->id);
 
-        return view('sessions.classroom',compact('session'));
+        if (!$isTeacher && !$isParticipant) {
+            abort(403, 'You are not a participant in this classroom.');
+        }
 
+        return view('sessions.classroom', compact('session'));
+    }
+
+    public function addParticipant(Request $request, SessionModel $session)
+    {
+        if ($session->organiser_id !== auth()->id()) abort(403);
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id'
+        ]);
+
+        // Ensure user hasn't already been added
+        if (!$session->participants->contains($request->user_id)) {
+            $session->participants()->attach($request->user_id);
+        }
+
+        return back()->with('success', 'Student added to classroom.');
     }
 
     public function updateLink(Request $request, SessionModel $session)

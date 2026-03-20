@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('app')
 
 @section('content')
 <style>
@@ -6,35 +6,28 @@
 html, body {
     height: 100%;
     margin: 0;
-    overflow: hidden; /* Messenger app shouldn't scroll the whole page */
-    background-color: #18191a;
-    color: #e4e6eb;
-    font-family: 'Inter', 'Roboto', sans-serif;
+    background-color: #f8fafc; /* Ensure body bg is consistent */
 }
 
-#app, main, .py-4 {
-    height: 100%;
-    padding: 0 !important;
-}
-
-/* Base Messenger Container */
+/* Ensure the messenger fills enough space but keeps header visible naturally */
 .messenger-container {
     display: flex;
-    height: 80vh; /* Fixed height relative to viewport to ensure it fits with header/footer */
+    height: calc(100vh - 120px); 
     min-height: 600px;
-    max-width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
     overflow: hidden;
-    background: #242526;
-    border: 1px solid #3e4042;
-    margin: 20px;
-    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--primary-teal-light);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.05);
 }
 
 /* Left Sidebar */
 .messenger-sidebar {
     width: 360px;
-    background: #242526;
-    border-right: 1px solid #3e4042;
+    background: #fdfdfd; /* Subtly different from active chat area */
+    border-right: 1px solid var(--primary-teal-light);
     display: flex;
     flex-direction: column;
 }
@@ -46,9 +39,9 @@ html, body {
 
 .sidebar-header h1 {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 800;
     margin: 0 0 16px 0;
-    color: #e4e6eb;
+    color: var(--text-dark);
 }
 
 .search-container {
@@ -58,18 +51,19 @@ html, body {
 
 .search-input {
     width: 100%;
-    background-color: #3a3b3c;
-    border: none;
+    background-color: #fff;
+    border: 1.5px solid var(--primary-teal-light); /* Always show teal border */
     border-radius: 20px;
     padding: 10px 16px 10px 40px;
-    color: #e4e6eb;
+    color: var(--text-slate);
     font-size: 15px;
     outline: none;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
 }
 
 .search-input:focus {
-    background-color: #4e4f50;
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 4px rgba(32, 166, 138, 0.1);
 }
 
 .search-icon {
@@ -85,14 +79,14 @@ html, body {
     top: 100%;
     left: 0;
     width: 100%;
-    background: #242526;
-    border: 1px solid #3e4042;
-    border-radius: 8px;
+    background: #fff;
+    border: 1px solid var(--primary-teal-light);
+    border-radius: 12px;
     z-index: 100;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     display: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .search-result-item {
@@ -104,7 +98,7 @@ html, body {
 }
 
 .search-result-item:hover {
-    background: #3a3b3c;
+    background: var(--bg-light-teal);
 }
 
 .search-result-item .avatar {
@@ -112,7 +106,7 @@ html, body {
     height: 36px;
     border-radius: 50%;
     margin-right: 12px;
-    background: #3a3b3c;
+    background: var(--primary-teal-light);
 }
 
 /* Conversation List */
@@ -126,7 +120,7 @@ html, body {
     width: 6px;
 }
 .conversation-list::-webkit-scrollbar-thumb {
-    background-color: #4e4f50;
+    background-color: var(--primary-teal-light);
     border-radius: 10px;
 }
 
@@ -140,12 +134,14 @@ html, body {
     margin-bottom: 4px;
 }
 
-.conversation-item:hover, .conversation-item.active {
-    background: #3a3b3c;
+.conversation-item:hover {
+    background: var(--bg-light-teal);
 }
 
 .conversation-item.active {
-    background: rgba(45, 136, 255, 0.1);
+    background: var(--bg-light-teal);
+    border-left: 4px solid var(--primary-teal);
+    box-shadow: inset 0 0 10px rgba(32, 166, 138, 0.05);
 }
 
 .conversation-avatar {
@@ -153,7 +149,7 @@ html, body {
     height: 50px;
     border-radius: 50%;
     margin-right: 12px;
-    background: #4e4f50;
+    background: var(--primary-teal-light);
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
@@ -168,9 +164,9 @@ html, body {
 }
 
 .conversation-name {
-    font-weight: 500;
+    font-weight: 700;
     font-size: 15px;
-    color: #e4e6eb;
+    color: var(--text-dark);
     margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
@@ -179,7 +175,7 @@ html, body {
 
 .conversation-snippet {
     font-size: 13px;
-    color: #b0b3b8;
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -190,7 +186,7 @@ html, body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: #242526;
+    background: #fff;
     position: relative;
 }
 
@@ -199,41 +195,52 @@ html, body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: #b0b3b8;
+    color: var(--text-secondary);
     font-size: 18px;
+    background: #fff; /* Match the perfection of a clean canvas */
 }
 
 .chat-header {
-    height: 64px;
-    border-bottom: 1px solid #3e4042;
+    height: 72px;
+    border-bottom: 1px solid #f0f0f0;
     display: none;
     align-items: center;
-    padding: 0 16px;
-    background: #242526;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    padding: 0 24px;
+    background: #fff;
 }
 
 .chat-header-avatar {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     margin-right: 12px;
-    background: #4e4f50;
+    background: var(--primary-teal-light);
     overflow: hidden;
 }
 .chat-header-avatar img {
     width:100%; height:100%; object-fit: cover;
 }
 
+.chat-header {
+    height: 72px;
+    border-bottom: 1px solid var(--primary-teal-light);
+    display: none;
+    align-items: center;
+    padding: 0 24px;
+    background: #fff;
+    border-left: 1px solid var(--primary-teal-light);
+}
+
 .chat-header-info h2 {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 700;
     margin: 0;
-    color: #e4e6eb;
+    color: var(--text-dark);
 }
 .chat-header-info p {
     font-size: 12px;
-    color: #b0b3b8;
+    color: var(--primary-teal);
+    font-weight: 600;
     margin: 0;
 }
 
@@ -243,12 +250,13 @@ html, body {
     padding: 20px;
     display: none;
     flex-direction: column;
+    border-left: 1px solid var(--primary-teal-light); /* Vertical separation border */
 }
 .messages-container::-webkit-scrollbar {
     width: 6px;
 }
 .messages-container::-webkit-scrollbar-thumb {
-    background-color: #4e4f50;
+    background-color: var(--primary-teal-light);
     border-radius: 10px;
 }
 
@@ -276,46 +284,50 @@ html, body {
 }
 
 .message-wrapper.sent .message-bubble {
-    background: #0084ff;
+    background: var(--primary-teal);
     color: #fff;
     border-bottom-right-radius: 4px;
 }
 
 .message-wrapper.received .message-bubble {
-    background: #3e4042;
-    color: #e4e6eb;
+    background: var(--bg-light-teal);
+    color: var(--text-dark);
     border-bottom-left-radius: 4px;
+    border: 1px solid var(--primary-teal-light);
 }
 
 .chat-input-area {
-    padding: 16px;
-    border-top: 1px solid #3e4042;
+    padding: 20px 24px;
+    border-top: 1px solid var(--primary-teal-light);
+    border-left: 1px solid var(--primary-teal-light); /* Vertical separation border */
     display: none;
     align-items: center;
-    background: #242526;
+    background: #fff;
 }
 
 .chat-input {
     flex: 1;
-    background: #3a3b3c;
-    border: none;
-    border-radius: 20px;
-    padding: 12px 16px;
-    color: #e4e6eb;
+    background: var(--bg-light-teal);
+    border: 1.5px solid transparent;
+    border-radius: 25px;
+    padding: 12px 20px;
+    color: var(--text-slate);
     font-size: 15px;
     outline: none;
+    transition: all 0.2s;
 }
 
 .chat-input:focus {
-    background: #4e4f50;
+    background: #fff;
+    border-color: var(--primary-teal);
 }
 
 .chat-send-btn {
     background: transparent;
     border: none;
-    color: #0084ff;
+    color: var(--primary-teal);
     cursor: pointer;
-    font-size: 24px;
+    font-size: 28px;
     margin-left: 12px;
     display: flex;
     align-items: center;
@@ -324,10 +336,11 @@ html, body {
 }
 
 .chat-send-btn:hover {
-    color: #0070d6;
+    color: var(--primary-teal-dark);
+    transform: scale(1.1);
 }
 .chat-send-btn:disabled {
-    color: #4e4f50;
+    color: #cbd5e1;
     cursor: not-allowed;
 }
 
@@ -395,7 +408,7 @@ html, body {
     <!-- Right Chat Area -->
     <div class="chat-area" id="chat-area">
         <div class="error-banner" id="chat-error-banner"></div>
-        <button class="btn btn-sm btn-dark d-md-none m-2" id="back-to-list" style="display:none; position:absolute; top:10px; right:10px; z-index:20;">Back</button>
+        <button class="btn btn-sm btn-pill primary d-md-none m-2" id="back-to-list" style="display:none; position:absolute; top:10px; right:10px; z-index:20;">Back</button>
 
         <div class="chat-empty" id="chat-empty">
             Select a conversation or search for someone to start chatting
@@ -442,10 +455,15 @@ html, body {
 
     document.addEventListener('DOMContentLoaded', function() {
         const autoTargetId = @json($target_user_id ?? null);
+        const targetUser = @json($targetUser ?? null);
+
         if (autoTargetId) {
             const existingConv = document.querySelector(`.conversation-item[data-target="${autoTargetId}"]`);
             if (existingConv) {
                 existingConv.click();
+            } else if (targetUser) {
+                const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(targetUser.name)}&background=random`;
+                startNewChat(targetUser.id, targetUser.name, targetUser.avatar || fallbackAvatar);
             }
         }
     });
@@ -619,4 +637,3 @@ html, body {
     }
 </script>
 @endsection
-```

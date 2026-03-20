@@ -1,7 +1,14 @@
+:root {
+    --primary-teal: #20a68a;
+    --primary-teal-dark: #17826a;
+    --primary-teal-light: #e6f5f2;
+    --text-slate: #1e293b;
+}
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: #f5f5f5;
+    background: #f8fafc;
 }
 
 .page-center {
@@ -13,18 +20,18 @@ body {
 
 .auth-card {
     display: flex;
-    width: 700px;
-    max-width: 90%;
+    width: 950px;
+    max-width: 95%;
     background: #ffffff;
-    border-radius: 8px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-    border: 1px solid #e0e0e0;
+    box-shadow: 0 15px 50px rgba(32, 166, 138, 0.08);
+    border: 1px solid var(--primary-teal-light);
 }
 
 /* LEFT IMAGE */
 .card-left {
-    flex: 1;
+    flex: 0 0 45%;
     background-color: #f0f0f0;
 }
 
@@ -40,7 +47,7 @@ body {
 /* RIGHT FORM */
 .card-right {
     flex: 1;
-    padding: 40px 30px;
+    padding: 50px 45px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,65 +61,76 @@ body {
 .card-right h2 {
     text-align: center;
     margin-bottom: 30px;
-    color: #1a1a1a;
-    font-weight: 700;
+    color: var(--text-slate);
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: -0.5px;
 }
 
-.card-right input {
+.card-right input[type="text"],
+.card-right input[type="email"],
+.card-right input[type="password"] {
     width: 100%;
-    padding: 12px;
+    padding: 14px 15px;
     margin-bottom: 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
     font-family: inherit;
-    color: #000;
-    background-color: #ffffff;
+    color: var(--text-slate);
+    background-color: #f8fafc;
     transition: all 0.3s ease;
 }
 
-.card-right input:focus {
+.card-right input[type="text"]:focus,
+.card-right input[type="email"]:focus,
+.card-right input[type="password"]:focus {
     outline: none;
-    border-color: #1a1a1a;
-    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+    border-color: var(--primary-teal);
+    box-shadow: 0 0 0 4px rgba(32, 166, 138, 0.15);
+    background-color: #ffffff;
 }
 
-.card-right button {
+.card-right button[type="submit"] {
     width: 100%;
-    padding: 12px;
-    background: #1a1a1a;
-    border: 2px solid #1a1a1a;
+    padding: 14px;
+    background: var(--primary-teal);
+    border: none;
     color: #ffffff;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     margin-top: 15px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card-right button:hover {
-    opacity: 1 !important;
+.card-right button[type="submit"]:hover {
+    background: var(--primary-teal-dark);
+    box-shadow: 0 8px 20px rgba(32, 166, 138, 0.3);
+    transform: translateY(-2px);
 }
 
-.card-right button:active {
-    transform: none !important;
+.card-right button[type="submit"]:active {
+    transform: translateY(0);
 }
 
 .links {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 25px;
+    line-height: 1.8;
 }
 
 .links a {
-    color: #1a1a1a;
+    color: var(--primary-teal);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 14.5px;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .links a:hover {
-    text-decoration: none !important;
+    color: var(--primary-teal-dark);
 }
 
 .error {
@@ -124,7 +142,7 @@ body {
 .remember {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     margin: 15px 0;
 }
 
@@ -133,13 +151,13 @@ body {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    border: 2px solid #e0e0e0;
-    border-radius: 4px;
+    accent-color: var(--primary-teal);
 }
 
 .remember label {
     margin: 0;
-    font-size: 14px;
+    font-size: 14.5px;
     cursor: pointer;
-    color: #333333;
+    color: #475569;
+    font-weight: 500;
 }

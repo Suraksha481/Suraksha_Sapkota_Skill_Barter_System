@@ -73,47 +73,72 @@
 </section>
 
 <style>
+    /* ── PAGE HERO ─────────────────────────────────────────────────── */
+    .dashboard-header h1 {
+        font-size: 3rem;
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        color: var(--text-slate);
+        margin-bottom: 0.75rem;
+    }
+    .dashboard-header p {
+        font-size: 1.1rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    /* ── SEARCH BAR (text centering fix) ───────────────────────────── */
     .premium-search {
         display: flex;
-        gap: 0;
-        border: 2px solid #000;
+        align-items: stretch;
+        border: 2.5px solid var(--primary-teal);
         border-radius: 50px;
         overflow: hidden;
         background: #fff;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        box-shadow: 0 8px 30px rgba(32, 166, 138, 0.12);
+        height: 58px;           /* fixed height so the button fills it */
     }
 
     .premium-search:focus-within {
-        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        transform: translateY(-2px);
+        box-shadow: 0 10px 40px rgba(32, 166, 138, 0.22);
+        border-color: var(--primary-teal-dark);
     }
 
     .search-input {
-        flex-grow: 1;
+        flex: 1;
         border: none;
-        padding: 15px 25px;
+        padding: 0 28px;
         font-size: 1rem;
+        font-family: inherit;
         outline: none;
         background: transparent;
+        color: var(--text-slate);
+        /* vertical centering for <input> elements */
+        line-height: 58px;
+        height: 58px;
+        vertical-align: middle;
+    }
+
+    .search-input::placeholder {
+        color: #a0aec0;
     }
 
     .search-btn {
-        background: #000;
+        background: var(--primary-teal);
         color: #fff;
         border: none;
-        padding: 0 35px;
-        font-weight: 700;
+        padding: 0 36px;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 1px;
+        font-size: 0.88rem;
         cursor: pointer;
-        transition: background 0.3s;
+        /* no hover transform / color shift */
+        transition: none;
+        flex-shrink: 0;
     }
 
-    .search-btn:hover {
-        background: #333;
-    }
-
+    /* ── TEACHER CARDS ─────────────────────────────────────────────── */
     .teacher-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -122,14 +147,11 @@
 
     .teacher-premium-card {
         background: #fff;
-        border: 2px solid #000;
-        border-radius: 16px;
-        padding: 2rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
+        border: 1.5px solid var(--primary-teal-light);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     }
-
-
 
     .card-inner {
         display: flex;
@@ -137,136 +159,140 @@
         gap: 2.5rem;
     }
 
-    .avatar-wrapper {
-        flex-shrink: 0;
-    }
+    .avatar-wrapper { flex-shrink: 0; }
 
     .teacher-avatar {
-        width: 120px;
-        height: 120px;
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
-        border: 3px solid #000;
-        padding: 4px;
+        border: 3px solid var(--primary-teal-light);
         object-fit: cover;
-        background: #fff;
+        background: #f8fafc;
     }
 
-    .teacher-info {
-        flex-grow: 1;
-    }
+    .teacher-info { flex-grow: 1; }
 
     .info-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
 
     .teacher-name {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
         font-weight: 900;
         margin: 0;
+        color: var(--text-slate);
         letter-spacing: -0.5px;
     }
 
     .rating-badge {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        background: #f9f9f9;
-        padding: 4px 12px;
-        border-radius: 20px;
-        border: 1px solid #eee;
+        gap: 0.4rem;
+        background: var(--bg-light-teal);
+        border: 1px solid var(--primary-teal-light);
+        padding: 5px 14px;
+        border-radius: 50px;
     }
 
-    .star { color: #000; font-size: 1.2rem; }
-    .score { font-weight: 800; font-size: 1rem; }
-    .count { color: #888; font-size: 0.85rem; }
-    .no-rating { font-size: 0.85rem; font-weight: 700; color: #aaa; text-transform: uppercase; }
+    .star   { color: var(--primary-teal); font-size: 1.1rem; }
+    .score  { font-weight: 800; font-size: 0.9rem; color: var(--text-slate); }
+    .count  { color: #64748b; font-size: 0.82rem; }
+    .no-rating {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--primary-teal);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
     .teacher-bio {
-        color: #555;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-        max-width: 700px;
+        color: #64748b;
+        line-height: 1.65;
+        margin-bottom: 1.25rem;
+        font-size: 0.97rem;
+        max-width: 680px;
     }
 
+    /* skill pills — NO hover */
     .skill-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
+        gap: 0.6rem;
     }
 
     .skill-pill {
-        background: #000;
-        color: #fff;
-        padding: 6px 16px;
+        background: var(--bg-light-teal);
+        color: var(--primary-teal);
+        padding: 5px 14px;
         border-radius: 50px;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
-        border: 1px solid #000;
-        transition: all 0.2s;
+        letter-spacing: 0.5px;
+        border: 1px solid var(--primary-teal-light);
     }
-
 
     .skill-pill-more {
-        background: #f1f1f1;
-        color: #666;
-        padding: 6px 12px;
+        background: #f1f5f9;
+        color: #64748b;
+        padding: 5px 12px;
         border-radius: 50px;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
     }
 
-    .btn-profile {
-        display: inline-block;
-        background: #000;
-        color: #fff;
-        text-decoration: none;
-        padding: 14px 28px;
-        border-radius: 12px;
+    /* View Profile button — NO hover / NO transform */
+    .btn-profile,
+    .btn-profile:hover,
+    .btn-profile:focus,
+    .btn-profile:active,
+    .btn-profile:visited {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-teal);
+        color: #fff !important;
+        text-decoration: none !important;
+        padding: 13px 30px;
+        border-radius: 50px;
         font-weight: 800;
         text-transform: uppercase;
-        font-size: 13px;
+        font-size: 12px;
         letter-spacing: 1px;
-        border: 2px solid #000;
-        transition: all 0.3s;
         white-space: nowrap;
+        box-shadow: 0 4px 14px rgba(32, 166, 138, 0.22);
+        transition: none;
+        cursor: pointer;
     }
 
-   
-
+    /* ── EMPTY STATE ───────────────────────────────────────────────── */
     .empty-state-container {
         text-align: center;
-        padding: 6rem 2rem;
+        padding: 5rem 2rem;
         background: #fff;
-        border: 2px dashed #000;
+        border: 2px dashed var(--primary-teal-light);
         border-radius: 24px;
     }
+    .empty-icon { font-size: 3.5rem; margin-bottom: 1.5rem; }
+    .empty-state-container h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-slate); }
+    .empty-state-container p  { color: #64748b; margin-bottom: 2rem; }
 
-    .empty-icon { font-size: 4rem; margin-bottom: 1.5rem; }
-    .empty-state-container h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
-    .empty-state-container p { color: #666; margin-bottom: 2rem; }
-
+    /* ── PAGINATION ────────────────────────────────────────────────── */
     .pagination-container {
-        margin-top: 4rem;
+        margin-top: 3.5rem;
         display: flex;
         justify-content: center;
     }
 
+    /* ── RESPONSIVE ────────────────────────────────────────────────── */
     @media (max-width: 900px) {
-        .card-inner {
-            flex-direction: column;
-            text-align: center;
-            gap: 1.5rem;
-        }
-        
-        .info-header {
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
+        .card-inner    { flex-direction: column; text-align: center; gap: 1.5rem; }
+        .info-header   { flex-direction: column; gap: 0.75rem; }
+        .skill-tags    { justify-content: center; }
+        .card-actions  { margin-top: 1.2rem; }
     }
 </style>
 
