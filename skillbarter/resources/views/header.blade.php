@@ -32,10 +32,18 @@
     gap: 12px;
 }
 
-.brand .logo-icon {
-    width: 32px;
-    height: 32px;
-    color: var(--primary-teal);
+.brand .brand-ss-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--primary-teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
 }
 
 .brand a {
@@ -177,9 +185,7 @@
 </style>
 
 <div class="brand">
-    <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-    </svg>
+    <div class="brand-ss-logo">SS</div>
     <a href="{{ url('/') }}">SkillSwap</a>
 </div>
 
@@ -245,7 +251,10 @@
                     <div style="max-height:280px; overflow-y:auto;">
                         @forelse($notifications as $n)
                             <div style="padding:12px 15px; border-bottom:1px solid #f9f9f9; background: #fff">
-                                <a href="{{ isset($n->data['request_id']) ? route('requests.index') : '#' }}" style="display:block;">
+                                @php
+                                    $notifUrl = $n->data['url'] ?? (isset($n->data['request_id']) ? route('requests.index') : '#');
+                                @endphp
+                                <a href="{{ $notifUrl }}" style="display:block; text-decoration: none;">
                                     <div style="font-size:13px; color:#000">{{ $n->data['message'] ?? 'Notification' }}</div>
                                     <small style="color:#888;">{{ $n->created_at->diffForHumans() }}</small>
                                 </a>

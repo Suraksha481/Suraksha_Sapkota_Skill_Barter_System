@@ -7,6 +7,8 @@ use App\Models\Skill;
 use App\Models\RequestModel;
 use App\Models\PremiumMembership;
 use App\Models\Feedback;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -148,6 +150,45 @@ class AdminController extends Controller
     {
         $skills = Skill::latest()->paginate(15);
         return view('admin.skills', compact('skills'));
+    }
+
+    /**
+     * Store a new skill (with optional image upload)
+     */
+    public function storeSkill(Request $request)
+    {
+        $request->validate([
+            'title'       => 'required|string|max:255',
+            'category'    => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|max:4096',
+        ]);
+
+        $data = $request->only(['title', 'description', 'category']);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images/skills', 'public');
+            $data['image'] = 'storage/' . $path;
+        }
+
+        Skill::create($data);
+
+        return back()->with('success', 'Skill "' . $data['title'] . '" added successfully.');
+    }
+
+    /**
+     * Update a skill's image
+     */
+    public function updateSkill(Request $request, $id)
+    {
+        $request->validate(['image' => 'required|image|max:4096']);
+
+        $skill = Skill::findOrFail($id);
+
+        $path = $request->file('image')->store('images/skills', 'public');
+        $skill->update(['image' => 'storage/' . $path]);
+
+        return back()->with('success', 'Image updated for "' . $skill->title . '".');
     }
 
     /**

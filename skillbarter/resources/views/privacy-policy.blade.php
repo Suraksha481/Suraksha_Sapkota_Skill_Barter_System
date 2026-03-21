@@ -10,7 +10,7 @@
     <div class="privacy-content">
         <section>
             <h2>1. Introduction</h2>
-            <p>Welcome to SkillXchange. We value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use nuestro platform.</p>
+            <p>Welcome to SkillSwap!. We value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use nuestro platform.</p>
         </section>
 
         <section>

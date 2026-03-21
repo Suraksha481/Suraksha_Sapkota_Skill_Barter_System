@@ -35,9 +35,9 @@ class KhaltiController extends Controller
 
         // Define plan prices in NPR. Khalti expects amount in Paisa.
         $prices = [
-            'monthly' => 25, // 25 NPR
-            'quarterly' => 50, // 50 NPR
-            'yearly' => 100, // 8000 NPR
+            'monthly' => 1000, // 1000 NPR
+            'quarterly' => 2500, // 2500 NPR
+            'yearly' => 8000, // 8000 NPR
         ];
 
         $amountInPaisa = $prices[$plan] * 100;
@@ -54,7 +54,7 @@ class KhaltiController extends Controller
             'customer_info' => [
                 'name' => $user->name,
                 'email' => $user->email,
-                'phone' => $user->phone ?? '9800000000', 
+                'phone' => $user->phone ?? '9800000000',
             ],
             'remarks' => 'Payment to Admin Account: 9849587005',
             // Pass the selected plan along so we can use it on the callback
@@ -120,8 +120,8 @@ class KhaltiController extends Controller
             if ($data['status'] === 'Completed') {
                 $user = $request->user();
 
-                // We extract the plan name either from the custom purchase order ID, or product details. 
-                // In our initiate method, we prefixed purchase_order_name with the plan. 
+                // We extract the plan name either from the custom purchase order ID, or product details.
+                // In our initiate method, we prefixed purchase_order_name with the plan.
                 // As a fallback, assuming it's monthly if we can't parse it precisely.
                 $plan = 'monthly';
                 if (strpos(strtolower(basename($purchaseOrderId)), 'yearly') !== false || $amountPaisa == 1039800)
@@ -132,7 +132,7 @@ class KhaltiController extends Controller
                 $priceInNpr = $amountPaisa / 100;
                 $adminShare = $priceInNpr * 0.5;
                 $teacherShare = $priceInNpr * 0.5;
-                
+
                 $teacherId = null;
                 if (preg_match('/_T(\d+)$/', $purchaseOrderId, $matches)) {
                     $teacherId = $matches[1];
@@ -193,7 +193,7 @@ class KhaltiController extends Controller
                 $this->gamificationService->awardBadge($user, 'premium');
 
                 // Note: The user requested "teacher should be notified after admin send money in there account".
-                // In this case (Premium Subscription), there might not be a specific teacher, 
+                // In this case (Premium Subscription), there might not be a specific teacher,
                 // but if we were paying for a specific session, we'd notify that teacher.
                 // For global premium subscriptions, the admin keeps the profit or splits with all/top teachers?
                 // The prompt says "when student use premium feature that should be goes on admin khalti account and from admin that payment goes on teacher"

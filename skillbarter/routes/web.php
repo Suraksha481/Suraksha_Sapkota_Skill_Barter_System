@@ -249,6 +249,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/session/{session}/add-participant', [\App\Http\Controllers\SessionRequestController::class , 'addParticipant'])->name('session.add-participant');
     Route::post('/session/{session}/complete', [SessionRequestController::class , 'completeSession'])->name('session.complete-session');
     Route::post('/session/{session}/toggle-live', [SessionRequestController::class , 'toggleLive'])->name('session.toggle-live');
+    
+    // Scheduling
+    Route::post('/session/{session}/update-schedule', [SessionRequestController::class , 'updateSchedule'])->name('session.update-schedule');
+    Route::post('/session/{session}/request-reschedule', [SessionRequestController::class , 'requestReschedule'])->name('session.request-reschedule');
 });
 /* |-------------------------------------------------------------------------- | ADMIN ROUTES |-------------------------------------------------------------------------- */
 Route::prefix('admin')->group(function () {
@@ -272,6 +276,8 @@ Route::prefix('admin')->group(function () {
             Route::post('/teachers/{id}/reject', [\App\Http\Controllers\AdminController::class , 'rejectTeacher'])->name('admin.teachers.reject');
 
             Route::get('/skills', [\App\Http\Controllers\AdminController::class , 'skills'])->name('admin.skills');
+            Route::post('/skills', [\App\Http\Controllers\AdminController::class , 'storeSkill'])->name('admin.skills.store');
+            Route::put('/skills/{id}', [\App\Http\Controllers\AdminController::class , 'updateSkill'])->name('admin.skills.update');
             Route::delete('/skills/{id}', [\App\Http\Controllers\AdminController::class , 'deleteSkill'])->name('admin.skills.delete');
 
             Route::get('/subscriptions', [\App\Http\Controllers\AdminController::class , 'subscriptions'])->name('admin.subscriptions');

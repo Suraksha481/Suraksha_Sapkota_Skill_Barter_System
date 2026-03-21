@@ -2,78 +2,135 @@
 
 @section('content')
 <style>
+    :root {
+        --classroom-teal: var(--primary-teal, #20a68a);
+        --classroom-teal-dark: var(--primary-teal-dark, #188c75);
+        --classroom-bg: var(--bg-light-teal, #f4fdfb);
+        --classroom-slate: #0f172a;
+        --classroom-gray: #64748b;
+    }
+
     .classroom-container {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-        background: #fff;
-        color: #000;
+        margin: 60px auto;
+        padding: 0 20px;
         font-family: 'Inter', sans-serif;
     }
 
     .card {
         background: #fff;
-        border: 2px solid #000;
-        border-radius: 0;
-        margin-bottom: 30px;
+        border: 1px solid #f1f5f9;
+        border-radius: 24px;
+        margin-bottom: 40px;
         overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.04);
     }
 
     .card-header {
-        background: #000;
-        color: #fff;
-        padding: 20px;
+        background: var(--classroom-bg);
+        color: var(--classroom-slate);
+        padding: 30px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        border-bottom: 1px solid rgba(32, 166, 138, 0.1);
+    }
+    .card-header h1 {
+        font-size: 1.8rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        color: var(--classroom-slate);
+        margin: 0;
+    }
+    .card-header small {
+        font-size: 1rem;
+        color: var(--classroom-gray);
+        font-weight: 600;
+        margin-top: 5px;
+        display: block;
     }
 
     .card-body {
-        padding: 25px;
+        padding: 40px;
     }
 
     .btn-bw {
-        background: #000;
-        color: #fff;
-        border: 2px solid #000;
-        padding: 12px 24px;
+        background: var(--classroom-teal);
+        color: #fff !important;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 28px;
         text-decoration: none;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1px;
+        font-size: 0.85rem;
         cursor: pointer;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(32, 166, 138, 0.2);
+    }
+    .btn-bw:hover {
+        background: var(--classroom-teal-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(32, 166, 138, 0.3);
     }
 
     .btn-outline {
         background: #fff;
-        color: #000;
-        border: 2px solid #000;
-        padding: 8px 16px;
+        color: var(--classroom-teal) !important;
+        border: 2px solid var(--classroom-teal);
+        border-radius: 50px;
+        padding: 8px 18px;
         text-decoration: none;
-        font-weight: 700;
-        cursor: pointer;
+        font-weight: 800;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-outline:hover {
+        background: var(--classroom-bg);
+        transform: translateY(-2px);
     }
 
     .badge-bw {
-        border: 1px solid #000;
-        padding: 4px 10px;
-        font-size: 12px;
-        font-weight: bold;
+        background: #fff;
+        border: 1px solid rgba(32, 166, 138, 0.2);
+        color: var(--classroom-teal);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 800;
         text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
 
     .input-bw {
-        border: 2px solid #000;
-        padding: 10px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 14px 20px;
         width: 100%;
-        margin-top: 5px;
+        margin-top: 8px;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--classroom-slate);
+        transition: border-color 0.3s;
+        background: #fff;
+    }
+    .input-bw:focus {
+        outline: none;
+        border-color: var(--classroom-teal);
+        box-shadow: 0 0 0 4px rgba(32,166,138,0.1);
     }
 
     .grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 30px;
+        gap: 40px;
     }
 
     @media (max-width: 768px) {
@@ -83,207 +140,346 @@
     .material-list, .practice-list {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
 
     .list-item {
-        border-bottom: 1px solid #eee;
-        padding: 15px 0;
+        border-bottom: 2px dashed #f1f5f9;
+        padding: 20px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
-    .alert-bw {
-        border: 2px solid #000;
-        padding: 15px;
-        margin-bottom: 20px;
-        font-weight: bold;
+    .list-item:last-child {
+        border-bottom: none;
+    }
+    .list-item span, .list-item strong {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--classroom-slate);
     }
 
-    /* Override for better visibility */
+    .alert-bw {
+        background: var(--classroom-bg);
+        border-left: 4px solid var(--classroom-teal);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: var(--classroom-teal-dark);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+
     .btn-primary-bw {
-        background: #000;
-        color: #fff;
-        border: 2px solid #000;
-        padding: 15px 30px;
+        background: var(--classroom-teal);
+        color: #fff !important;
+        border: none;
+        border-radius: 16px;
+        padding: 18px 30px;
         text-decoration: none;
         font-weight: 800;
         text-transform: uppercase;
+        font-size: 1rem;
         display: inline-block;
         text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(32, 166, 138, 0.25);
+        cursor: pointer;
+    }
+    .btn-primary-bw:hover {
+        background: var(--classroom-teal-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(32, 166, 138, 0.35);
     }
     
     .btn-secondary-bw {
         background: #fff;
-        color: #000;
-        border: 2px solid #000;
-        padding: 15px 30px;
+        color: var(--classroom-slate) !important;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 18px 30px;
         text-decoration: none;
         font-weight: 800;
         text-transform: uppercase;
+        font-size: 1rem;
         display: inline-block;
         text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .btn-secondary-bw:hover {
+        border-color: var(--classroom-gray);
+        background: #f8fafc;
+        transform: translateY(-2px);
     }
 
-    .status-badge {
-        display: inline-block;
-        padding: 6px 15px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 800;
+    .participant-chip {
+        display: inline-flex;
+        align-items: center;
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 50px;
+        padding: 8px 20px;
+        gap: 15px;
+        transition: all 0.2s;
+    }
+    .participant-chip:hover {
+        border-color: rgba(32,166,138,0.3);
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .participant-chip strong {
+        color: var(--classroom-slate);
+        font-size: 0.95rem;
+    }
+    .info-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
         text-transform: uppercase;
-        border: 2px solid #000;
+        color: #94a3b8;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .action-box {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 20px;
+        padding: 25px;
+    }
+    .action-box-solid {
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+    }
+
+    .divider-line {
+        border: 0;
+        border-top: 2px solid #f1f5f9;
+        margin: 35px 0;
     }
 </style>
 
 <div class="classroom-container">
 
     @if(session('success'))
-        <div class="alert-bw" style="border-color: #000;">{{ session('success') }}</div>
+        <div class="alert-bw">{{ session('success') }}</div>
     @endif
 
     <div class="card">
         <div class="card-header">
             <div>
-                <h1 style="margin: 0; font-size: 24px;">CLASSROOM ({{ auth()->id() === $session->organiser_id ? 'TEACHER VIEW' : 'STUDENT VIEW' }})</h1>
+                <h1>CLASSROOM ({{ auth()->id() === $session->organiser_id ? 'TEACHER VIEW' : 'STUDENT VIEW' }})</h1>
                 <small>{{ $session->skill->title ?? 'Session' }}</small>
             </div>
-            <div class="badge-bw" style="background: #fff; color: #000;">
+            <div class="badge-bw">
                 {{ $session->status }}
             </div>
         </div>
         <div class="card-body">
-            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px;">
-                <div style="display: flex; gap: 40px; align-items: flex-start;">
-                    <div>
-                        <label style="display: block; font-size: 12px; color: #666;">TEACHER</label>
-                        <strong>{{ $session->teacher->name }}</strong>
-                        @if(auth()->id() !== $session->organiser_id)
-                            <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-outline" style="font-size: 10px; margin-left:10px; padding: 2px 8px;">CHAT</a>
-                        @endif
+            <div style="display: flex; flex-direction: column; gap: 30px; margin-bottom: 20px;">
+                <div style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
+                    <div style="min-width: 250px;">
+                        <span class="info-label">TEACHER</span>
+                        <div class="participant-chip">
+                            <strong>{{ $session->teacher->name }}</strong>
+                            @if(auth()->id() !== $session->organiser_id)
+                                <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-outline" style="font-size: 10px; padding: 4px 12px;">CHAT</a>
+                            @endif
+                        </div>
                     </div>
                     <div style="flex-grow: 1;">
-                        <label style="display: block; font-size: 12px; color: #666;">STUDENTS IN THIS CLASS</label>
-                        <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px;">
+                        <span class="info-label">STUDENTS IN THIS CLASS</span>
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                             @forelse($session->participants as $p)
-                                <div style="display: flex; align-items: center; border: 1px solid #000; padding: 5px 12px;">
+                                <div class="participant-chip">
                                     <strong>{{ $p->name }}</strong>
                                     @if(auth()->id() === $session->organiser_id && $p->id !== auth()->id())
-                                        <a href="{{ route('messenger.index') }}?user={{ $p->id }}" class="btn-outline" style="font-size: 10px; margin-left:10px; padding: 2px 8px;">CHAT</a>
+                                        <a href="{{ route('messenger.index') }}?user={{ $p->id }}" class="btn-outline" style="font-size: 10px; padding: 4px 12px;">CHAT</a>
                                     @endif
                                 </div>
                             @empty
-                                <span style="color: #888;">No students attached to this session yet.</span>
+                                <span style="color: #94a3b8; font-style: italic; margin-top: 10px; display: inline-block;">No students attached to this session yet.</span>
                             @endforelse
                         </div>
                     </div>
                 </div>
 
                 @if(auth()->id() === $session->organiser_id)
-                    <div style="background: #f9f9f9; padding: 15px; border: 1px dashed #000;">
-                        <form action="{{ route('session.add-participant', $session->id) }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
+                    <div class="action-box">
+                        <form action="{{ route('session.add-participant', $session->id) }}" method="POST" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
                             @csrf
-                            <label style="font-size: 12px; font-weight: bold;">ADD ANOTHER ACCEPTED STUDENT:</label>
-                            <select name="user_id" required style="padding: 8px; border: 2px solid #000;">
-                                <option value="">Select Student...</option>
-                                @php
-                                    $acceptedRequests = \App\Models\RequestModel::where('responder_id', auth()->id())
-                                        ->where('status', 'accepted')
-                                        ->where('user_skill_id', $session->request->user_skill_id ?? 0)
-                                        ->with('requester')
-                                        ->get();
-                                @endphp
-                                @foreach($acceptedRequests as $ar)
-                                    @if(!$session->participants->contains($ar->requester_id))
-                                        <option value="{{ $ar->requester_id }}">{{ $ar->requester->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            <button type="submit" class="btn-bw" style="padding: 8px 15px; font-size: 12px;">ADD TO CLASS</button>
+                            <span class="info-label" style="margin: 0; padding-right: 10px;">ADD ANOTHER ACCEPTED STUDENT:</span>
+                            <div style="flex-grow: 1; min-width: 250px;">
+                                <select name="user_id" required class="input-bw" style="margin-top: 0;">
+                                    <option value="">Select Student...</option>
+                                    @php
+                                        $acceptedRequests = \App\Models\RequestModel::where('responder_id', auth()->id())
+                                            ->where('status', 'accepted')
+                                            ->where('user_skill_id', $session->request->user_skill_id ?? 0)
+                                            ->with('requester')
+                                            ->get();
+                                    @endphp
+                                    @foreach($acceptedRequests as $ar)
+                                        @if(!$session->participants->contains($ar->requester_id))
+                                            <option value="{{ $ar->requester_id }}">{{ $ar->requester->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-bw" style="padding: 14px 24px;">ADD TO CLASS</button>
                         </form>
                     </div>
                 @endif
             </div>
 
+            <!-- SCHEDULE SECTION -->
+            <hr class="divider-line">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--classroom-slate); margin: 0;">Session Schedule</h3>
+                
+                <div style="display: flex; align-items: center; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 16px; border: 1.5px solid #e2e8f0;">
+                    <div style="font-size: 2rem;">🗓️</div>
+                    <div>
+                        <span class="info-label" style="margin-bottom: 5px;">CURRENT TIME</span>
+                        <strong style="font-size: 1.1rem; color: var(--classroom-teal-dark);">
+                            @if($session->start_time)
+                                {{ \Carbon\Carbon::parse($session->start_time)->format('F j, Y - g:i A') }}
+                                @if($session->end_time)
+                                    to {{ \Carbon\Carbon::parse($session->end_time)->format('g:i A') }}
+                                @endif
+                            @else
+                                Not fully scheduled
+                            @endif
+                        </strong>
+                    </div>
+                </div>
+
+                @if(auth()->id() === $session->organiser_id)
+                    <!-- TEACHER CAN UPDATE -->
+                    <div class="action-box">
+                        <form action="{{ route('session.update-schedule', $session->id) }}" method="POST" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
+                            @csrf
+                            <div style="flex-grow: 1;">
+                                <span class="info-label">UPDATE START TIME</span>
+                                <input type="datetime-local" name="start_time" class="input-bw" value="{{ $session->start_time ? \Carbon\Carbon::parse($session->start_time)->format('Y-m-d\TH:i') : '' }}" required>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <span class="info-label">UPDATE END TIME</span>
+                                <input type="datetime-local" name="end_time" class="input-bw" value="{{ $session->end_time ? \Carbon\Carbon::parse($session->end_time)->format('Y-m-d\TH:i') : '' }}" required>
+                            </div>
+                            <button type="submit" class="btn-bw" style="padding: 14px 24px; height: 50px;">UPDATE SCHEDULE</button>
+                        </form>
+                    </div>
+                @else
+                    <!-- STUDENT CAN REQUEST RESCHEDULE -->
+                    @if($session->status !== 'completed')
+                        @if($session->reschedule_requested)
+                            <div class="action-box" style="background: #fff; border-color: rgba(32,166,138,0.3);">
+                                <span class="info-label" style="color: var(--classroom-teal-dark);">RESCHEDULE REQUEST SENT</span>
+                                <p style="color: var(--classroom-slate); font-weight: 500; font-size: 0.95rem; line-height: 1.5; margin: 5px 0 0 0; background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                                    "{{ $session->reschedule_remarks }}"
+                                </p>
+                                <small style="display: block; margin-top: 10px; color: #94a3b8; font-style: italic;">We have politely notified the teacher. They will safely review your note and adjust the class time.</small>
+                            </div>
+                        @else
+                            <div class="action-box">
+                                <form action="{{ route('session.request-reschedule', $session->id) }}" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+                                    @csrf
+                                    <span class="info-label">REQUEST A DIFFERENT TIME</span>
+                                    <textarea name="remarks" class="input-bw" rows="2" placeholder="Teacher, I am not available then. Could we do Tuesday at 5 PM instead?" required></textarea>
+                                    <button type="submit" class="btn-outline" style="align-self: flex-start; margin-top: 5px;">SEND RESCHEDULE REQUEST</button>
+                                </form>
+                            </div>
+                        @endif
+                    @endif
+                @endif
+            </div>
+
             <!-- MEETING LINK SECTION -->
-            <div style="border-top: 2px solid #000; padding-top: 25px; margin-top: 20px;">
+            <hr class="divider-line">
+            
+            <div>
                 @if($session->status === 'completed')
-                    <div style="padding: 40px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 12px; text-align: center;">
-                        <h2 style="color: #28a745; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Session Completed</h2>
-                        <p style="color: #666; font-size: 16px;">This session has ended. Materials and chat remain available below.</p>
+                    <div class="action-box-solid" style="text-align: center; border-color: #e2e8f0; background: #fdfdfd;">
+                        <span class="info-label" style="color: #10b981; font-size: 1rem; margin-bottom: 10px;">✔ Session Completed</span>
+                        <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 0;">This session has gracefully ended. Materials and practice submissions remain permanently available below.</p>
                         @if(auth()->id() === $session->participant_id)
-                            <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
-                            <a href="{{ route('feedback.create', ['session_id' => $session->id]) }}" class="btn primary" style="padding: 12px 30px;">RATE YOUR TEACHER</a>
+                            <hr class="divider-line" style="margin: 25px auto; width: 50%;">
+                            <a href="{{ route('feedback.create', ['session_id' => $session->id]) }}" class="btn-primary-bw">RATE YOUR TEACHER</a>
                         @endif
                     </div>
                 @else
                     @if(auth()->id() === $session->organiser_id)
                         <!-- TEACHER VIEW -->
-                        <div style="background: #fff; border: 1px solid #000; padding: 25px; border-radius: 8px;">
-                            <h3 style="margin-top: 0; font-size: 16px; text-transform: uppercase; margin-bottom: 20px;">Live Class Controls</h3>
+                        <div class="action-box-solid">
+                            <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--classroom-slate); margin-top: 0; margin-bottom: 25px;">Live Class Controls</h3>
                             
-                            <form action="{{ route('session.update-link', $session->id) }}" method="POST" style="margin-bottom: 25px; background: #fdfdfd; padding: 15px; border: 1px solid #eee;">
+                            <form action="{{ route('session.update-link', $session->id) }}" method="POST" style="margin-bottom: 35px; background: var(--classroom-bg); padding: 25px; border-radius: 16px;">
                                 @csrf
-                                <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 8px;">MEETING LINK (Zoom, Google Meet, etc.)</label>
-                                <div style="display: flex; gap: 10px;">
-                                    <input type="url" name="meeting_link" value="{{ $session->meeting_link }}" placeholder="https://zoom.us/j/..." required style="flex-grow: 1; padding: 10px; border: 1px solid #000; border-radius: 4px;">
-                                    <button type="submit" class="btn primary">@if($session->meeting_link) UPDATE LINK @else SAVE LINK @endif</button>
+                                <span class="info-label" style="color: var(--classroom-teal-dark);">MEETING LINK (Zoom, Google Meet, etc.)</span>
+                                <div style="display: flex; gap: 15px;">
+                                    <input type="url" name="meeting_link" class="input-bw" value="{{ $session->meeting_link }}" placeholder="https://zoom.us/j/..." required style="margin: 0; background: #fff;">
+                                    <button type="submit" class="btn-bw" style="border-radius: 12px; padding: 0 30px;">@if($session->meeting_link) UPDATE @else SAVE @endif</button>
                                 </div>
                             </form>
 
                             @if($session->meeting_link)
-                                <div style="text-align: center; padding: 30px; border: 2px solid #000; background: {{ $session->is_live ? '#000' : '#fff' }}; color: {{ $session->is_live ? '#fff' : '#000' }}; transition: all 0.3s ease;">
+                                <div style="text-align: center; padding: 40px; border-radius: 20px; background: {{ $session->is_live ? 'var(--classroom-teal)' : '#f8fafc' }}; color: {{ $session->is_live ? '#fff' : 'var(--classroom-slate)' }}; transition: all 0.3s ease; border: 1.5px solid {{ $session->is_live ? 'transparent' : '#e2e8f0' }}; box-shadow: {{ $session->is_live ? '0 15px 35px rgba(32,166,138,0.3)' : 'none' }};">
                                     @if($session->is_live)
-                                        <p style="font-weight: 800; margin-bottom: 20px; letter-spacing: 1px;">● SESSION IS LIVE</p>
-                                        <div style="display: flex; gap: 15px; justify-content: center; flex-direction: column;">
-                                            <a href="{{ $session->meeting_link }}" target="_blank" class="btn-secondary-bw">OPEN MEETING ROOM</a>
+                                        <h3 style="font-weight: 900; margin-bottom: 30px; letter-spacing: 1px; font-size: 1.4rem;">● SESSION IS LIVE</h3>
+                                        <div style="display: flex; gap: 15px; justify-content: center; flex-direction: column; max-width: 400px; margin: 0 auto;">
+                                            <a href="{{ $session->meeting_link }}" target="_blank" class="btn-secondary-bw" style="border: none !important;">OPEN MEETING ROOM</a>
                                             <form action="{{ route('session.toggle-live', $session) }}" method="POST">
                                                 @csrf
-                                                <button type="submit" class="btn-secondary-bw" style="background: transparent; color: #fff; border-color: #fff; width: 100%;">STOP LIVE SESSION</button>
+                                                <button type="submit" class="btn-secondary-bw" style="background: transparent; color: #fff !important; width: 100%; border: 2px solid rgba(255,255,255,0.4) !important;">STOP LIVE SESSION</button>
                                             </form>
                                         </div>
                                     @else
-                                        <p style="margin-bottom: 20px; font-weight: 700; text-transform: uppercase;">Link is Ready</p>
+                                        <h3 style="margin-bottom: 25px; font-weight: 800; font-size: 1.2rem;">Link is Ready</h3>
                                         <form action="{{ route('session.toggle-live', $session) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn-primary-bw" style="width: 100%; padding: 20px; font-size: 20px; letter-spacing: 1px;">START LIVE CLASS</button>
+                                            <button type="submit" class="btn-primary-bw" style="width: 100%; max-width: 400px; padding: 22px; font-size: 1.1rem; border-radius: 50px;">START LIVE CLASS</button>
                                         </form>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             @else
-                                <div style="text-align: center; padding: 20px; color: #888; border: 2px dashed #eee;">
-                                    Please save a meeting link first to start the live class.
+                                <div style="text-align: center; padding: 30px; color: #94a3b8; border: 2px dashed #cbd5e1; border-radius: 16px; font-weight: 600;">
+                                    Please save a meeting link first to unlock live class controls.
                                 </div>
                             @endif
                         </div>
                     @else
                         <!-- STUDENT VIEW -->
-                        <div style="background: #fff; border: 2px solid #000; padding: 40px; text-align: center;">
+                        <div class="action-box-solid" style="text-align: center; padding: 60px 40px;">
                             @if(!$session->meeting_link)
                                 <div>
-                                    <div style="font-size: 50px; margin-bottom: 20px; filter: grayscale(1);">⏳</div>
-                                    <h3 style="margin: 0; font-size: 24px; font-weight: 800; text-transform: uppercase;">Awaiting meeting link...</h3>
-                                    <p style="color: #666; margin-top: 15px; max-width: 400px; margin-left: auto; margin-right: auto;">The teacher hasn't provided the meeting link yet. You can message them to remind them.</p>
-                                    <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-secondary-bw" style="margin-top: 20px;">MESSAGE TEACHER</a>
+                                    <div style="font-size: 60px; margin-bottom: 25px; filter: grayscale(1); opacity: 0.5;">⏳</div>
+                                    <h3 style="margin: 0; font-size: 1.6rem; font-weight: 900; color: var(--classroom-slate);">AWAITING MEETING LINK...</h3>
+                                    <p style="color: #64748b; margin-top: 15px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;">The teacher hasn't provided the live room link yet. You can relax or kindly message them a reminder.</p>
+                                    <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-secondary-bw" style="margin-top: 30px; border-radius: 50px;">MESSAGE TEACHER</a>
                                 </div>
                             @else
                                 @if($session->is_live)
-                                    <div>
-                                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; color: #000; font-weight: 800; margin-bottom: 20px; font-size: 14px;">
-                                            <span style="width: 10px; height: 10px; background: #000; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;"></span>
+                                    <div style="background: var(--classroom-teal); padding: 50px; border-radius: 20px; color: #fff; box-shadow: 0 20px 40px rgba(32,166,138,0.3);">
+                                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; margin-bottom: 20px; font-size: 0.9rem; letter-spacing: 1px;">
+                                            <span style="width: 12px; height: 12px; background: #fff; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;"></span>
                                             LIVE SESSION IN PROGRESS
                                         </div>
-                                        <h2 style="font-size: 32px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; letter-spacing: -1px;">Class is Started</h2>
-                                        <p style="color: #666; margin-bottom: 30px;">Your teacher is waiting for you in the meeting room.</p>
-                                        <a href="{{ $session->meeting_link }}" target="_blank" class="btn-primary-bw" style="font-size: 20px; width: 100%; padding: 25px;">JOIN LIVE CLASS NOW</a>
+                                        <h2 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 15px; letter-spacing: -1px;">Class is Started</h2>
+                                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 35px; font-size: 1.1rem;">Your teacher successfully opened the room. Join now!</p>
+                                        <a href="{{ $session->meeting_link }}" target="_blank" class="btn-secondary-bw" style="font-size: 1.1rem; width: 100%; max-width: 400px; padding: 22px; border-radius: 50px; border: none !important;">JOIN LIVE CLASS NOW</a>
                                     </div>
                                 @else
-                                    <div style="background: #fcfcfc; padding: 30px; border: 1px dashed #000;">
-                                        <h3 style="margin-bottom: 5px; font-weight: 800; text-transform: uppercase;">Teacher has not started</h3>
-                                        <p style="color: #666; margin-bottom: 25px;">The meeting link is ready, but the teacher has not started the live class yet. Please wait or message them.</p>
-                                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                                            <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-secondary-bw" style="width: 100%;">MESSAGE TEACHER</a>
-                                            <p style="font-size: 12px; color: #999; font-style: italic;">Note: The join button will appear here once the teacher starts the live session.</p>
+                                    <div class="action-box">
+                                        <h3 style="margin-bottom: 10px; font-weight: 800; font-size: 1.4rem; color: var(--classroom-slate);">Teacher has not started</h3>
+                                        <p style="color: #64748b; margin-bottom: 35px; line-height: 1.6;">The meeting link is fully prepared, but the teacher has not initiated the live session yet. You will be able to join when they start.</p>
+                                        <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                                            <a href="{{ route('messenger.index') }}?user={{ $session->organiser_id }}" class="btn-bw">MESSAGE TEACHER</a>
+                                            <span style="font-size: 0.85rem; color: #94a3b8; font-style: italic;">The join button will securely unlock here once the session begins.</span>
                                         </div>
                                     </div>
                                 @endif
@@ -298,29 +494,31 @@
     <div class="grid-2">
         <!-- MATERIALS -->
         <div class="card">
-            <div class="card-header">MATERIALS</div>
+            <div class="card-header">
+                <h1 style="font-size: 1.3rem;">MATERIALS</h1>
+            </div>
             <div class="card-body">
                 <ul class="material-list">
                     @forelse($session->materials as $material)
                         <li class="list-item">
                             <span>{{ $material->title }}</span>
-                            <a href="{{ $material->file_url }}" target="_blank" class="btn-outline">
-                                {{ auth()->id() === $session->organiser_id ? 'VIEW FILE' : 'DOWNLOAD' }}
+                            <a href="{{ $material->file_url }}" target="_blank" class="btn-outline" style="font-size: 0.75rem;">
+                                {{ auth()->id() === $session->organiser_id ? 'VIEW & CHECK' : 'DOWNLOAD FILE' }}
                             </a>
                         </li>
                     @empty
-                        <li style="color: #888;">No materials shared yet.</li>
+                        <li style="color: #94a3b8; font-style: italic; padding: 10px 0;">No materials shared yet.</li>
                     @endforelse
                 </ul>
 
                 @if(auth()->id() === $session->organiser_id)
-                    <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-                        <h4 style="margin-top: 0;">UPLOAD MATERIAL</h4>
+                    <div style="margin-top: 40px; border-top: 2px dashed #f1f5f9; padding-top: 30px;">
+                        <span class="info-label" style="color: var(--classroom-slate);">UPLOAD NEW MATERIAL</span>
                         <form action="{{ route('session.upload-material', $session->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="text" name="title" class="input-bw" placeholder="Material Title" required>
-                            <input type="file" name="file" class="input-bw" style="border:none; padding: 10px 0;" required>
-                            <button type="submit" class="btn-bw" style="width: 100%; margin-top: 10px;">UPLOAD</button>
+                            <input type="text" name="title" class="input-bw" placeholder="Material Title (e.g. Chapter 1 PDF)" required>
+                            <input type="file" name="file" class="input-bw" style="border:none; padding: 15px 0; background: transparent; box-shadow: none;" required>
+                            <button type="submit" class="btn-bw" style="width: 100%; margin-top: 15px; border-radius: 12px;">SECURE UPLOAD</button>
                         </form>
                     </div>
                 @endif
@@ -329,36 +527,38 @@
 
         <!-- PRACTICE SUBMISSIONS -->
         <div class="card">
-            <div class="card-header">PRACTICE</div>
+            <div class="card-header">
+                <h1 style="font-size: 1.3rem;">PRACTICE & HOMEWORK</h1>
+            </div>
             <div class="card-body">
                 <ul class="practice-list">
                     @forelse($session->assignments as $assignment)
-                        <li class="list-item" style="flex-direction: column; align-items: flex-start;">
-                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <li class="list-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
                                 <strong>{{ $assignment->title }}</strong>
                                 @if($assignment->file_url)
-                                    <a href="{{ $assignment->file_url }}" target="_blank" class="btn-outline" style="font-size: 10px;">VIEW FILE</a>
+                                    <a href="{{ $assignment->file_url }}" target="_blank" class="btn-outline" style="font-size: 0.75rem;">VIEW WORK</a>
                                 @endif
                             </div>
                             @if($assignment->details)
-                                <p style="font-size: 12px; margin: 5px 0;">{{ $assignment->details }}</p>
+                                <p style="font-size: 0.95rem; color: #64748b; line-height: 1.5; margin: 5px 0;">{{ $assignment->details }}</p>
                             @endif
-                            <small style="color: #999;">{{ $assignment->created_at->diffForHumans() }}</small>
+                            <small style="color: #94a3b8; font-weight: 600;">Submitted: {{ $assignment->created_at->diffForHumans() }}</small>
                         </li>
                     @empty
-                        <li style="color: #888;">No practice submitted yet.</li>
+                        <li style="color: #94a3b8; font-style: italic; padding: 10px 0;">No practice files submitted yet.</li>
                     @endforelse
                 </ul>
 
                 @if(auth()->id() === $session->participant_id)
-                    <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-                        <h4 style="margin-top: 0;">SUBMIT PRACTICE</h4>
+                    <div style="margin-top: 40px; border-top: 2px dashed #f1f5f9; padding-top: 30px;">
+                        <span class="info-label" style="color: var(--classroom-slate);">SUBMIT NEW PRACTICE</span>
                         <form action="{{ route('session.submit-practice', $session->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="text" name="title" class="input-bw" placeholder="Task Name" required>
-                            <textarea name="details" class="input-bw" placeholder="Notes/Description" rows="2"></textarea>
-                            <input type="file" name="file" class="input-bw" style="border:none; padding: 10px 0;">
-                            <button type="submit" class="btn-bw" style="width: 100%; margin-top: 10px;">SUBMIT</button>
+                            <input type="text" name="title" class="input-bw" placeholder="Task Name (e.g. Design Draft v1)" required>
+                            <textarea name="details" class="input-bw" placeholder="Notes/Description to teacher..." rows="3" style="resize: vertical;"></textarea>
+                            <input type="file" name="file" class="input-bw" style="border:none; padding: 15px 0; background: transparent; box-shadow: none;">
+                            <button type="submit" class="btn-bw" style="width: 100%; margin-top: 15px; border-radius: 12px;">SUBMIT WORK</button>
                         </form>
                     </div>
                 @endif
@@ -368,10 +568,10 @@
 
     <!-- ACTIONS -->
     @if(auth()->id() === $session->organiser_id && $session->status !== 'completed')
-        <div style="margin-top: 30px; text-align: right;">
-            <form action="{{ route('session.complete-session', $session->id) }}" method="POST" onsubmit="return confirm('Finish this session?');">
+        <div style="margin-top: 20px; text-align: right; padding-bottom: 60px;">
+            <form action="{{ route('session.complete-session', $session->id) }}" method="POST" onsubmit="return confirm('WARNING: Are you absolutely sure you want to finish this session permanently?');">
                 @csrf
-                <button type="submit" class="btn-bw" style="background: #fff; color: #000;">MARK AS COMPLETED</button>
+                <button type="submit" class="btn-secondary-bw" style="border-radius: 50px;">MARK COURSE AS COMPLETED</button>
             </form>
         </div>
     @endif

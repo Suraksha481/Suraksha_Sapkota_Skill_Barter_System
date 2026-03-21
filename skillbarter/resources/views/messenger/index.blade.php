@@ -12,7 +12,7 @@ html, body {
 /* Ensure the messenger fills enough space but keeps header visible naturally */
 .messenger-container {
     display: flex;
-    height: calc(100vh - 120px); 
+    height: calc(100vh - 120px);
     min-height: 600px;
     max-width: 1200px;
     margin: 20px auto;
@@ -380,8 +380,8 @@ html, body {
         <div class="sidebar-header">
             <h1>Chats</h1>
             <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="search-input" placeholder="Search Messenger for Teachers...">
+                <span class="search-icon"></span>
+                <input type="text" class="search-input" id="search-input" placeholder="Search Messenger...">
                 <div class="search-results" id="search-results"></div>
             </div>
             <!-- Conversation Filters / Tabs can go here -->
@@ -441,7 +441,7 @@ html, body {
 <script>
     const currentUserId = {{ $user->id }};
     let currentConversationId = null;
-    let targetUserId = null; 
+    let targetUserId = null;
 
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');

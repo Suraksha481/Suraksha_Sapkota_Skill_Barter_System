@@ -21,8 +21,10 @@ class SessionModel extends Model
         'meeting_link',
         'is_live',
 
-        'status'
-
+        'status',
+        
+        'reschedule_requested',
+        'reschedule_remarks'
     ];
 
     public function organiser() { return $this->belongsTo(User::class,'organiser_id'); }

@@ -354,6 +354,70 @@ class SessionRequestController extends Controller
         ]);
     }
 
+    public function updateSchedule(Request $request, SessionModel $session)
+    {
+        if ($session->organiser_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
+        ]);
+
+        $session->update([
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'reschedule_requested' => false,
+            'reschedule_remarks' => null
+        ]);
+
+        // Notify students (primary participant and any extra participants)
+        try {
+            // Notify primary student
+            $session->student->notify(new \App\Notifications\RescheduleRequested($session, auth()->user(), null, 'update'));
+            
+            // Notify other participants
+            foreach ($session->participants as $participant) {
+                if ($participant->id !== $session->participant_id) {
+                    $participant->notify(new \App\Notifications\RescheduleRequested($session, auth()->user(), null, 'update'));
+                }
+            }
+        } catch (\Throwable $e) {
+            // Ignore notification errors
+        }
+
+        return back()->with('success', 'Session schedule updated successfully.');
+    }
+
+    public function requestReschedule(Request $request, SessionModel $session)
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        
+        // Ensure user is the primary student or a participant
+        if ($session->participant_id !== $user->id && !$session->participants->contains($user->id)) {
+            abort(403);
+        }
+
+        $request->validate([
+            'remarks' => 'required|string|max:1000',
+        ]);
+
+        $session->update([
+            'reschedule_requested' => true,
+            'reschedule_remarks' => $request->remarks
+        ]);
+
+        try {
+            $session->teacher->notify(new \App\Notifications\RescheduleRequested($session, $user, $request->remarks));
+        } catch (\Throwable $e) {
+            // Log or ignore
+        }
+
+        return back()->with('success', 'Reschedule request sent to the teacher!');
+    }
+
     public function toggleLive(SessionModel $session)
     {
         $user = auth()->user();

@@ -10,9 +10,17 @@
     </div>
 
     <!-- PREMIUM SEARCH BAR -->
-    <div class="search-container" style="max-width: 600px; margin: 0 auto 4rem auto;">
+    <div class="search-container" style="max-width: 1000px; margin: 0 auto 4rem auto;">
         <form method="GET" action="{{ route('teachers.index') }}" class="premium-search">
             <input type="search" name="q" placeholder="Search by name or skill..." value="{{ request('q') }}" class="search-input">
+            <select name="category" class="search-select">
+                <option value="">All Categories</option>
+                @if(isset($categories))
+                    @foreach($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
+                    @endforeach
+                @endif
+            </select>
             <button type="submit" class="search-btn">Search</button>
         </form>
     </div>
@@ -137,6 +145,24 @@
         transition: none;
         flex-shrink: 0;
     }
+
+    .search-select {
+        flex: none;
+        width: 170px;
+        border: none;
+        border-left: 1.5px solid var(--primary-teal-light);
+        padding: 0 15px 0 20px;
+        outline: none;
+        font-weight: 600;
+        color: #64748b;
+        background: transparent;
+        font-family: inherit;
+        font-size: 0.95rem;
+        cursor: pointer;
+        height: 58px;
+        text-overflow: ellipsis;
+    }
+
 
     /* ── TEACHER CARDS ─────────────────────────────────────────────── */
     .teacher-grid {

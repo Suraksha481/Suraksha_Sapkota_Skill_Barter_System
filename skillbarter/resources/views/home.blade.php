@@ -328,7 +328,13 @@
         @foreach($popularSkills->take(3) as $skill)
         <a href="{{ route('skill.show', $skill->id) }}" class="project-card">
             <div class="project-img">
-                <img src="https://via.placeholder.com/400x500?text={{ urlencode($skill->title) }}" alt="{{ $skill->title }}">
+                @if($skill->image)
+                    <img src="{{ asset($skill->image) }}"
+                         alt="{{ $skill->title }}"
+                         onerror="this.src='https://via.placeholder.com/400x500/e9f7f4/20a68a?text={{ urlencode($skill->title) }}'">
+                @else
+                    <img src="{{ asset('images/skills/web_development.png') }}" alt="{{ $skill->title }}">
+                @endif
             </div>
             <div class="project-info">
                 <h3>{{ $skill->title }}</h3>

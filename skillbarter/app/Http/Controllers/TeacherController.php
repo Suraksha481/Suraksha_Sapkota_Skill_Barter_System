@@ -23,6 +23,13 @@ class TeacherController extends Controller
             });
         }
 
+        // apply category filter
+        if ($category = request('category')) {
+            $query->whereHas('userSkills.skill', function($q) use ($category) {
+                $q->where('category', $category);
+            });
+        }
+
         // Add average rating and review count
         $teachers = $query->with('userSkills.skill')
             ->withCount(['receivedFeedback as reviews_count' => function ($q) {
@@ -31,9 +38,13 @@ class TeacherController extends Controller
             ->withAvg('receivedFeedback as average_rating', 'rating')
             ->paginate(10);
 
+        // Fetch categories for the dropdown
+        $categories = \App\Models\Skill::whereNotNull('category')->distinct()->pluck('category');
+
         // return view with teachers collection (include query string for pagination)
         return view('teacher.index', [
             'teachers' => $teachers->withQueryString(),
+            'categories' => $categories
         ]);
     }
 
