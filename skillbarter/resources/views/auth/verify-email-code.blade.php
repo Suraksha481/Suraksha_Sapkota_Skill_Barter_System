@@ -3,292 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Your Email | SkillXchange</title>
+    <title>Verify Your Email | SkillBarter</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
     <style>
-        .verify-code-card {
-            display: flex;
-            width: 800px;
-            max-width: 90%;
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 50px rgba(32, 166, 138, 0.08);
-            border: 1px solid var(--primary-teal-light);
-            margin: 0 auto;
+        :root {
+            --primary-teal: #20a68a;
+            --primary-teal-dark: #17826a;
+            --primary-teal-light: #e6f5f2;
+            --text-slate: #1e293b;
         }
 
-        .verify-code-left {
-            flex: 1;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .premium-verify-card {
+            display: flex;
+            width: 1000px;
+            max-width: 95%;
+            min-height: 640px;
+            height: auto;
+            background: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(32, 166, 138, 0.12);
+            border: 1px solid rgba(32, 166, 138, 0.1);
+            margin: 20px;
+        }
+
+        /* Branding Side */
+        .verify-visual {
+            flex: 0 0 45%;
             background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
-            padding: 50px 30px;
+            padding: 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
             text-align: center;
+            position: relative;
         }
 
-        .verify-code-left h1 {
-            margin: 0 0 15px 0;
-            font-size: 28px;
-        }
-
-        .verify-code-left p {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.6;
-            opacity: 0.95;
-        }
-
-        .code-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-
-        .verify-code-right {
-            flex: 1;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .verify-code-right h2 {
-            text-align: center;
-            margin: 0 0 10px 0;
-            color: var(--text-slate);
-            font-size: 26px;
-            font-weight: 800;
-        }
-
-        .verify-code-right .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        .verify-code-right .info-text {
-            background: var(--primary-teal-light);
-            padding: 12px 15px;
-            border-left: 4px solid var(--primary-teal);
-            margin-bottom: 25px;
-            border-radius: 8px;
-            font-size: 13.5px;
-            color: var(--text-slate);
-        }
-
-        .code-input-group {
-            margin-bottom: 25px;
-        }
-
-        .code-input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .code-input-group input {
-            width: 100%;
-            padding: 14px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 20px;
-            text-align: center;
-            letter-spacing: 12px;
-            font-weight: bold;
-            color: var(--text-slate);
-            transition: all 0.3s;
-        }
-
-        .code-input-group input:focus {
-            outline: none;
-            border-color: var(--primary-teal);
-            box-shadow: 0 0 0 4px rgba(32, 166, 138, 0.15);
-        }
-
-        .code-input-group input::placeholder {
-            letter-spacing: 0;
+        .verify-visual::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 86c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm66 3c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm-46-45c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm40 24c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd' /%3E%3C/svg%3E");
             opacity: 0.5;
         }
 
-        .verify-code-right button {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-teal);
-            border: none;
-            color: white;
+        .icon-box {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .verify-visual h1 {
+            font-size: 32px;
+            margin: 0 0 15px 0;
+            font-weight: 800;
+        }
+
+        .verify-visual p {
             font-size: 16px;
-            cursor: pointer;
-            border-radius: 50px;
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 300px;
+        }
+
+        /* Form Side */
+        .verify-form-area {
+            flex: 1;
+            padding: 60px 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            color: var(--text-slate);
+            margin: 0 0 10px 0;
+            font-weight: 800;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .code-display {
+            background: var(--primary-teal-light);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-teal-dark);
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .code-grid {
+            margin-bottom: 30px;
+        }
+
+        .code-grid label {
+            display: block;
+            margin-bottom: 12px;
             font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-top: 10px;
+            color: var(--text-slate);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
 
-        .verify-code-right button:hover {
-            background: var(--primary-teal-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(32, 166, 138, 0.3);
+        .code-input-wrapper {
+            position: relative;
+         color: #373636ff;
         }
 
-        .resend-section {
+        .main-code-input {
+            width: 100%;
+            height: 60px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
             text-align: center;
-            margin-top: 25px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 15px;
+            color: var(--text-slate);
+            transition: all 0.3s;
+            background: #fdfdfd;
+        }
+
+        .main-code-input:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 5px rgba(61, 67, 66, 0.1);
+            background: #fff;
+        }
+
+        .btn-verify {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-teal);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(32, 166, 138, 0.25);
+        }
+
+        .resend-box {
+            margin-top: 30px;
+            text-align: center;
             padding-top: 25px;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #f1f5f9;
         }
 
-        .resend-text {
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 10px;
+        .resend-box p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 15px;
         }
 
-        .resend-btn {
-            background: transparent;
+        .btn-resend {
+            background: white;
             color: var(--primary-teal);
             border: 2px solid var(--primary-teal);
-            padding: 10px 24px;
+            padding: 10px 25px;
             border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 14.5px;
-            font-weight: 600;
-            transition: all 0.3s;
-            width: auto;
-            margin-top: 0;
-            display: inline-block;
         }
 
-        .resend-btn:hover {
-            background: var(--primary-teal);
-            color: white;
-            box-shadow: 0 4px 15px rgba(32, 166, 138, 0.2);
+        .main-code-input::placeholder {
+            font-size: 18px;
+            color: #cbd5e1;
+            letter-spacing: 2px;
+            font-weight: 400;
         }
 
-        .error-message {
-            background: #fee;
-            color: #c00;
-            padding: 12px 15px;
-            border-left: 4px solid #c00;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 13px;
+    
+
+        .error-toast {
+            background: #fff1f2;
+            color: #e11d48;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border-left: 4px solid #e11d48;
+            margin-bottom: 25px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .success-message {
-            background: #efe;
-            color: #0a0;
-            padding: 12px 15px;
-            border-left: 4px solid #0a0;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 13px;
+        .success-toast {
+            background: #f0fdf4;
+            color: #16a34a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border-left: 4px solid #16a34a;
+            margin-bottom: 25px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .timer {
-            text-align: center;
-            color: #999;
-            font-size: 12px;
-            margin-top: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .verify-code-card {
+        @media (max-width: 900px) {
+            .premium-verify-card {
                 flex-direction: column;
-                width: 100%;
+                height: auto;
+                width: 500px;
             }
-
-            .verify-code-left {
-                padding: 30px 20px;
-                min-height: 200px;
+            .verify-visual {
+                padding: 40px;
             }
-
-            .verify-code-right {
-                padding: 30px 20px;
+            .verify-form-area {
+                padding: 40px;
             }
-
-            .code-input-group input {
-                letter-spacing: 4px;
+            .icon-box {
+                width: 80px; height: 80px; font-size: 32px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="page-center">
-        <div class="verify-code-card">
-            <!-- Left Section -->
-            <div class="verification-header">
-            <h3>Verify Your Email</h3>
-            <p>We've sent a 6-digit verification code to <strong style="color: var(--text-slate);">{{ auth()->user()->email }}</strong>.</p>
+    <div class="premium-verify-card">
+        <!-- Visual Brand Side -->
+        <div class="verify-visual">
+            <div class="icon-box">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+            <h1>Secure Your Access</h1>
+            <p>One final step to join the SkillBarter community. Verify your identity to protect your account and start trading skills.</p>
         </div>
 
-            <!-- Right Section -->
-            <div class="verify-code-right">
-                <h2>Enter Code</h2>
-                <p class="subtitle">Check your inbox for the verification code sent to <strong>{{ $user->email }}</strong></p>
+        <!-- Form Side -->
+        <div class="verify-form-area">
+            <div class="form-header">
+                <h2>Verify Email</h2>
+                <p>We've sent a unique 6-digit code to your inbox to ensure your account security.</p>
+                <div style="margin-top: 10px; font-size: 13px; color: #ef4444; font-weight: 600;">
+                    <i class="fas fa-clock"></i> Code expires in 2 minutes
+                </div>
+            </div>
 
-                @if ($errors->any())
-                    <div class="error-message">
-                        {{ $errors->first() }}
-                    </div>
-                @endif
+            <div class="code-display">
+                <i class="fas fa-envelope"></i>
+                <span>{{ $user->email }}</span>
+            </div>
 
-                @if (session('success'))
-                    <div class="success-message">
-                        {{ session('success') }}
-                    </div>
-                @endif
+            @if ($errors->any())
+                <div class="error-toast">
+                    <i class="fas fa-circle-exclamation"></i>
+                    <span>{{ $errors->first() }}</span>
+                </div>
+            @endif
 
-                <form method="POST" action="{{ route('verify-email-code.verify') }}">
-                    @csrf
+            @if (session('success'))
+                <div class="success-toast">
+                    <i class="fas fa-circle-check"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
 
-                    @unless(session('pending_registration'))
-                        <input type="hidden" name="user_id" value="{{ $user->id }}">
-                    @endunless
+            <form method="POST" action="{{ route('verify-email-code.verify') }}">
+                @csrf
+                @unless(session('pending_registration'))
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                @endunless
 
-                    <div class="code-input-group">
-                        <label for="code">Verification Code</label>
+                <div class="code-grid">
+                    <label for="code">Enter 6-Digit Code</label>
+                    <div class="code-input-wrapper">
                         <input
                             type="text"
                             id="code"
                             name="code"
+                            class="main-code-input"
                             placeholder="000000"
                             maxlength="6"
                             pattern="[0-9]{6}"
                             required
                             autocomplete="off"
                             value="{{ old('code') }}"
+                            autofocus
                         >
                     </div>
+                </div>
 
-                    <button type="submit">Verify Email</button>
+                <button type="submit" class="btn-verify">Complete Verification</button>
+            </form>
+
+            <div class="resend-box">
+                <p>Didn't receive a code? Please check your spam folder or request a new one.</p>
+                <form method="POST" action="{{ route('verify-email-code.resend') }}">
+                    @csrf
+                    @unless(session('pending_registration'))
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    @endunless
+                    <button type="submit" class="btn-resend">Resend New Code</button>
                 </form>
-
-                <div class="resend-section">
-                    <p class="resend-text">Didn't receive the code?</p>
-                    <form method="POST" action="{{ route('verify-email-code.resend') }}" style="display:inline;">
-                        @csrf
-                        @unless(session('pending_registration'))
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                        @endunless
-                        <button type="submit" class="resend-btn">Resend Code</button>
-                    </form>
-                </div>
-
-                <div class="timer">
-                    ⏱️ Code expires in 10 minutes
-                </div>
             </div>
         </div>
     </div>

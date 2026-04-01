@@ -69,17 +69,17 @@
 
 <section class="values-grid-v2">
     <div class="value-card-v2">
-        <span class="icon">🤝</span>
+
         <h3>Community First</h3>
         <p>We believe in the strength of collective knowledge and supporting each other's journeys.</p>
     </div>
     <div class="value-card-v2">
-        <span class="icon">🚀</span>
+
         <h3>Continuous Growth</h3>
         <p>Learning never stops. We provide the tools and connections for lifelong improvement.</p>
     </div>
     <div class="value-card-v2">
-        <span class="icon">💎</span>
+       
         <h3>Quality Exchange</h3>
         <p>We maintain a high standard of peer-to-peer mentoring through verified reviews and badges.</p>
     </div>

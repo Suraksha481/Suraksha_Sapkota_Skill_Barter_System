@@ -53,19 +53,24 @@ class SkillController extends Controller
      */
     public function show(Skill $skill)
     {
-        // also fetch teachers who have this skill and are approved/active
-        $teachers = User::where('role','teacher')
-            ->where('is_teacher_approved', true)
-            ->where('is_active', true)
+        $user = auth()->user();
+        
+        // Fetch teachers who have this skill and are approved/active
+        $teachersQuery = User::where('role','teacher')
             ->whereHas('userSkills', function($q) use ($skill) {
                 $q->where('skill_id', $skill->id);
-            })
-            ->with('userSkills.skill')
-            ->get();
+            });
+
+        // 1. Exclude the current user from the mentors list
+        if ($user) {
+            $teachersQuery->where('id', '!=', $user->id);
+        }
+
+        $teachers = $teachersQuery->with('userSkills.skill')->get();
 
         $isAdded = false;
-        if (auth()->check()) {
-            $isAdded = auth()->user()->userSkills()
+        if ($user) {
+            $isAdded = $user->userSkills()
                 ->where('skill_id', $skill->id)
                 ->exists();
         }

@@ -58,7 +58,13 @@
             @endforelse
         </div>
 
-        @if($teacher->userSkills()->where('type', $teacher->isTeacher() ? 'offer' : 'request')->count() > 0)
+        @php
+            $isViewerTeacher = auth()->check() && auth()->user()->isTeacher();
+            $isProfileStudent = $teacher->isStudent();
+            $shouldHideInteraction = $isViewerTeacher && $isProfileStudent;
+        @endphp
+
+        @if($teacher->userSkills()->where('type', $teacher->isTeacher() ? 'offer' : 'request')->count() > 0 && !$shouldHideInteraction)
             <div style="margin-top: 40px; background: var(--bg-light-teal); padding: 40px; border-radius: 24px; border: 1px solid var(--primary-teal-light); text-align: center; box-shadow: 0 10px 30px rgba(32, 166, 138, 0.05);">
                 <h3 style="margin-top: 0; margin-bottom: 25px; color: var(--text-slate); font-size: 1.5rem;">{{ $teacher->isTeacher() ? 'Ready to Learn from ' . $teacher->name . '?' : 'Ready to Teach ' . $teacher->name . '?' }}</h3>
                 @auth

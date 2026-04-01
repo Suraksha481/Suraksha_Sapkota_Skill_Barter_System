@@ -7,7 +7,13 @@
         {{-- Page Title --}}
         <div style="text-align: center; margin-bottom: 40px;">
             <h1 style="font-size: 36px; font-weight: 800; color: var(--primary-teal); margin-bottom: 10px;">My Skills</h1>
-            <p style="color: var(--text-secondary); font-size: 16px; font-weight: 600;">Manage the skills you teach or want to learn</p>
+            <p style="color: var(--text-secondary); font-size: 16px; font-weight: 600;">
+                @if($user->isTeacher())
+                    Manage the skills you teach
+                @else
+                    Manage the skills you want to learn
+                @endif
+            </p>
         </div>
 
         {{-- Success Message --}}
@@ -57,21 +63,21 @@
                         @enderror
                     </div>
 
-                    {{-- Type Selection --}}
                     <div>
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #000; font-size: 14px;">
-                            {{ $user->isTeacher() ? 'I Teach' : 'Type' }} *
+                            Type
                         </label>
-                        <select name="type" required style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit;">
-                            @if($user->isTeacher())
-                                <option value="offer">I Teach</option>
-                            @else
-                                <option value="request">I Want to Learn</option>
-                            @endif
-                        </select>
-                        @error('type')
-                            <p style="color: #dc2626; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
-                        @enderror
+                        @if($user->isTeacher())
+                            <input type="hidden" name="type" value="offer">
+                            <div style="width: 100%; padding: 12px; background: #f8fafc; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; color: var(--primary-teal); font-weight: 700;">
+                                <i class="fas fa-chalkboard-teacher"></i> Skills I Teach
+                            </div>
+                        @else
+                            <input type="hidden" name="type" value="request">
+                            <div style="width: 100%; padding: 12px; background: #f8fafc; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; color: var(--primary-teal); font-weight: 700;">
+                                <i class="fas fa-book-reader"></i> Skills I Want to Learn
+                            </div>
+                        @endif
                     </div>
 
                     {{-- Level Selection --}}
@@ -95,65 +101,68 @@
                 </div>
             </form>
         </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 40px;">
+            <div style="width: 100%; max-width: 600px;">
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
-
-            {{-- Skills I Teach --}}
-            <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 30px; border: 1px solid var(--primary-teal-light);">
-                <h3 style="font-size: 20px; font-weight: 800; color: var(--primary-teal); margin-bottom: 20px; text-align: center;">
-                    💡 Skills I Teach
-                </h3>
-                @if($teachSkills && $teachSkills->count() > 0)
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        @foreach($teachSkills as $userSkill)
-                            <div style="background: var(--bg-light-teal); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary-teal); display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <p style="margin: 0 0 5px 0; font-weight: 700; color: var(--text-dark);">{{ $userSkill->skill->title }}</p>
-                                    <p style="margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 600;">{{ ucfirst($userSkill->level) }} level</p>
-                                </div>
-                                <form action="{{ route('my.skills.destroy', $userSkill->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" style="background: #dc2626; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;" onclick="return confirm('Remove this skill?');">
-                                        Remove
-                                    </button>
-                                </form>
+                @if($user->isTeacher())
+                    {{-- Skills I Teach --}}
+                    <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 30px; border: 1px solid var(--primary-teal-light);">
+                        <h3 style="font-size: 20px; font-weight: 800; color: var(--primary-teal); margin-bottom: 20px; text-align: center;">
+                            💡 Skills I Teach
+                        </h3>
+                        @if($teachSkills && $teachSkills->count() > 0)
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                @foreach($teachSkills as $userSkill)
+                                    <div style="background: var(--bg-light-teal); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary-teal); display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <p style="margin: 0 0 5px 0; font-weight: 700; color: var(--text-dark);">{{ $userSkill->skill->title }}</p>
+                                            <p style="margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 600;">{{ ucfirst($userSkill->level) }} level</p>
+                                        </div>
+                                        <form action="{{ route('my.skills.destroy', $userSkill->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="background: #dc2626; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;" onclick="return confirm('Remove this skill?');">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endforeach
+                        @else
+                            <p style="color: #999; text-align: center; margin: 0;">No teaching skills added yet.</p>
+                        @endif
                     </div>
                 @else
-                    <p style="color: #999; text-align: center; margin: 0;">No teaching skills added yet.</p>
-                @endif
-            </div>
-
-            {{-- Skills I Want to Learn --}}
-            <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 30px; border: 1px solid var(--primary-teal-light);">
-                <h3 style="font-size: 20px; font-weight: 800; color: var(--primary-teal); margin-bottom: 20px; text-align: center;">
-                    📚 Skills I Want to Learn
-                </h3>
-                @if($learnSkills && $learnSkills->count() > 0)
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        @foreach($learnSkills as $userSkill)
-                            <div style="background: var(--bg-light-teal); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary-teal); display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <p style="margin: 0 0 5px 0; font-weight: 700; color: var(--text-dark);">{{ $userSkill->skill->title }}</p>
-                                    <p style="margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 600;">{{ ucfirst($userSkill->level) }} level</p>
-                                </div>
-                                <form action="{{ route('my.skills.destroy', $userSkill->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" style="background: #dc2626; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;" onclick="return confirm('Remove this skill?');">
-                                        Remove
-                                    </button>
-                                </form>
+                    {{-- Skills I Want to Learn --}}
+                    <div style="background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); padding: 30px; border: 1px solid var(--primary-teal-light);">
+                        <h3 style="font-size: 20px; font-weight: 800; color: var(--primary-teal); margin-bottom: 20px; text-align: center;">
+                            📚 Skills I Want to Learn
+                        </h3>
+                        @if($learnSkills && $learnSkills->count() > 0)
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                @foreach($learnSkills as $userSkill)
+                                    <div style="background: var(--bg-light-teal); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary-teal); display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <p style="margin: 0 0 5px 0; font-weight: 700; color: var(--text-dark);">{{ $userSkill->skill->title }}</p>
+                                            <p style="margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 600;">{{ ucfirst($userSkill->level) }} level</p>
+                                        </div>
+                                        <form action="{{ route('my.skills.destroy', $userSkill->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="background: #dc2626; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;" onclick="return confirm('Remove this skill?');">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endforeach
+                        @else
+                            <p style="color: #999; text-align: center; margin: 0;">No learning skills added yet.</p>
+                        @endif
                     </div>
-                @else
-                    <p style="color: #999; text-align: center; margin: 0;">No learning skills added yet.</p>
                 @endif
-            </div>
 
+            </div>
         </div>
 
 {{-- Back Button --}}

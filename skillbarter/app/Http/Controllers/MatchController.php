@@ -8,8 +8,9 @@ use App\Models\User;
 
 class MatchController extends Controller
 {
-    public function index(Request $request, \App\Services\AISuggestionService $aiService)
+    public function index(Request $request, \App\Services\RecommendationService $recoService)
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
 
         // If not logged in, just redirect to find-skill
@@ -75,24 +76,23 @@ class MatchController extends Controller
             $matchUser->match_score = round($score);
             $matchUser->match_reasons = $matchReasons;
             $matchUser->avg_rating = $avgRating;
-            $matchUser->is_ai_suggestion = false;
+            $matchUser->is_recommendation = false;
 
             return $matchUser;
         })->sortByDesc('match_score')->values();
 
-        // --- AI SUGGESTIONS ---
-        /** @var \App\Models\User $user */
-        $aiSuggestions = $aiService->suggestMatches($user);
+        // --- RECOMMENDATIONS ---
+        $recommendations = $recoService->suggestMatches($user);
 
-        // Filter AI suggestions that aren't already in regular matches
+        // Filter recommendations that aren't already in regular matches
         $regularMatchIds = $scoredMatches->pluck('id')->toArray();
-        $aiSuggestions = $aiSuggestions->reject(function ($aiUser) use ($regularMatchIds) {
-            return in_array($aiUser->id, $regularMatchIds);
+        $recommendations = $recommendations->reject(function ($recoUser) use ($regularMatchIds) {
+            return in_array($recoUser->id, $regularMatchIds);
         });
 
         return view('match.index', [
             'matches' => $scoredMatches,
-            'aiSuggestions' => $aiSuggestions
+            'recommendations' => $recommendations
         ]);
     }
 }

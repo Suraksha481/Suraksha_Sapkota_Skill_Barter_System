@@ -75,32 +75,32 @@
 <section class="container">
     <div class="services-grid-v2">
         <div class="srv-card-v2">
-            <span class="icon">👤</span>
+
             <h3>1-on-1 Sessions</h3>
             <p>Personalized tutoring sessions for focused, hands-on learning with schedule flexibility.</p>
         </div>
         <div class="srv-card-v2">
-            <span class="icon">🏛️</span>
+
             <h3>Campus Workshops</h3>
             <p>Organize group workshops and campus events to teach practical skills at scale.</p>
         </div>
         <div class="srv-card-v2">
-            <span class="icon">🧠</span>
+
             <h3>Smart Matching</h3>
             <p>Intelligent matching suggests peers who have complementary skills and availability.</p>
         </div>
         <div class="srv-card-v2">
-            <span class="icon">🏅</span>
+
             <h3>Badges & Rewards</h3>
             <p>Earn badges and points for teaching and contributing to the community.</p>
         </div>
         <div class="srv-card-v2">
-            <span class="icon">📚</span>
+
             <h3>Learning Resources</h3>
             <p>Access curated materials — slides, templates, and starter projects.</p>
         </div>
         <div class="srv-card-v2">
-            <span class="icon">👨‍🏫</span>
+           
             <h3>Mentor Support</h3>
             <p>Find experienced mentors for longer-term guidance and portfolio reviews.</p>
         </div>

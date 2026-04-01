@@ -8,6 +8,7 @@ class Skill extends Model
 {
     protected $fillable = [
         'title',
+        'slug',
         'description',
         'category',
         'image'
@@ -15,7 +16,7 @@ class Skill extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_skills')
+        return $this->belongsToMany(User::class , 'user_skills')
             ->withPivot('type')
             ->withTimestamps();
     }
@@ -27,5 +28,3 @@ class Skill extends Model
 
 
 }
-
-

@@ -8,6 +8,7 @@ use App\Models\SessionModel;
 use App\Models\SessionMaterial;
 use App\Models\SessionAssignment;
 use App\Services\GamificationService;
+use App\Notifications\SessionScheduled;
 use Illuminate\Http\Request;
 
 class SessionRequestController extends Controller
@@ -51,6 +52,10 @@ class SessionRequestController extends Controller
             return back()->with('error', 'You cannot request your own skill.');
         }
 
+        if (auth()->user()->isTeacher()) {
+            return back()->with('error', 'Teachers cannot request mentorship sessions.');
+        }
+
         return view('requests.create', compact('userSkill'));
     }
 
@@ -67,6 +72,10 @@ class SessionRequestController extends Controller
 
         if ($userSkill->user_id === $user->id) {
             return back()->with('error', 'You cannot request your own skill.');
+        }
+
+        if ($user->isTeacher()) {
+            return back()->with('error', 'Teachers cannot request mentorship sessions.');
         }
 
         // Limit checking logic
@@ -142,7 +151,8 @@ class SessionRequestController extends Controller
             // ignore
         }
 
-        return back()->with('success', 'Request accepted! Now you can schedule the session.');
+        return redirect()->route('requests.index', ['tab' => 'received'])
+            ->with('success', 'Request accepted! Now you can schedule the session below.');
     }
 
     public function schedule(Request $request, RequestModel $requestModel)
@@ -171,7 +181,15 @@ class SessionRequestController extends Controller
 
         $requestModel->update(['status' => 'scheduled']);
 
-        return back()->with('success', 'Session scheduled successfully.');
+        // Notify the student about the scheduled session
+        try {
+            $requestModel->requester->notify(new SessionScheduled($session));
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
+        return redirect()->route('sessions.index')
+            ->with('success', 'Session scheduled successfully and student notified.');
     }
 
     public function decline(RequestModel $requestModel)
@@ -248,7 +266,7 @@ class SessionRequestController extends Controller
 
         // Check if user is teacher or a participant
         $isTeacher = ($session->organiser_id === $user->id);
-        $isParticipant = $session->participants->contains($user->id);
+        $isParticipant = ($session->participant_id === $user->id) || $session->participants->contains($user->id);
 
         if (!$isTeacher && !$isParticipant) {
             abort(403, 'You are not a participant in this classroom.');

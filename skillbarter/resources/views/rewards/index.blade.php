@@ -12,7 +12,7 @@
 
         <div class="header-stats">
             <div class="stat-badge">
-                <span class="number">{{ $user->total_sessions }}</span>
+                <span class="number">{{ $stats['sessions_taught'] + $stats['sessions_learned'] }}</span>
                 <span class="label">Sessions</span>
             </div>
             <div class="stat-badge">
@@ -20,7 +20,7 @@
                 <span class="label">Skills</span>
             </div>
             <div class="stat-badge">
-                <span class="number">{{ $user->averageRating() ? number_format($user->averageRating(), 1) : 'No' }}</span>
+                <span class="number">{{ $user->getAverageRating() > 0 ? number_format($user->getAverageRating(), 1) : 'No' }}</span>
                 <span class="label">Feedback</span>
             </div>
         </div>

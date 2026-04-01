@@ -117,6 +117,23 @@ class VerifyEmailCodeController extends Controller
      */
     public function resend(Request $request)
     {
+        $pending = session('pending_registration');
+        if ($pending) {
+            // Generate new code
+            $code = $this->generateVerificationCode();
+            
+            // Update session
+            $pending['verification_code'] = $code;
+            $pending['expires_at'] = now()->addMinutes(2);
+            session(['pending_registration' => $pending]);
+
+            // Send email
+            \Illuminate\Support\Facades\Notification::route('mail', $pending['email'])
+                ->notify(new \App\Notifications\VerifyEmailCode($code));
+
+            return back()->with('success', 'A new verification code has been sent to your email.');
+        }
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
         ]);
@@ -135,7 +152,7 @@ class VerifyEmailCodeController extends Controller
         EmailVerificationCode::create([
             'user_id' => $user->id,
             'code' => $code,
-            'expires_at' => now()->addMinutes(10),
+            'expires_at' => now()->addMinutes(2),
         ]);
 
         // Send email with new code

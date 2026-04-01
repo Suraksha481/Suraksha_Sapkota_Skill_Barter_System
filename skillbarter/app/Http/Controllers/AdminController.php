@@ -165,6 +165,7 @@ class AdminController extends Controller
         ]);
 
         $data = $request->only(['title', 'description', 'category']);
+        $data['slug'] = \Illuminate\Support\Str::slug($data['title']);
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images/skills', 'public');

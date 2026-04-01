@@ -5,25 +5,27 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\UserSkill;
-use App\Services\AISuggestionService;
+use App\Services\RecommendationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AISuggestionTest extends TestCase
+class RecommendationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_ai_suggestion_suggests_related_skills_in_same_category()
+    public function test_recommendation_suggests_related_skills_in_same_category()
     {
         // 1. Setup skills
         $programming = Skill::create([
             'title' => 'Python Programming',
+            'slug' => 'python-programming',
             'description' => 'Learn Python from scratch.',
             'category' => 'Technology'
         ]);
 
         $webdev = Skill::create([
             'title' => 'Web Development',
+            'slug' => 'web-development',
             'description' => 'Build websites with HTML/CSS.',
             'category' => 'Technology'
         ]);
@@ -45,19 +47,20 @@ class AISuggestionTest extends TestCase
             'user_id' => $userB->id,
             'skill_id' => $webdev->id,
             'type' => 'offer',
-            'level' => 'expert'
+            'level' => 'advanced'
         ]);
 
-        // 3. Run AI Suggestion
-        $service = new AISuggestionService();
-        $suggestions = $service->suggestMatches($userA);
+        // 3. Run Recommendation Service
+        $service = new RecommendationService();
+        $recommendations = $service->suggestMatches($userA);
 
         // 4. Assert
-        $this->assertNotEmpty($suggestions);
-        $firstSuggestion = $suggestions->first();
-        $this->assertNotNull($firstSuggestion);
-        $this->assertEquals($userB->id, $firstSuggestion->id);
-        $this->assertTrue($firstSuggestion->is_ai_suggestion);
-        $this->assertContains("Interest match: You both share an interest in Technology.", $firstSuggestion->ai_reasons);
+        $this->assertNotEmpty($recommendations);
+        /** @var \App\Models\User $firstRec */
+        $firstRec = $recommendations->first();
+        $this->assertNotNull($firstRec);
+        $this->assertEquals($userB->id, $firstRec->id);
+        $this->assertTrue($firstRec->is_recommendation);
+        $this->assertContains("Interest match: You both share an interest in Technology.", $firstRec->match_reasons);
     }
 }

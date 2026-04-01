@@ -12,7 +12,7 @@ html, body {
 /* Ensure the messenger fills enough space but keeps header visible naturally */
 .messenger-container {
     display: flex;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 120px); 
     min-height: 600px;
     max-width: 1200px;
     margin: 20px auto;
@@ -441,7 +441,7 @@ html, body {
 <script>
     const currentUserId = {{ $user->id }};
     let currentConversationId = null;
-    let targetUserId = null;
+    let targetUserId = null; 
 
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');

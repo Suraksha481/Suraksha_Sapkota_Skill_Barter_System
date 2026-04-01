@@ -62,7 +62,7 @@ class RegisteredUserController extends Controller
         // generate a random verification code and keep it with the pending data
         $code = $this->generateVerificationCode();
         $pending['verification_code'] = $code;
-        $pending['expires_at'] = now()->addMinutes(10);
+        $pending['expires_at'] = now()->addMinutes(2);
 
         session(['pending_registration' => $pending]);
 

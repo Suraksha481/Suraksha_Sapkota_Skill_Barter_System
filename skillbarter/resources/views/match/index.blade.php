@@ -9,7 +9,7 @@
         <p>We've analyzed your skills and found the best potential matches for you to learn and teach! Matches are scored based on mutual needs, high ratings, and activity levels.</p>
     </div>
 
-    @if(collect($matches)->isEmpty() && collect($aiSuggestions)->isEmpty())
+    @if(collect($matches)->isEmpty() && collect($recommendations)->isEmpty())
         <div class="dashboard-section" style="text-align: center; padding: 3rem 1rem;">
             <h2>No Matches Found Yet</h2>
             <p style="color: #64748b; margin-bottom: 2rem;">We couldn't find any perfect matches right now. Try adding more skills to your profile or check back later as new users join!</p>
@@ -74,17 +74,17 @@
             </div>
         @endif
 
-        @if(collect($aiSuggestions)->isNotEmpty())
+        @if(collect($recommendations)->isNotEmpty())
             <div class="dashboard-section-header" style="margin-bottom: 1.5rem; margin-top: 2rem;">
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <h2 style="font-size: 1.5rem; border-left: 4px solid var(--primary-teal-dark); padding-left: 1rem; margin: 0;">AI Suggestions</h2>
-                    <span style="background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark)); color: white; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">Beta</span>
+                    <h2 style="font-size: 1.5rem; border-left: 4px solid var(--primary-teal-dark); padding-left: 1rem; margin: 0;">Recommended for You</h2>
+                    <span style="background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark)); color: white; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">NEW</span>
                 </div>
-                <p style="color: #64748b; margin-top: 0.5rem;">Intelligent broad matches based on skill categories and related topics.</p>
+                <p style="color: #64748b; margin-top: 0.5rem;">Suggested matches based on your interests and skill categories.</p>
             </div>
 
             <div class="teacher-list">
-                @foreach($aiSuggestions as $match)
+                @foreach($recommendations as $match)
                     <div class="teacher-card" style="position: relative; overflow: hidden; border: 1px dashed var(--primary-teal-dark); background: rgba(32, 166, 138, 0.02);">
                         
                         <div style="display:flex; align-items:flex-start; gap:1.5rem; width: 100%;">
@@ -108,16 +108,16 @@
                                     </div>
                                     <div style="text-align: right;">
                                         <div style="background: #fff; color: var(--primary-teal-dark); padding: 5px 10px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; margin-bottom: 8px; border: 1px solid var(--primary-teal-light);">
-                                            {{ $match->ai_score }} <span style="font-size: 0.8rem; color: #64748b;">AI Score</span>
+                                            {{ $match->match_score }} <span style="font-size: 0.8rem; color: #64748b;">Match Score</span>
                                         </div>
                                         <a href="{{ route('teachers.show', $match) }}" class="btn-pill secondary" style="padding: 6px 15px; font-size: 0.85rem; height: auto; border-color: var(--primary-teal-dark); color: var(--primary-teal-dark) !important;">View Profile</a>
                                     </div>
                                 </div>
                                 
                                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(32, 166, 138, 0.1);">
-                                    <strong style="font-size: 0.85rem; color: var(--primary-teal-dark); text-transform: uppercase; letter-spacing: 1px;">Smart matching logic:</strong>
+                                    <strong style="font-size: 0.85rem; color: var(--primary-teal-dark); text-transform: uppercase; letter-spacing: 1px;">Why it's recommended:</strong>
                                     <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #4b5563; font-size: 0.9rem;">
-                                        @foreach($match->ai_reasons as $reason)
+                                        @foreach($match->match_reasons as $reason)
                                             <li>{{ $reason }}</li>
                                         @endforeach
                                     </ul>
