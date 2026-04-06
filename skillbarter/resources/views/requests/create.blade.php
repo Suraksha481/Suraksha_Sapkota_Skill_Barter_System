@@ -1,63 +1,208 @@
 @extends('app')
 
+@section('page_title', 'Request Session - SkillSwap')
+
 @section('content')
 
-<section class="dashboard">
+<style>
+:root {
+    --req-primary: #20a68a;
+    --req-primary-light: #e9f7f4;
+    --req-text-main: #2d3e50;
+    --req-text-muted: #6b8e88;
+    --req-bg: #f8fbfa;
+    --req-card-bg: #ffffff;
+    --req-shadow: 0 20px 50px rgba(32, 166, 138, 0.08);
+}
 
-    <div class="dashboard-header">
-        <h1>Request a Session</h1>
-        <p>Send a learning request to {{ $userSkill->user->name ?? 'this user' }}</p>
-    </div>
+.req-wrapper {
+    background: var(--req-bg);
+    min-height: 100vh;
+    padding: 120px 5% 80px;
+}
 
-    @if(session('error'))
-        <div class="alert error">{{ session('error') }}</div>
-    @endif
+.req-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
 
-    <!-- Skill Info -->
-    <div class="dashboard-section" style="max-width: 600px; background: #fff; padding: 2rem; border-radius: 12px; border: 1px solid #eee; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
-        <h2 style="color: #000; margin-bottom: 1rem;">{{ $userSkill->skill->title ?? 'Skill' }}</h2>
-        <div style="display: grid; gap: 0.5rem; color: #444;">
-            <p style="margin: 0;"><strong>Teacher:</strong> {{ $userSkill->user->name ?? 'Unknown' }}</p>
-            <p style="margin: 0;"><strong>Level:</strong> {{ ucfirst($userSkill->level ?? 'N/A') }}</p>
-            @if($userSkill->price)
-                <p style="margin: 0;"><strong>Price:</strong> <span style="color: #000; font-weight: 700;">${{ number_format($userSkill->price, 2) }}/hr</span></p>
-            @endif
+.req-card {
+    background: var(--req-card-bg);
+    border-radius: 40px;
+    padding: 60px;
+    box-shadow: var(--req-shadow);
+    border: 1px solid var(--req-primary-light);
+}
+
+.req-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.req-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--req-text-main);
+    margin-bottom: 10px;
+}
+
+.req-header p {
+    color: var(--req-text-muted);
+    font-size: 1.1rem;
+}
+
+.skill-info-banner {
+    background: var(--req-primary-light);
+    border-radius: 30px;
+    padding: 30px 40px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(32, 166, 138, 0.2);
+}
+
+.skill-info-text h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--req-primary);
+    margin-bottom: 5px;
+}
+
+.skill-info-details {
+    display: flex;
+    gap: 30px;
+    color: var(--req-text-main);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 35px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--req-text-main);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 18px 24px;
+    border-radius: 20px;
+    border: 2px solid var(--req-primary-light);
+    background: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--req-text-main);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--req-primary);
+    box-shadow: 0 0 0 5px rgba(32, 166, 138, 0.1);
+}
+
+textarea.form-control {
+    resize: none;
+    min-height: 150px;
+}
+
+.req-btns {
+    display: flex;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.req-btns .btn-pill {
+    flex: 1;
+}
+
+
+.alert-modern {
+    padding: 20px 30px;
+    border-radius: 25px;
+    background: #fff5f5;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .req-card { padding: 40px 25px; border-radius: 30px; }
+    .skill-info-banner { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .skill-info-details { flex-direction: column; gap: 5px; }
+    .req-btns { flex-direction: column; }
+    .req-header h1 { font-size: 2rem; }
+}
+</style>
+
+<div class="req-wrapper">
+    <div class="req-container">
+        
+        <header class="req-header">
+            <h1 style="color: #000;">Request Mentorship</h1>
+            <p>Connect with <strong>{{ $userSkill->user->name ?? 'Expert' }}</strong> to master this skill.</p>
+        </header>
+
+        @if(session('error'))
+            <div class="alert-modern">
+                {!! session('error') !!}
+            </div>
+        @endif
+
+        <div class="req-card">
+            <div class="skill-info-banner">
+                <div class="skill-info-text">
+                    <h2>{{ $userSkill->skill->title ?? 'Professional Skill' }}</h2>
+                    <div class="skill-info-details">
+                        <span>Level: {{ ucfirst($userSkill->level ?? 'Beginner') }}</span>
+                        @if($userSkill->price)
+                            <span style="color: var(--req-primary);">Token Cost: {{ number_format($userSkill->price, 0) }} pts</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ route('requests.store') }}" onsubmit="return confirm('Ready to send this request?');">
+                @csrf
+                <input type="hidden" name="user_skill_id" value="{{ $userSkill->id }}">
+
+                <div class="form-group">
+                    <label for="message" class="form-label">Introduce Yourself</label>
+                    <textarea name="message" id="message" class="form-control" 
+                              placeholder="Describe what you want to learn or any specific goals you have..."
+                              required>{{ old('message') }}</textarea>
+                    @error('message')
+                        <span style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduled_at" class="form-label">Preferred Date & Time</label>
+                    <div style="position: relative;">
+                        <input type="datetime-local" name="scheduled_at" id="scheduled_at" 
+                               class="form-control" value="{{ old('scheduled_at') }}">
+                    </div>
+                    @error('scheduled_at')
+                        <span style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="req-btns">
+                    <button type="submit" class="btn-pill primary">Send Request</button>
+                    <a href="{{ url()->previous() }}" class="btn-pill secondary">Cancel</a>
+                </div>
+            </form>
         </div>
     </div>
-
-    <!-- Request Form -->
-    <div class="skill-form-card" style="max-width: 600px; background: #fff; padding: 2.5rem; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-        <form method="POST" action="{{ route('requests.store') }}" onsubmit="return confirm('Are you sure you want to request this session?');">
-            @csrf
-            <input type="hidden" name="user_skill_id" value="{{ $userSkill->id }}">
-
-            <div class="form-group" style="margin-bottom: 1.5rem;">
-                <label for="message" style="display: block; font-weight: 700; margin-bottom: 0.5rem; color: #000;">Message (optional)</label>
-                <textarea name="message" id="message" rows="4"
-                          placeholder="Tell the teacher what you'd like to learn..."
-                          style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; transition: border-color 0.3s ease;">{{ old('message') }}</textarea>
-                @error('message')
-                    <span style="color: #ef4444; font-size: 0.85rem; margin-top: 0.25rem; display: block;">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group" style="margin-bottom: 2rem;">
-                <label for="scheduled_at" style="display: block; font-weight: 700; margin-bottom: 0.5rem; color: #000;">Preferred Date/Time (optional)</label>
-                <input type="datetime-local" name="scheduled_at" id="scheduled_at"
-                       value="{{ old('scheduled_at') }}"
-                       style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;">
-                @error('scheduled_at')
-                    <span style="color: #ef4444; font-size: 0.85rem; margin-top: 0.25rem; display: block;">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div style="display: flex; gap: 1rem;">
-                <button type="submit" class="btn primary" style="padding: 0.75rem 2.5rem; background: #000; color: #fff; border: 1px solid #000; cursor: pointer; font-weight: 700;">Send Request</button>
-                <a href="{{ url()->previous() }}" class="btn ghost" style="padding: 0.75rem 2.5rem; background: #fff; color: #000; border: 1px solid #000; text-decoration: none; display: inline-block; text-align: center; font-weight: 700;">Cancel</a>
-            </div>
-        </form>
-    </div>
-
-</section>
+</div>
 
 @endsection

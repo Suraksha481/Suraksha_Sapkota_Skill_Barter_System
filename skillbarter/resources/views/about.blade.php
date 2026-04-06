@@ -6,7 +6,7 @@
 
 <style>
 .about-hero-v2 {
-    background: #20a68a; /* Solid vibrant teal for better clarity */
+    background: #75dcc5; /* Solid vibrant teal for better clarity */
     padding: 100px 5%;
     text-align: center;
     color: #fff;
@@ -79,7 +79,7 @@
         <p>Learning never stops. We provide the tools and connections for lifelong improvement.</p>
     </div>
     <div class="value-card-v2">
-       
+
         <h3>Quality Exchange</h3>
         <p>We maintain a high standard of peer-to-peer mentoring through verified reviews and badges.</p>
     </div>

@@ -1,128 +1,183 @@
 @extends('app')
 
-@section('page_title', 'Our Services - SkillSwap')
+@section('page_title', 'Services - SkillSwap')
 
 @section('content')
 
 <style>
-.services-hero-v2 {
-    padding: 120px 5% 80px;
-    background: #fff;
+:root {
+    --srv-primary: #20a68a;
+    --srv-text-main: #0f172a;
+    --srv-text-muted: #64748b;
+    --srv-bg: #f8fafc;
 }
-.services-hero-v2 .container { display: flex; align-items: center; gap: 80px; }
-.srv-hero-text { flex: 1.2; }
-.srv-hero-text h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 25px; line-height: 1.1; letter-spacing: -2px; }
-.srv-hero-text p { font-size: 1.2rem; color: #666; margin-bottom: 40px; }
-.srv-hero-img { flex: 1; border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
-.srv-hero-img img { width: 100%; display: block; }
 
-.services-grid-v2 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    margin: 80px 0;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+.srv-page-wrapper {
+    background: var(--srv-bg);
+    min-height: 100vh;
+    padding-bottom: 120px;
+    font-family: 'Inter', sans-serif;
 }
-.srv-card-v2 {
-    background: #fff;
-    padding: 60px 40px;
-    border-right: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
+
+.srv-hero-clean {
+    padding: 100px 5% 60px;
     text-align: center;
-    transition: all 0.3s;
+    background: #75dcc5;
+    border-radius: 0 0 50px 50px;
 }
-.srv-card-v2:hover { background: var(--bg-light-teal); transform: scale(1.02); z-index: 2; border-color: transparent; box-shadow: 0 20px 40px rgba(32, 166, 138, 0.1); }
-.srv-card-v2 .icon { font-size: 3rem; margin-bottom: 25px; display: block; }
-.srv-card-v2 h3 { font-size: 1.4rem; margin-bottom: 15px; }
-.srv-card-v2 p { color: #888; font-size: 0.95rem; line-height: 1.6; }
 
-.categories-v2 { background: var(--bg-light-teal); padding: 100px 5%; text-align: center; }
-.cat-list-v2 { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 40px; }
-.cat-tag-v2 {
-    background: var(--primary-teal);
-    padding: 12px 30px;
-    border-radius: 50px;
+.srv-hero-clean h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: #080808;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+}
+
+.srv-hero-clean p {
+    font-size: 1.15rem;
+    color: #666;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Minimal Grid */
+.srv-grid {
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.srv-card-clean {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 45px 40px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.srv-card-clean:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+.srv-icon-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: rgba(32, 166, 138, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.srv-icon-placeholder svg {
+    width: 28px;
+    height: 28px;
+    color: var(--srv-primary);
+}
+
+.srv-card-clean h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--srv-text-main);
+    margin-bottom: 15px;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.srv-card-clean p {
+    color: var(--srv-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.cta-box-modern {
+    background: #ffffff;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.cta-box-modern h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--srv-text-main);
+    margin-bottom: 30px;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--srv-primary);
     color: #fff;
     font-weight: 700;
+    border-radius: 30px;
     text-decoration: none;
-    transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(32,166,138,0.2);
+    transition: 0.3s;
+    font-size: 1.1rem;
 }
-.cat-tag-v2:hover { background: var(--primary-teal-dark); color: #fff; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(32,166,138,0.3); }
 
-@media (max-width: 992px) {
-    .services-hero-v2 .container { flex-direction: column; text-align: center; }
-    .services-grid-v2 { grid-template-columns: 1fr; }
+.cta-btn:hover {
+    background: #178a72;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(32, 166, 138, 0.3);
+}
+
+@media (max-width: 768px) {
+    .srv-grid { grid-template-columns: 1fr; }
+    .srv-card-clean { padding: 35px 30px; }
 }
 </style>
 
-<section class="services-hero-v2">
-    <div class="container">
-        <div class="srv-hero-text">
-            <span class="badge-teal">OUR SERVICES</span>
-            <h1>Everything you need to <span class="text-teal">master</span> new skills.</h1>
-            <p>Discover a comprehensive suite of services designed to make skill exchange seamless, effective, and enjoyable for everyone.</p>
-            <div class="hero-btns">
-                <a href="{{ url('/find-skill') }}" class="btn-pill primary">Browse All Skills</a>
+<div class="srv-page-wrapper">
+    <header class="srv-hero-clean">
+        <h1><span style="color:#050606;">Services</span></h1>
+        <p>A comprehensive look at all the features and capabilities we provide to facilitate your skill-bartering journey.</p>
+    </header>
+
+    <main class="srv-grid">
+        @forelse($services as $service)
+            <div class="srv-card-clean">
+                <div class="srv-icon-placeholder">
+                    {{-- Generic elegant check/star icon for the design --}}
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3>{{ $service->title }}</h3>
+                <p>{{ $service->description }}</p>
             </div>
-        </div>
-        <div class="srv-hero-img">
-            <img src="{{ asset('images/home_redesign/hero_students.png') }}" alt="Services Hero">
-        </div>
-    </div>
-</section>
+        @empty
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px; background: #fff; border-radius: 20px;">
+                <p style="color: #64748b; font-size: 1.1rem;">No services have been added yet.</p>
+            </div>
+        @endforelse
+    </main>
 
-<section class="container">
-    <div class="services-grid-v2">
-        <div class="srv-card-v2">
-
-            <h3>1-on-1 Sessions</h3>
-            <p>Personalized tutoring sessions for focused, hands-on learning with schedule flexibility.</p>
-        </div>
-        <div class="srv-card-v2">
-
-            <h3>Campus Workshops</h3>
-            <p>Organize group workshops and campus events to teach practical skills at scale.</p>
-        </div>
-        <div class="srv-card-v2">
-
-            <h3>Smart Matching</h3>
-            <p>Intelligent matching suggests peers who have complementary skills and availability.</p>
-        </div>
-        <div class="srv-card-v2">
-
-            <h3>Badges & Rewards</h3>
-            <p>Earn badges and points for teaching and contributing to the community.</p>
-        </div>
-        <div class="srv-card-v2">
-
-            <h3>Learning Resources</h3>
-            <p>Access curated materials — slides, templates, and starter projects.</p>
-        </div>
-        <div class="srv-card-v2">
-           
-            <h3>Mentor Support</h3>
-            <p>Find experienced mentors for longer-term guidance and portfolio reviews.</p>
+    <div style="padding: 0 5%;">
+        <div class="cta-box-modern">
+            <h2>Ready to unlock your true potential?</h2>
+            <a href="{{ route('register') }}" class="btn-pill primary" style="padding: 15px 40px;">Join the Community</a>
+            
         </div>
     </div>
-</section>
-
-<section class="categories-v2">
-    <span class="badge-teal">CATEGORIES</span>
-    <h2>Explore skills across many fields</h2>
-    <div class="cat-list-v2">
-        @foreach(['Technology', 'Design', 'Business', 'Language', 'Soft Skills', 'Marketing', 'Data'] as $cat)
-            <a href="{{ route('find-skill', ['category' => $cat]) }}" class="cat-tag-v2">{{ $cat }}</a>
-        @endforeach
-    </div>
-</section>
-
-<div class="cta-box container">
-    <div>
-        <span class="text-teal">Ready?</span>
-        <h2>Start your own learning journey</h2>
-    </div>
-    <a href="{{ route('register') }}" class="btn-pill primary" style="padding: 15px 40px;">Get Started Now</a>
 </div>
 
 @endsection

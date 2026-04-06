@@ -13,6 +13,9 @@ class Service extends Model
         'title',
         'description',
         'category',
+        'role',
         'image_path',
+        'teacher_route',
+        'student_route',
     ];
 }

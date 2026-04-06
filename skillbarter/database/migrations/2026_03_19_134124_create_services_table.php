@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('category')->nullable();
+            $table->string('role')->default('both'); // teacher, student, both, guest
             $table->string('image_path')->nullable();
+            $table->string('teacher_route')->nullable();
+            $table->string('student_route')->nullable();
             $table->timestamps();
         });
     }

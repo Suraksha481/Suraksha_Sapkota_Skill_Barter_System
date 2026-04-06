@@ -44,7 +44,12 @@ class PageController extends Controller
     // SERVICE PAGE
     public function service()
     {
+        if (auth()->check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('service', [
+            'services' => \App\Models\Service::all(),
             'serviceCount' => Skill::distinct('category')->count('category')
         ]);
     }

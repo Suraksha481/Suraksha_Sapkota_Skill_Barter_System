@@ -6,8 +6,8 @@
 
 <style>
 .contact-hero-v2 {
-    background: var(--bg-light-teal);
-    padding: 100px 5%;
+    background: #75dcc5;
+    padding: 100px 4%;
     text-align: center;
 }
 .contact-hero-v2 h1 { font-size: 3.5rem; margin-bottom: 20px; letter-spacing: -2px; }
@@ -16,7 +16,7 @@
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     gap: 60px;
-    margin: -50px 0 100px;
+    margin: 50px 0 100px;
 }
 .contact-form-v2 {
     background: #fff;
@@ -66,7 +66,7 @@
     <div class="contact-grid-v2">
         <div class="contact-form-v2">
             <h2>Send us a Message</h2>
-            
+
             @if(session('success'))
                 <div style="background: var(--bg-light-teal); color: var(--primary-teal); padding: 20px; border-radius: 15px; margin-bottom: 30px; font-weight: 600;">
                     {{ session('success') }}
@@ -97,19 +97,19 @@
 
         <div class="contact-info-v2">
             <div class="info-box-v2">
-                <h4>📧 Email Us</h4>
+                <h4>Email Us</h4>
                 <p>support@skillswap.com<br>info@skillswap.com</p>
             </div>
             <div class="info-box-v2">
-                <h4>📞 Call Us</h4>
+                <h4>Call Us</h4>
                 <p>+977 9816681421<br>+977 061-554433</p>
             </div>
             <div class="info-box-v2">
-                <h4>📍 Our Office</h4>
+                <h4>Our Office</h4>
                 <p>Pokhara-17, Jyamirkuna<br>Gandaki, Nepal</p>
             </div>
             <div class="info-box-v2">
-                <h4>🕒 Support Hours</h4>
+                <h4>Support Hours</h4>
                 <p>Mon - Fri: 9:00 AM - 6:00 PM<br>Weekend: 10:00 AM - 2:00 PM</p>
             </div>
         </div>
@@ -120,7 +120,7 @@
             <span class="badge-teal">FAQS</span>
             <h2>Common Questions</h2>
         </div>
-        
+
         <div class="faq-grid-v2">
             <div class="faq-item-v2">
                 <h4>Is SkillSwap really free?</h4>

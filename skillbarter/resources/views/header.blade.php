@@ -193,7 +193,9 @@
     <ul class="main-nav-list">
         <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
         <li class="nav-item"><a href="{{ url('/about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">About</a></li>
+        @guest
         <li class="nav-item"><a href="{{ url('/service') }}" class="nav-link {{ request()->is('service') ? 'active' : '' }}">Services</a></li>
+        @endguest
         <li class="nav-item">
             <a href="#" class="nav-link {{ (request()->is('find-skill') || request()->is('privacy-policy') || request()->is('terms-of-use') || request()->is('help-center')) ? 'active' : '' }}">
                 Pages
