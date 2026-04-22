@@ -9,7 +9,13 @@
         <p>We've analyzed your skills and found the best potential matches for you to learn and teach! Matches are scored based on mutual needs, high ratings, and activity levels.</p>
     </div>
 
-    @if(collect($matches)->isEmpty() && collect($recommendations)->isEmpty())
+    @if(isset($isPremium) && !$isPremium)
+        <div class="dashboard-section" style="text-align: center; padding: 3rem 1rem;">
+            <h2 style="color: var(--primary-teal);"><i class="fas fa-crown" style="margin-right: 10px;"></i>Premium Feature</h2>
+            <p style="color: #64748b; margin-bottom: 2rem;">Skill matching is an exclusive feature for our premium members. Upgrade your account to see your perfect matches!</p>
+            <a href="{{ route('premium.index') }}" class="btn primary">Use Premium to See Your Match</a>
+        </div>
+    @elseif(collect($matches)->isEmpty() && collect($recommendations)->isEmpty())
         <div class="dashboard-section" style="text-align: center; padding: 3rem 1rem;">
             <h2>No Matches Found Yet</h2>
             <p style="color: #64748b; margin-bottom: 2rem;">We couldn't find any perfect matches right now. Try adding more skills to your profile or check back later as new users join!</p>

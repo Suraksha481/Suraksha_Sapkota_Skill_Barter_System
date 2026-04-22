@@ -48,7 +48,7 @@ class VerifyEmailCode extends Notification implements ShouldQueue
             ->line('')
             ->line('**' . $this->code . '**')
             ->line('')
-            ->line('This code will expire in 10 minutes.')
+            ->line('This code will expire in 2 minutes.')
             ->line('If you did not request this code, please ignore this email.')
             ->salutation('Best regards, SkillXchange Team');
     }

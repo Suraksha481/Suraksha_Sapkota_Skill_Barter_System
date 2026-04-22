@@ -6,9 +6,10 @@
 
 <style>
 .find-hero-v2 {
-    background: var(--bg-light-teal);
+    background: #aad9d0;
     padding: 80px 5%;
     text-align: center;
+    border-radius: 0 0 50px 50px;
 }
 .find-hero-v2 h1 { font-size: 3rem; margin-bottom: 20px; letter-spacing: -1.5px; }
 
@@ -98,7 +99,7 @@
 
 .skill-footer-v2 { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 20px; margin-top: auto; }
 .learner-count-v2 { font-size: 0.9rem; color: #64748b; font-weight: 700; display: flex; align-items: center; gap: 6px; }
-.btn-view-v2 { 
+.btn-view-v2 {
     background: var(--primary-teal);
     color: #fff !important;
     font-weight: 700;

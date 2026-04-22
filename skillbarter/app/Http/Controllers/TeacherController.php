@@ -81,15 +81,21 @@ class TeacherController extends Controller
         }
 
         // students who have an accepted request can view resources
+        $isPremium = false;
         if (! $canViewResources && $user && $user->isStudent()) {
+            $isPremium = $user->isPremium();
             $accepted = \App\Models\RequestModel::where('responder_id', $teacher->id)
                 ->where('requester_id', $user->id)
                 ->where('status', 'accepted')
                 ->exists();
 
             if ($accepted) {
-                $canViewResources = true;
-                $resources = $teacher->resources()->latest()->get();
+                if ($isPremium) {
+                    $canViewResources = true;
+                    $resources = $teacher->resources()->latest()->get();
+                } else {
+                    $canViewResources = 'premium_required';
+                }
             }
         }
 

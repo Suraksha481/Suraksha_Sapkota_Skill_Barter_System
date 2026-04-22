@@ -22,7 +22,7 @@
 .srv-hero-clean {
     padding: 100px 5% 60px;
     text-align: center;
-    background: #75dcc5;
+    background: #aad9d0;
     border-radius: 0 0 50px 50px;
 }
 
@@ -175,7 +175,7 @@
         <div class="cta-box-modern">
             <h2>Ready to unlock your true potential?</h2>
             <a href="{{ route('register') }}" class="btn-pill primary" style="padding: 15px 40px;">Join the Community</a>
-            
+
         </div>
     </div>
 </div>

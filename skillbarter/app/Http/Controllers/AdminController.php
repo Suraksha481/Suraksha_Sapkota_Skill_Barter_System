@@ -328,7 +328,10 @@ class AdminController extends Controller
             if ($dispute->sessionRequest) {
                 $dispute->sessionRequest->update(['status' => 'cancelled']);
             }
-            return back()->with('success', 'Dispute resolved: session cancelled and marked as refunded.');
+            \App\Models\PremiumMembership::where('user_id', $dispute->user_id)
+                ->where('status', 'active')
+                ->update(['status' => 'refunded']);
+            return back()->with('success', 'Dispute resolved: session cancelled, refunded, and subscription cancelled.');
         }
 
         $dispute->update([

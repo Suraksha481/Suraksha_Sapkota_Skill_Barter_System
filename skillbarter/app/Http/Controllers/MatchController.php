@@ -18,6 +18,15 @@ class MatchController extends Controller
             return redirect()->route('find-skill');
         }
 
+        $isPremium = $user->isPremium();
+        if (!$isPremium) {
+            return view('match.index', [
+                'matches' => collect([]),
+                'recommendations' => collect([]),
+                'isPremium' => false
+            ]);
+        }
+
         // --- REGULAR MATCHING ---
         $skillsWantedIds = $user->skillsWanted()->pluck('skill_id')->toArray();
         $skillsOfferedIds = $user->skillsOffered()->pluck('skill_id')->toArray();

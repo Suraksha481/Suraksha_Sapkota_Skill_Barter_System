@@ -140,7 +140,7 @@
         </div>
     @endif
 
-    @if(isset($canViewResources) && $canViewResources)
+    @if(isset($canViewResources) && $canViewResources === true)
         <div class="dashboard-section">
             <h2>Resources</h2>
             @if($resources->isEmpty())
@@ -169,6 +169,15 @@
                     @endforeach
                 </div>
             @endif
+        </div>
+    @elseif(isset($canViewResources) && $canViewResources === 'premium_required')
+        <div class="dashboard-section">
+            <h2>Resources</h2>
+            <div style="background: rgba(32,166,138,0.1); padding: 30px; border-radius: 12px; text-align: center; border: 1px dashed var(--primary-teal);">
+                <h3 style="color: var(--primary-teal);"><i class="fas fa-crown"></i> Premium Feature</h3>
+                <p>This teacher has shared resources with you, but you need a premium subscription to access them.</p>
+                <a href="{{ route('premium.index') }}" class="btn-pill primary" style="margin-top: 15px; display: inline-block;">Get Premium</a>
+            </div>
         </div>
     @elseif(auth()->check() && auth()->user()->isStudent())
         <div class="dashboard-section">

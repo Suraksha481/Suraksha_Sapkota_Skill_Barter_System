@@ -6,11 +6,12 @@
 
 <style>
 .contact-hero-v2 {
-    background: #75dcc5;
+    background: #aad9d0;
     padding: 100px 4%;
     text-align: center;
+    border-radius: 0 0 50px 50px;
 }
-.contact-hero-v2 h1 { font-size: 3.5rem; margin-bottom: 20px; letter-spacing: -2px; }
+.contact-hero-v2 h1 { font-size: 2.5rem; margin-bottom: 20px; letter-spacing: -2px; }
 
 .contact-grid-v2 {
     display: grid;

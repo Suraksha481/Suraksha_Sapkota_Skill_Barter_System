@@ -6,7 +6,7 @@
 
 <style>
 .about-hero-v2 {
-    background: #75dcc5; /* Solid vibrant teal for better clarity */
+    background: #aad9d0; /* Solid vibrant teal for better clarity */
     padding: 100px 5%;
     text-align: center;
     color: #fff;

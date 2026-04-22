@@ -68,7 +68,7 @@
             transition: color 0.3s;
         }
         .footer-links a:hover { color: var(--primary-teal); }
-        
+
         .footer-bottom {
             padding-top: 30px;
             border-top: 1px solid #f0f0f0;
@@ -78,7 +78,7 @@
             color: #aaa;
             font-size: 0.85rem;
         }
-        
+
         @media (max-width: 768px) {
             .footer-grid { grid-template-columns: 1fr; }
         }
@@ -123,7 +123,7 @@
             <h4>Services</h4>
             <ul class="footer-links">
                 <li><a href="{{ route('find-skill') }}">Find Skills</a></li>
-                <li><a href="{{ route('service') }}">Popular Categories</a></li>
+                <li><a href="{{ route('service') }}">Services</a></li>
                 <li><a href="{{ route('premium.index') }}">Premium Membership</a></li>
                 <li><a href="{{ auth()->check() ? route('match') : route('login') }}">Skill Matching</a></li>
             </ul>

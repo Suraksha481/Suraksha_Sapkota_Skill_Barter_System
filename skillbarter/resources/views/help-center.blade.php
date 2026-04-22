@@ -6,7 +6,7 @@
 
 <style>
 .help-hero {
-    background: var(--bg-light-teal);
+    background: #aad9d0;
     padding: 80px 5%;
     text-align: center;
     border-radius: 0 0 50px 50px;
@@ -42,7 +42,7 @@
         <h2>Safety & Trust</h2>
         <p>We prioritize the safety of our community. Always review your potential match's profile and ratings before starting a session. We recommend conducting first sessions in public places or through our integrated video classroom.</p>
     </div>
-    
+
     <div style="text-align: center; margin-top: 60px; padding: 40px; background: var(--bg-light-teal); border-radius: 30px;">
         <h3>Still have questions?</h3>
         <p>Our support team is always here for you.</p>

@@ -26,12 +26,7 @@
             <p><strong>Status:</strong> <span style="color: green;">Active</span></p>
             <p><strong>Expires:</strong> {{ $membership->expires_at ? $membership->expires_at->format('M d, Y') : 'N/A' }}</p>
 
-            <form method="POST" action="{{ route('premium.cancel') }}" style="margin-top: 1rem;">
-                @csrf
-                <button type="submit" class="btn ghost" onclick="return confirm('Are you sure you want to cancel?')">
-                    Cancel Membership
-                </button>
-            </form>
+           
         </div>
     </div>
     @endif

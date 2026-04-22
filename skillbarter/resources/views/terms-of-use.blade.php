@@ -6,7 +6,7 @@
 
 <style>
 .terms-hero {
-    background: var(--bg-light-teal);
+    background: #aad9d0;
     padding: 80px 5%;
     text-align: center;
     border-radius: 0 0 50px 50px;

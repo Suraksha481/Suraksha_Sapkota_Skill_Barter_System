@@ -15,14 +15,14 @@
         <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden;">
 
             {{-- Header Section --}}
-            <div style="background: var(--primary-teal); color: white; padding: 40px 30px; text-align: center;">
+            <div style="background: #aad9d0; color: white; padding: 40px 30px; text-align: center;">
                 <img
                     src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name='.$user->name.'&background=20a68a&color=fff' }}"
                     style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 15px;"
                     alt="Profile Avatar"
                 >
                 <h1 style="margin: 0 0 5px 0; font-size: 32px; font-weight: 700;">{{ $user->name }}</h1>
-                <p style="margin: 5px 0; color: #d1d5db; font-size: 14px;">{{ $user->email }}</p>
+                <p style="margin: 5px 0; color: #101211; font-size: 14px;">{{ $user->email }}</p>
                 <span style="display: inline-block; background: white; color: var(--primary-teal); padding: 6px 16px; border-radius: 20px; font-weight: 600; margin-top: 12px; font-size: 13px;">
                     {{ ucfirst($user->role) }}
                 </span>
